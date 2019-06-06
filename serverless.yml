@@ -1,0 +1,24 @@
+service: mes-result-processing-service
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+package:
+  individually: true
+
+functions:
+  tarsUpload:
+    handler: src/functions/tarsUpload/framework/handler.handler
+    events:
+      - http:
+          path: tarsUpload
+          method: get
+
+custom:
+  webpack:
+    webpackConfig: 'webpack-sls-offline.config.js'
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
