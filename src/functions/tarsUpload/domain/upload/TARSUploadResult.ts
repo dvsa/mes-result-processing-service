@@ -1,8 +1,8 @@
 import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
-import { TARSSubmissionStatus } from './TARSSubmissionStatus';
+import { TARSUploadStatus } from './TARSUploadStatus';
 
-export interface TARSSubmissionResult {
+export interface TARSUploadResult {
   test: StandardCarTestCATBSchema;
-  status: TARSSubmissionStatus;
+  status: TARSUploadStatus;
   errorMessage?: string;
 }
