@@ -9,6 +9,8 @@ import { ISubmissionReportingMediator } from '../../domain/ISubmissionReportingM
 import { SubmissionReportingMediator } from '../../domain/SubmissionReportingMediator';
 import { IResultInterfaceCategoriser } from '../../domain/upload/IResultInterfaceCategoriser';
 import { ResultInterfaceCategoriser } from '../../domain/upload/ResultInterfaceCategoriser';
+import { ITarsUploadFacade } from '../../domain/upload/ITarsUploadFacade';
+import { TARSUploadFacade } from '../../domain/upload/TARSUploadFacade';
 
 const container = new Container();
 
@@ -23,5 +25,6 @@ container.bind<BatchProcessInvoker>(BatchProcessInvoker).toSelf();
 container.bind<ITestResultBatchProcessor>(TYPES.TestResultBatchProcessor).to(TestResultBatchProcessor);
 container.bind<ISubmissionReportingMediator>(TYPES.SubmissionReportingMediator).to(SubmissionReportingMediator);
 container.bind<IResultInterfaceCategoriser>(TYPES.ResultInterfaceCategoriser).to(ResultInterfaceCategoriser);
+container.bind<ITarsUploadFacade>(TYPES.TarsUploadFacade).to(TARSUploadFacade);
 
 export { container };
