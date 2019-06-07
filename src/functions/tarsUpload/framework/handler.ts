@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import { Context, ScheduledEvent } from 'aws-lambda';
 import { container } from './di/inversify.config';
-import { UploadBatchPort } from '../application/inbound/UploadBatchPort';
+import { UploadInvoker } from '../application/primary/UploadInvoker';
 
 export async function handler(event: ScheduledEvent, fnCtx: Context): Promise<void> {
-  const uploadPort = container.get<UploadBatchPort>(UploadBatchPort);
-  uploadPort.uploadBatch();
+  const uploadPort = container.get<UploadInvoker>(UploadInvoker);
+  await uploadPort.uploadToTARS();
   return;
 }

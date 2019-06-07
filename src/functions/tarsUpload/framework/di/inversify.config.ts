@@ -1,20 +1,20 @@
 import { Container } from 'inversify';
-import { IBatchUploader } from '../../domain/IBatchUploader';
+import { ITARSUploader } from '../../domain/ITARSUploader';
 import { TYPES } from './types';
-import { BatchUploader } from '../../domain/BatchUploader';
-import { UploadBatchPort } from '../../application/inbound/UploadBatchPort';
-import { IBatchFetcher } from '../../application/inbound/IBatchFetcher';
-import { BlankBatchFetcher } from '../BlankBatchFetcher';
+import { TARSUploader } from '../../domain/TARSUploader';
+import { UploadInvoker } from '../../application/primary/UploadInvoker';
+import { IBatchFetcher } from '../../application/secondary/IBatchFetcher';
+import { ConfigurableBatchFetcher } from '../adapter/ConfigurableBatchFetcher';
 
 const container = new Container();
 
 // Framework
-container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(BlankBatchFetcher);
+container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(ConfigurableBatchFetcher);
 
 // Application
-container.bind<UploadBatchPort>(UploadBatchPort).toSelf();
+container.bind<UploadInvoker>(UploadInvoker).toSelf();
 
 // Domain
-container.bind<IBatchUploader>(TYPES.BatchUploader).to(BatchUploader);
+container.bind<ITARSUploader>(TYPES.TARSUploader).to(TARSUploader);
 
 export { container };
