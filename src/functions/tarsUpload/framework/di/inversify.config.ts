@@ -1,14 +1,14 @@
 import { Container } from 'inversify';
-import { ITARSUploader } from '../../domain/ITARSUploader';
 import { TYPES } from './types';
-import { TARSUploader } from '../../domain/TARSUploader';
-import { UploadInvoker } from '../../application/primary/UploadInvoker';
+import { ITestResultBatchProcessor } from '../../domain/ITestResultBatchProcessor';
+import { TestResultBatchProcessor } from '../../domain/TestResultBatchProcessor';
+import { BatchProcessInvoker } from '../../application/primary/BatchProcessInvoker';
 import { IBatchFetcher } from '../../application/secondary/IBatchFetcher';
 import { ConfigurableBatchFetcher } from '../adapter/ConfigurableBatchFetcher';
 import { ISubmissionReportingMediator } from '../../domain/ISubmissionReportingMediator';
 import { SubmissionReportingMediator } from '../../domain/SubmissionReportingMediator';
 import { IResultInterfaceCategoriser } from '../../domain/upload/IResultInterfaceCategoriser';
-import { ResultInterfaceCategoriser } from '../../domain/ResultInterfaceCategoriser';
+import { ResultInterfaceCategoriser } from '../../domain/upload/ResultInterfaceCategoriser';
 
 const container = new Container();
 
@@ -17,10 +17,10 @@ const container = new Container();
 container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(ConfigurableBatchFetcher);
 
 // Application
-container.bind<UploadInvoker>(UploadInvoker).toSelf();
+container.bind<BatchProcessInvoker>(BatchProcessInvoker).toSelf();
 
 // Domain
-container.bind<ITARSUploader>(TYPES.TARSUploader).to(TARSUploader);
+container.bind<ITestResultBatchProcessor>(TYPES.TestResultBatchProcessor).to(TestResultBatchProcessor);
 container.bind<ISubmissionReportingMediator>(TYPES.SubmissionReportingMediator).to(SubmissionReportingMediator);
 container.bind<IResultInterfaceCategoriser>(TYPES.ResultInterfaceCategoriser).to(ResultInterfaceCategoriser);
 

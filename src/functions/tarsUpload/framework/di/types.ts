@@ -3,7 +3,7 @@ const TYPES = {
   ResultInterfaceCategoriser: Symbol.for('ResultInterfaceCategoriser'),
   SubmissionOutcomeReporter: Symbol.for('SubmissionOutcomeReporter'),
   SubmissionReportingMediator: Symbol.for('SubmissionReportingMediator'),
-  TARSUploader: Symbol.for('TARSUploader'),
+  TestResultBatchProcessor: Symbol.for('TARSUploader'),
 };
 
 export { TYPES };

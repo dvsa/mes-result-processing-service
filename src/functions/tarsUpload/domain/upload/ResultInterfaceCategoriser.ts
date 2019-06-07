@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
-import { IResultInterfaceCategoriser } from './upload/IResultInterfaceCategoriser';
+import { IResultInterfaceCategoriser } from './IResultInterfaceCategoriser';
 import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
-import { TestsByInterface } from './upload/TestsByInterface';
+import { TestsByInterface } from './TestsByInterface';
 
 @injectable()
 export class ResultInterfaceCategoriser implements IResultInterfaceCategoriser {
