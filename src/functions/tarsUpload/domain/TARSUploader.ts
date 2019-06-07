@@ -2,16 +2,17 @@ import { injectable, inject } from 'inversify';
 import { ITARSUploader } from './ITARSUploader';
 import { TYPES } from '../framework/di/types';
 import { IBatchFetcher } from '../application/secondary/IBatchFetcher';
+import { ISubmissionReportingMediator } from './ISubmissionReportingMediator';
 
 @injectable()
 export class TARSUploader implements ITARSUploader {
   constructor(
-    @inject(TYPES.BatchFetcher) private uploadBatchFetcher: IBatchFetcher,
+    @inject(TYPES.BatchFetcher) private batchFetcher: IBatchFetcher,
+    @inject(TYPES.SubmissionReportingMediator) private submissionReportingMediator: ISubmissionReportingMediator,
   ) { }
 
-  uploadToTARS(): Promise<void> {
-    const batchesToUpload = this.uploadBatchFetcher.fetchNextUploadBatch();
-    console.log(`I got ${batchesToUpload.length} batches`);
-    return Promise.resolve();
+  async uploadToTARS(): Promise<void> {
+    const batchesToUpload = await this.batchFetcher.fetchNextUploadBatch();
+    await this.submissionReportingMediator.submitBatchesAndReportOutcome(batchesToUpload);
   }
 }
