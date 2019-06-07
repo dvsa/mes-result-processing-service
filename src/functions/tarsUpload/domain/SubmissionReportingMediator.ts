@@ -24,23 +24,25 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
     ]);
   }
 
+  // TODO: We can't directly map all of these to an upload, rate limiting will need to come here
   private submitAndReportCompletedTests(completedTests: StandardCarTestCATBSchema[]) {
     return Promise.all([
       completedTests.map((completedTest) => {
         this.tarsUploadFacade.upload(completedTest, TARSInterfaceType.COMPLETED)
-          .then(() => {
-            console.log('reporting completed');
+          .then((uploadResult) => {
+            console.log(`reporting completed uploads ${JSON.stringify(uploadResult)}`);
           });
       }),
     ]);
   }
 
+  // TODO: We can't directly map all of these to an upload, rate limiting will need to come here
   private submitAndReportNonCompletedTests(nonCompletedTests: StandardCarTestCATBSchema[]) {
     return Promise.all([
       nonCompletedTests.map((nonCompletedTest) => {
         this.tarsUploadFacade.upload(nonCompletedTest, TARSInterfaceType.UNCOMPLETED)
-          .then(() => {
-            console.log('reporting completed');
+          .then((uploadResult) => {
+            console.log(`reporting noncompleted uploads ${JSON.stringify(uploadResult)}`);
           });
       }),
     ]);
