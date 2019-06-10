@@ -16,33 +16,29 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
   async submitBatchesAndReportOutcome(batch: StandardCarTestCATBSchema[]): Promise<void> {
     const { completed, nonCompleted } = this.resultInterfaceCategoriser.categoriseByInterface(batch);
     await Promise.all([
-      this.submitAndReportCompletedTests(completed),
-      this.submitAndReportNonCompletedTests(nonCompleted),
+      ...this.submitAndReportCompletedTests(completed),
+      ...this.submitAndReportNonCompletedTests(nonCompleted),
     ]);
   }
 
   // TODO: We can't directly map all of these to an upload, rate limiting will need to come here
   private submitAndReportCompletedTests(completedTests: StandardCarTestCATBSchema[]) {
-    return Promise.all([
-      completedTests.map((completedTest) => {
-        this.tarsSubmissionFacade.convertAndUpload(completedTest, TARSInterfaceType.COMPLETED)
-          .then((uploadResult) => {
-            console.log(`reporting completed uploads`);
-          });
-      }),
-    ]);
+    return completedTests.map((completedTest) => {
+      return this.tarsSubmissionFacade.convertAndUpload(completedTest, TARSInterfaceType.COMPLETED)
+        .then((uploadResult) => {
+          console.log(`reporting completed upload`);
+        });
+    });
   }
 
   // TODO: We can't directly map all of these to an upload, rate limiting will need to come here
   private submitAndReportNonCompletedTests(nonCompletedTests: StandardCarTestCATBSchema[]) {
-    return Promise.all([
-      nonCompletedTests.map((nonCompletedTest) => {
-        this.tarsSubmissionFacade.convertAndUpload(nonCompletedTest, TARSInterfaceType.UNCOMPLETED)
-          .then((uploadResult) => {
-            console.log(`reporting noncompleted uploads`);
-          });
-      }),
-    ]);
-
+    return nonCompletedTests.map((nonCompletedTest) => {
+      return this.tarsSubmissionFacade.convertAndUpload(nonCompletedTest, TARSInterfaceType.UNCOMPLETED)
+        .then((uploadResult) => {
+          console.log(`reporting noncompleted upload`);
+        });
+    });
   }
+
 }

@@ -1,5 +1,5 @@
 import { ITARSSubmissionFacade } from './ITARSSubmissionFacade';
-import { injectable, inject } from 'inversify';
+import { injectable, inject, named } from 'inversify';
 import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
 import { TARSInterfaceType } from './TARSInterfaceType';
 import { TARSUploadResult } from './TARSUploadResult';
