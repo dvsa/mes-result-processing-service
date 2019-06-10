@@ -4,15 +4,21 @@ export interface CompletedTestPayload extends ITARSPayload {
   // Integer > 0, max 12 digits
   checkDigit: number;
 
-  // 'E' / 'W' (English or Welsh)
+  /**
+   * 'E' / 'W' (English or Welsh)
+   */
   languageId: string;
 
   licenceSurrender: boolean;
 
-  // 6 chars max
+  /*
+   * 6 chars max
+   */
   dL25Category: string;
 
-  // Integer > 0, max 2 digits
+  /*
+   * Integer > 0, max 2 digits
+   */
   dL25TestType: number;
 
   automaticTest: boolean;
@@ -21,15 +27,23 @@ export interface CompletedTestPayload extends ITARSPayload {
 
   d255Selected: boolean;
 
-  // true=>pass false=>fail
+  /*
+   * true=>pass false=>fail
+   */
   passResult: boolean;
 
-  // 8 or 16 characters
+  /*
+   * 8 or 16 characters
+   */
   driverNumber: string;
 
-  // Format DD/MM/YYYY
+  /*
+   * Format DD/MM/YYYY
+   */
   testDate: string;
 
-  // Max 8 chars
+  /*
+   * Max 8 chars
+   */
   passCertificate: string;
 }

@@ -20,15 +20,7 @@ export class HTTPRetryingTARSUploader implements ITARSUploader {
   }
 
   async uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<void> {
-    console.log(`uploading ${JSON.stringify(tarsPayload)}`);
-    console.log(`endpoint is either`);
-    console.log(this.tarsHttpConfig.completedTestEndpoint);
-    console.log(this.tarsHttpConfig.nonCompletedTestEndpoint);
-    console.log(`I will allow ${this.tarsHttpConfig.maxRetriesPerUpload} retries`);
-    console.log(`axios client is ${this.axios}`);
-    const resp = await this.axios.post(this.tarsHttpConfig.completedTestEndpoint, tarsPayload);
-    console.log(`HTTP RESP: ${resp}`);
-    return Promise.resolve();
+    await this.axios.post(this.tarsHttpConfig.completedTestEndpoint, tarsPayload);
   }
 
 }

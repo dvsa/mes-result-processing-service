@@ -10,13 +10,11 @@ import { TARSInterfaceType } from './upload/TARSInterfaceType';
 export class SubmissionReportingMediator implements ISubmissionReportingMediator {
   constructor(
     @inject(TYPES.ResultInterfaceCategoriser) private resultInterfaceCategoriser: IResultInterfaceCategoriser,
-    @inject(TYPES.TARSSubmissionFacade) private tarsUploadFacade: ITARSSubmissionFacade,
+    @inject(TYPES.TARSSubmissionFacade) private tarsSubmissionFacade: ITARSSubmissionFacade,
   ) { }
 
   async submitBatchesAndReportOutcome(batch: StandardCarTestCATBSchema[]): Promise<void> {
-    console.log(`submitting and reporting on ${batch.length} results in an interleaved fashion`);
     const { completed, nonCompleted } = this.resultInterfaceCategoriser.categoriseByInterface(batch);
-
     await Promise.all([
       this.submitAndReportCompletedTests(completed),
       this.submitAndReportNonCompletedTests(nonCompleted),
@@ -27,7 +25,7 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
   private submitAndReportCompletedTests(completedTests: StandardCarTestCATBSchema[]) {
     return Promise.all([
       completedTests.map((completedTest) => {
-        this.tarsUploadFacade.convertAndUpload(completedTest, TARSInterfaceType.COMPLETED)
+        this.tarsSubmissionFacade.convertAndUpload(completedTest, TARSInterfaceType.COMPLETED)
           .then((uploadResult) => {
             console.log(`reporting completed uploads`);
           });
@@ -39,7 +37,7 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
   private submitAndReportNonCompletedTests(nonCompletedTests: StandardCarTestCATBSchema[]) {
     return Promise.all([
       nonCompletedTests.map((nonCompletedTest) => {
-        this.tarsUploadFacade.convertAndUpload(nonCompletedTest, TARSInterfaceType.UNCOMPLETED)
+        this.tarsSubmissionFacade.convertAndUpload(nonCompletedTest, TARSInterfaceType.UNCOMPLETED)
           .then((uploadResult) => {
             console.log(`reporting noncompleted uploads`);
           });
