@@ -2,9 +2,10 @@ import { ITARSPayloadConverter } from './ITARSPayloadConverter';
 import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
 import { TARSInterfaceType } from './TARSInterfaceType';
 import { ITARSPayload } from './ITARSPayload';
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 import { NonCompletedTestPayload } from './NonCompletedTest';
 import { CompletedTestPayload } from './CompletedTestPayload';
+import { TYPES } from '../../framework/di/types';
 
 @injectable()
 export class TARSPayloadConverter implements ITARSPayloadConverter {
@@ -48,7 +49,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       d255Selected: test.testSummary.d255Selected,
       passResult: test.activityCode === '1',
       driverNumber: candidate.driverNumber,
-      testDate: Date.parse(testSlotAttributes.start).toString(), // TODO: format
+      testDate: new Date(testSlotAttributes.start).toLocaleDateString('en-GB'),
       passCertificate: passCompletion.passCertificateNumber,
     };
   }
