@@ -17,9 +17,9 @@ import { TARSSubmissionFacade } from '../../domain/upload/TARSSubmissionFacade';
 import { ITARSUploader } from '../../application/secondary/ITARSUploader';
 import { EnvvarTARSHTTPConfig } from '../adapter/upload/EnvvarTARSHTTPConfig';
 import { RateLimitDecoratingTARSUploader } from '../adapter/upload/RateLimitDecoratingTARSUploader';
-import { HTTPRetryingTARSUploader } from '../adapter/upload/HTTPRetryingTARSUploader';
 import { IDateFormatter } from '../../domain/util/IDateFormatter';
 import { DateFormatter } from '../../domain/util/DateFormatter';
+import { HTTPTARSUploader } from '../adapter/upload/HTTPTARSUploader';
 
 const container = new Container();
 
@@ -28,7 +28,7 @@ const container = new Container();
 container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(ConfigurableBatchFetcher);
 container.bind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).to(EnvvarTARSHTTPConfig);
 container.bind<ITARSUploader>(TYPES.TARSUploader).to(RateLimitDecoratingTARSUploader).whenTargetIsDefault();
-container.bind<ITARSUploader>(TYPES.TARSUploader).to(HTTPRetryingTARSUploader).whenTargetNamed('http');
+container.bind<ITARSUploader>(TYPES.TARSUploader).to(HTTPTARSUploader).whenTargetNamed('http');
 
 // Application
 container.bind<BatchProcessInvoker>(BatchProcessInvoker).toSelf();

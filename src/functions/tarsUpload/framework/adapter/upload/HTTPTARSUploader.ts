@@ -5,9 +5,10 @@ import { ITARSHTTPConfig } from './ITARSHTTPConfig';
 import { ITARSUploader } from '../../../application/secondary/ITARSUploader';
 import { ITARSPayload } from '../../../domain/upload/ITARSPayload';
 import axios, { AxiosInstance } from 'axios';
+import { UploadRetryCount } from '../../../domain/upload/UploadRetryCount';
 
 @injectable()
-export class HTTPRetryingTARSUploader implements ITARSUploader {
+export class HTTPTARSUploader implements ITARSUploader {
 
   axios: AxiosInstance;
 
@@ -19,10 +20,11 @@ export class HTTPRetryingTARSUploader implements ITARSUploader {
     });
   }
 
-  async uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<void> {
+  async uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<UploadRetryCount> {
     const endpoint = interfaceType === TARSInterfaceType.COMPLETED ?
       this.tarsHttpConfig.completedTestEndpoint : this.tarsHttpConfig.nonCompletedTestEndpoint;
-    return this.axios.post(endpoint, tarsPayload);
+    await this.axios.post(endpoint, tarsPayload);
+    return 0;
   }
 
 }

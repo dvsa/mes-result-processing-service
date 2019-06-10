@@ -19,12 +19,13 @@ export class TARSSubmissionFacade implements ITARSSubmissionFacade {
     interfacetype: TARSInterfaceType,
   ): Promise<TARSUploadResult> {
     try {
-      const tarsPayload = this.tarsPayloadConverter.convertToTARSSubmission(test, interfacetype);
-      await this.tarsUploader.uploadToTARS(tarsPayload, interfacetype);
-      return { test, status: TARSUploadStatus.SUCCESSFUL };
+      const tarsPayload = this.tarsPayloadConverter.convertToTARSPayload(test, interfacetype);
+      const uploadRetryCount = await this.tarsUploader.uploadToTARS(tarsPayload, interfacetype);
+      return { test, uploadRetryCount, status: TARSUploadStatus.SUCCESSFUL };
     } catch (err) {
-      // TODO: Categorise the error
-      return { test, status: TARSUploadStatus.TRANSIENT_ERROR, errorMessage: err.message };
+      // TODO: Categorise the error, find the actual retry count
+      const uploadRetryCount = 0;
+      return { test, uploadRetryCount, status: TARSUploadStatus.TRANSIENT_ERROR, errorMessage: err.message };
     }
   }
 
