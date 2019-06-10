@@ -26,13 +26,13 @@ describe('TestResultBatchProcessor', () => {
     testResultBatchProcessor = container.get<ITestResultBatchProcessor>(TYPES.TestResultBatchProcessor);
   });
 
-  it('should submit a single uncompleted test payload to TARS', async () => {
+  it('should submit a single non-completed test payload to TARS', async () => {
     batchFetcher.setNextBatch([dummyTests.fail1]);
 
     await testResultBatchProcessor.processNextBatch();
 
     expect(tarsUploader.getCalls().length).toBe(1);
-    expect(tarsUploader.getCalls()[0].interfaceType).toBe(TARSInterfaceType.UNCOMPLETED);
+    expect(tarsUploader.getCalls()[0].interfaceType).toBe(TARSInterfaceType.NON_COMPLETED);
     expect(tarsUploader.getCalls()[0].payload as NonCompletedTestPayload).toEqual({
       applicationId: 1234571,
       bookingSequence: 2,

@@ -1,4 +1,4 @@
 export enum TARSInterfaceType {
   COMPLETED,
-  UNCOMPLETED,
+  NON_COMPLETED,
 }
