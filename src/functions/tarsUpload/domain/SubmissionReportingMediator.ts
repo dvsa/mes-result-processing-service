@@ -32,7 +32,7 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
 
   private submitAndReportNonCompletedTests(nonCompletedTests: StandardCarTestCATBSchema[]) {
     return nonCompletedTests.map((nonCompletedTest) => {
-      return this.tarsSubmissionFacade.convertAndUpload(nonCompletedTest, TARSInterfaceType.UNCOMPLETED)
+      return this.tarsSubmissionFacade.convertAndUpload(nonCompletedTest, TARSInterfaceType.NON_COMPLETED)
         .then((uploadResult) => {
           console.log(`reporting noncompleted upload`);
         });

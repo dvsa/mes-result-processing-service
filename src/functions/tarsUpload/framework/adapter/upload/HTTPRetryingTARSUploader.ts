@@ -20,11 +20,9 @@ export class HTTPRetryingTARSUploader implements ITARSUploader {
   }
 
   async uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<void> {
-    try {
-      await this.axios.post(this.tarsHttpConfig.completedTestEndpoint, tarsPayload);
-    } catch (err) {
-      console.log(`******************* POST caught. ${err}`);
-    }
+    const endpoint = interfaceType === TARSInterfaceType.COMPLETED ?
+      this.tarsHttpConfig.completedTestEndpoint : this.tarsHttpConfig.nonCompletedTestEndpoint;
+    return this.axios.post(endpoint, tarsPayload);
   }
 
 }
