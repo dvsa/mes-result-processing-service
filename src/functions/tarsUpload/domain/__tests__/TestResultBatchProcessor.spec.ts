@@ -13,14 +13,10 @@ import { CompletedTestPayload } from '../upload/CompletedTestPayload';
 
 describe('TestResultBatchProcessor', () => {
   let testResultBatchProcessor: ITestResultBatchProcessor;
-
   let batchFetcher: ConfigurableBatchFetcher;
   let tarsUploader: RecordingTARSUploader;
 
   beforeEach(() => {
-    process.env.TARS_COMPLETED_TEST_ENDPOINT = 'https://postman-echo.com/tarscompleted';
-    process.env.TARS_NON_COMPLETED_TEST_ENDPOINT = 'https://postman-echo.com/tarsnoncompleted';
-
     batchFetcher = new ConfigurableBatchFetcher();
     tarsUploader = new RecordingTARSUploader();
 
@@ -30,14 +26,14 @@ describe('TestResultBatchProcessor', () => {
     testResultBatchProcessor = container.get<ITestResultBatchProcessor>(TYPES.TestResultBatchProcessor);
   });
 
-  it('should submit a single failure payload to TARS', async () => {
+  it('should submit a single uncompleted test payload to TARS', async () => {
     batchFetcher.setNextBatch([dummyTests.fail1]);
 
     await testResultBatchProcessor.processNextBatch();
 
     expect(tarsUploader.getCalls().length).toBe(1);
-    expect(tarsUploader.getCalls()[0][1]).toBe(TARSInterfaceType.UNCOMPLETED);
-    expect(tarsUploader.getCalls()[0][0] as NonCompletedTestPayload).toEqual({
+    expect(tarsUploader.getCalls()[0].interfaceType).toBe(TARSInterfaceType.UNCOMPLETED);
+    expect(tarsUploader.getCalls()[0].payload as NonCompletedTestPayload).toEqual({
       applicationId: 1234571,
       bookingSequence: 2,
       nonCompletionCode: 51,
@@ -50,8 +46,8 @@ describe('TestResultBatchProcessor', () => {
     await testResultBatchProcessor.processNextBatch();
 
     expect(tarsUploader.getCalls().length).toBe(1);
-    expect(tarsUploader.getCalls()[0][1]).toBe(TARSInterfaceType.COMPLETED);
-    expect(tarsUploader.getCalls()[0][0] as CompletedTestPayload).toEqual({
+    expect(tarsUploader.getCalls()[0].interfaceType).toBe(TARSInterfaceType.COMPLETED);
+    expect(tarsUploader.getCalls()[0].payload as CompletedTestPayload).toEqual({
       applicationId: 1234569,
       bookingSequence: 1,
       checkDigit: 9,

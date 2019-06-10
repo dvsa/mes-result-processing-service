@@ -3,14 +3,19 @@ import { ITARSPayload } from '../../upload/ITARSPayload';
 import { TARSInterfaceType } from '../../upload/TARSInterfaceType';
 import { injectable } from 'inversify';
 
+export interface TARSUploaderCall {
+  payload: ITARSPayload;
+  interfaceType: TARSInterfaceType;
+}
+
 @injectable()
 export class RecordingTARSUploader implements ITARSUploader {
 
   private errorForNextCall: Error | null = null;
-  private calledWith: [ITARSPayload, TARSInterfaceType][] = [];
+  private calledWith: TARSUploaderCall[] = [];
 
-  uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<void> {
-    this.calledWith = [...this.calledWith, [tarsPayload, interfaceType]];
+  uploadToTARS(payload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<void> {
+    this.calledWith = [...this.calledWith, { payload, interfaceType }];
     if (this.errorForNextCall) {
       return Promise.reject(this.errorForNextCall);
     }
@@ -21,7 +26,7 @@ export class RecordingTARSUploader implements ITARSUploader {
     this.errorForNextCall = error;
   }
 
-  getCalls(): [ITARSPayload, TARSInterfaceType][] {
+  getCalls(): TARSUploaderCall[] {
     return this.calledWith;
   }
 

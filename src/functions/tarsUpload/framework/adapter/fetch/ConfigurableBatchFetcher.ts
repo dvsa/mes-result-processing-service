@@ -11,7 +11,7 @@ export class ConfigurableBatchFetcher implements IBatchFetcher {
     return Promise.resolve(this.nextBatch);
   }
 
-  setNextBatch(next: StandardCarTestCATBSchema[]) {
-    this.nextBatch = next;
+  setNextBatch(nextBatch: StandardCarTestCATBSchema[]) {
+    this.nextBatch = nextBatch;
   }
 }
