@@ -3,7 +3,10 @@ const TYPES = {
   ResultInterfaceCategoriser: Symbol.for('ResultInterfaceCategoriser'),
   SubmissionOutcomeReporter: Symbol.for('SubmissionOutcomeReporter'),
   SubmissionReportingMediator: Symbol.for('SubmissionReportingMediator'),
-  TarsUploadFacade: Symbol.for('TarsUploadFacade'),
+  TARSHTTPConfig: Symbol.for('TARSHTTPConfig'),
+  TARSPayloadConverter: Symbol.for('TARSPayloadConverter'),
+  TARSSubmissionFacade: Symbol.for('TarsSubmissionFacade'),
+  TARSUploader: Symbol.for('TARSUploader'),
   TestResultBatchProcessor: Symbol.for('TestResultBatchProcessor'),
 };
 

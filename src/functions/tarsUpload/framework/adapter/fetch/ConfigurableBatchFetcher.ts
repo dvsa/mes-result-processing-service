@@ -1,4 +1,4 @@
-import { IBatchFetcher } from '../../application/secondary/IBatchFetcher';
+import { IBatchFetcher } from '../../../application/secondary/IBatchFetcher';
 import { injectable } from 'inversify';
 import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
 
