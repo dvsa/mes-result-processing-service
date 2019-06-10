@@ -12,7 +12,7 @@ describe('TestResultBatchProcessor', () => {
     testResultBatchProcessor = container.get<ITestResultBatchProcessor>(TYPES.TestResultBatchProcessor);
   });
 
-  it('should not crash', () => {
-    testResultBatchProcessor.processNextBatch();
+  it('should not crash', async () => {
+    await testResultBatchProcessor.processNextBatch();
   });
 });

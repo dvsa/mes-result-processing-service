@@ -21,7 +21,6 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
     ]);
   }
 
-  // TODO: We can't directly map all of these to an upload, rate limiting will need to come here
   private submitAndReportCompletedTests(completedTests: StandardCarTestCATBSchema[]) {
     return completedTests.map((completedTest) => {
       return this.tarsSubmissionFacade.convertAndUpload(completedTest, TARSInterfaceType.COMPLETED)
@@ -31,7 +30,6 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
     });
   }
 
-  // TODO: We can't directly map all of these to an upload, rate limiting will need to come here
   private submitAndReportNonCompletedTests(nonCompletedTests: StandardCarTestCATBSchema[]) {
     return nonCompletedTests.map((nonCompletedTest) => {
       return this.tarsSubmissionFacade.convertAndUpload(nonCompletedTest, TARSInterfaceType.UNCOMPLETED)

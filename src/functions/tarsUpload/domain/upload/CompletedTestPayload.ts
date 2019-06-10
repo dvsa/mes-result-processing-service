@@ -11,12 +11,12 @@ export interface CompletedTestPayload extends ITARSPayload {
 
   licenceSurrender: boolean;
 
-  /*
+  /**
    * 6 chars max
    */
   dL25Category: string;
 
-  /*
+  /**
    * Integer > 0, max 2 digits
    */
   dL25TestType: number;
@@ -27,22 +27,22 @@ export interface CompletedTestPayload extends ITARSPayload {
 
   d255Selected: boolean;
 
-  /*
+  /**
    * true=>pass false=>fail
    */
   passResult: boolean;
 
-  /*
+  /**
    * 8 or 16 characters
    */
   driverNumber: string;
 
-  /*
+  /**
    * Format DD/MM/YYYY
    */
   testDate: string;
 
-  /*
+  /**
    * Max 8 chars
    */
   passCertificate: string;

@@ -16,7 +16,7 @@ import { TARSPayloadConverter } from '../../domain/upload/TARSPayloadConverter';
 import { TARSSubmissionFacade } from '../../domain/upload/TARSSubmissionFacade';
 import { ITARSUploader } from '../../application/secondary/ITARSUploader';
 import { EnvvarTARSHTTPConfig } from '../adapter/upload/EnvvarTARSHTTPConfig';
-import { RateLimitingTARSUploader } from '../adapter/upload/RateLimitingTARSUploader';
+import { RateLimitDecoratingTARSUploader } from '../adapter/upload/RateLimitDecoratingTARSUploader';
 import { HTTPRetryingTARSUploader } from '../adapter/upload/HTTPRetryingTARSUploader';
 
 const container = new Container();
@@ -25,8 +25,8 @@ const container = new Container();
 // TODO: Implement a HTTP version when the endpoint is available - this version is just for testing
 container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(ConfigurableBatchFetcher);
 container.bind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).to(EnvvarTARSHTTPConfig);
-// container.bind<ITARSUploader>(TYPES.TARSUploader).to(RateLimitingTARSUploader).whenTargetIsDefault();
-container.bind<ITARSUploader>(TYPES.TARSUploader).to(HTTPRetryingTARSUploader); // .whenTargetNamed('http');
+container.bind<ITARSUploader>(TYPES.TARSUploader).to(RateLimitDecoratingTARSUploader).whenTargetIsDefault();
+container.bind<ITARSUploader>(TYPES.TARSUploader).to(HTTPRetryingTARSUploader).whenTargetNamed('http');
 
 // Application
 container.bind<BatchProcessInvoker>(BatchProcessInvoker).toSelf();

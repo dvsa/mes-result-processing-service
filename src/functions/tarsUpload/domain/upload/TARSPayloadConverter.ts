@@ -42,7 +42,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       languageId: communicationPreferences.conductedLanguage === 'English' ? 'E' : 'W',
       licenceSurrender: passCompletion.provisionalLicenceProvided,
       dL25Category: category,
-      dL25TestType: 1, // TODO: What is this?
+      dL25TestType: 2, // TODO: 2 is for cat B only, we need to get this from the test schema eventually
       automaticTest: vehicleDetails.gearboxCategory === 'Automatic',
       extendedTest: testSlotAttributes.extendedTest,
       d255Selected: test.testSummary.d255Selected,
