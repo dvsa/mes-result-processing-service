@@ -7,10 +7,12 @@ describe('TestResultBatchProcessor', () => {
   let testResultBatchProcessor: ITestResultBatchProcessor;
 
   beforeEach(() => {
+    process.env.TARS_COMPLETED_TEST_ENDPOINT = 'https://postman-echo.com/tarscompleted';
+    process.env.TARS_NON_COMPLETED_TEST_ENDPOINT = 'https://postman-echo.com/tarsnoncompleted';
     testResultBatchProcessor = container.get<ITestResultBatchProcessor>(TYPES.TestResultBatchProcessor);
   });
 
-  it('should not crash', () => {
-    testResultBatchProcessor.processNextBatch();
+  it('should not crash', async () => {
+    await testResultBatchProcessor.processNextBatch();
   });
 });
