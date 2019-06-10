@@ -7,8 +7,8 @@ describe('TestResultBatchProcessor', () => {
   let testResultBatchProcessor: ITestResultBatchProcessor;
 
   beforeEach(() => {
-    process.env.TARS_COMPLETED_TEST_ENDPOINT = 'https://example.com/tarscompleted';
-    process.env.TARS_NON_COMPLETED_TEST_ENDPOINT = 'https://example.com/tarsnoncompleted';
+    process.env.TARS_COMPLETED_TEST_ENDPOINT = 'https://postman-echo.com/tarscompleted';
+    process.env.TARS_NON_COMPLETED_TEST_ENDPOINT = 'https://postman-echo.com/tarsnoncompleted';
     testResultBatchProcessor = container.get<ITestResultBatchProcessor>(TYPES.TestResultBatchProcessor);
   });
 
