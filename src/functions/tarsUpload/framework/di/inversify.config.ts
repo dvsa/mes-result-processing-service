@@ -22,6 +22,8 @@ import { DateFormatter } from '../../domain/util/DateFormatter';
 import { HTTPTARSUploader } from '../adapter/upload/HTTPTARSUploader';
 import { ISubmissionOutcomeReporter } from '../../domain/reporting/ISubmissionOutcomeReporter';
 import { SubmissionOutcomeReporter } from '../../domain/reporting/SubmissionOutcomeReporter';
+import { ISubmissionOutcomeContextBuilder } from '../../domain/reporting/ISubmissionOutcomeContextBuilder';
+import { SubmissionOutcomeContextBuilder } from '../../domain/reporting/SubmissionOutcomeContextBuilder';
 
 const container = new Container();
 
@@ -43,5 +45,7 @@ container.bind<ITARSSubmissionFacade>(TYPES.TARSSubmissionFacade).to(TARSSubmiss
 container.bind<ITARSPayloadConverter>(TYPES.TARSPayloadConverter).to(TARSPayloadConverter);
 container.bind<IDateFormatter>(TYPES.DateFormatter).to(DateFormatter);
 container.bind<ISubmissionOutcomeReporter>(TYPES.SubmissionOutcomeReporter).to(SubmissionOutcomeReporter);
+container.bind<ISubmissionOutcomeContextBuilder>(TYPES.SubmissionOutcomeContextBuilder)
+  .to(SubmissionOutcomeContextBuilder);
 
 export { container };

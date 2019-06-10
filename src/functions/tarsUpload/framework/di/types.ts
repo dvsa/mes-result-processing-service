@@ -3,6 +3,7 @@ const TYPES = {
   DateFormatter: Symbol.for('DateFormatter'),
   ResultInterfaceCategoriser: Symbol.for('ResultInterfaceCategoriser'),
   SubmissionOutcomeReporter: Symbol.for('SubmissionOutcomeReporter'),
+  SubmissionOutcomeContextBuilder: Symbol.for('SubmissionOutcomeContextBuilder'),
   SubmissionReportingMediator: Symbol.for('SubmissionReportingMediator'),
   TARSHTTPConfig: Symbol.for('TARSHTTPConfig'),
   TARSPayloadConverter: Symbol.for('TARSPayloadConverter'),
