@@ -21,7 +21,7 @@ export class EnvvarTARSHTTPConfig {
 
   private getFromEnvThrowIfNotPresent(envvarName: string): string {
     const envvarVal = process.env[envvarName];
-    if (envvarName === undefined || envvarName.trim().length === 0) {
+    if (envvarVal === undefined || envvarVal.trim().length === 0) {
       throw new Error(`Couldn't find envvar ${envvarName}`);
     }
     return envvarVal as string;

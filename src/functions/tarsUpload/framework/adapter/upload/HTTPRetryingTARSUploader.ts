@@ -14,6 +14,10 @@ export class HTTPRetryingTARSUploader implements ITARSUploader {
 
   uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<void> {
     console.log(`uploading ${JSON.stringify(tarsPayload)}`);
+    console.log(`endpoint is either`);
+    console.log(this.tarsHttpConfig.completedTestEndpoint);
+    console.log(this.tarsHttpConfig.nonCompletedTestEndpoint);
+    console.log(`I will allow ${this.tarsHttpConfig.maxRetriesPerUpload} retries`);
     return Promise.resolve();
   }
 

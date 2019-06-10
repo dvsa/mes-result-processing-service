@@ -11,19 +11,19 @@ import { IResultInterfaceCategoriser } from '../../domain/upload/IResultInterfac
 import { ResultInterfaceCategoriser } from '../../domain/upload/ResultInterfaceCategoriser';
 import { ITARSSubmissionFacade } from '../../domain/upload/ITARSSubmissionFacade';
 import { ITARSHTTPConfig } from '../adapter/upload/ITARSHTTPConfig';
-import { DummyTARSHTTPConfig } from '../adapter/upload/DummyTARSHTTPConfig';
 import { ITARSPayloadConverter } from '../../domain/upload/ITARSPayloadConverter';
 import { TARSPayloadConverter } from '../../domain/upload/TARSPayloadConverter';
 import { TARSSubmissionFacade } from '../../domain/upload/TARSSubmissionFacade';
 import { ITARSUploader } from '../../application/secondary/ITARSUploader';
 import { HTTPRetryingTARSUploader } from '../adapter/upload/HTTPRetryingTARSUploader';
+import { EnvvarTARSHTTPConfig } from '../adapter/upload/EnvvarTARSHTTPConfig';
 
 const container = new Container();
 
 // Framework
 // TODO: Implement a HTTP version when the endpoint is available - this version is just for testing
 container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(ConfigurableBatchFetcher);
-container.bind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).to(DummyTARSHTTPConfig);
+container.bind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).to(EnvvarTARSHTTPConfig);
 container.bind<ITARSUploader>(TYPES.TARSUploader).to(HTTPRetryingTARSUploader);
 
 // Application
