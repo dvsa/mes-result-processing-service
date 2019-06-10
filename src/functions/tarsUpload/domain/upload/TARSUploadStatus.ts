@@ -1,0 +1,5 @@
+export enum TARSUploadStatus {
+  SUCCESSFUL,
+  TRANSIENT_ERROR,
+  NON_TRANSIENT_ERROR,
+}

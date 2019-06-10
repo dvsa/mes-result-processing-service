@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "aws-sdk": "^2.389.0",
-    "moment": "^2.23.0"
+    "inversify": "^5.0.1",
+    "moment": "^2.23.0",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
+    "@dvsa/mes-test-schema": "^1.0.17",
     "@types/aws-lambda": "^8.10.13",
     "@types/aws-sdk": "^2.7.0",
     "@types/jasmine": "^2.8.9",
