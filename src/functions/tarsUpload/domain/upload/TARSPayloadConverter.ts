@@ -24,14 +24,15 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
   }
 
   convertToCompletedTestPayload(test: StandardCarTestCATBSchema): CompletedTestPayload {
-    const { journalData, communicationPreferences, passCompletion, category, vehicleDetails } = test;
+    const { journalData, communicationPreferences, passCompletion, category, vehicleDetails, testSummary } = test;
     const { applicationReference, testSlotAttributes, candidate } = journalData;
     const { applicationId, bookingSequence, checkDigit } = applicationReference;
     if (
       !passCompletion ||
       !communicationPreferences ||
       !candidate.driverNumber ||
-      !test.testSummary ||
+      !testSummary ||
+      !testSummary.D255 ||
       !vehicleDetails
     ) {
       throw new Error(`Invalid completed test: ${JSON.stringify(test)}`);
@@ -46,7 +47,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       dL25TestType: 2, // TODO: 2 is for cat B only, we need to get this from the test schema eventually
       automaticTest: vehicleDetails.gearboxCategory === 'Automatic',
       extendedTest: testSlotAttributes.extendedTest,
-      d255Selected: test.testSummary.d255Selected,
+      d255Selected: testSummary.D255,
       passResult: test.activityCode === '1',
       driverNumber: candidate.driverNumber,
       testDate: new Date(testSlotAttributes.start).toLocaleDateString('en-GB'),
