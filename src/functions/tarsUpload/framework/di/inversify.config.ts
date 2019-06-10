@@ -20,6 +20,8 @@ import { RateLimitDecoratingTARSUploader } from '../adapter/upload/RateLimitDeco
 import { IDateFormatter } from '../../domain/util/IDateFormatter';
 import { DateFormatter } from '../../domain/util/DateFormatter';
 import { HTTPTARSUploader } from '../adapter/upload/HTTPTARSUploader';
+import { ISubmissionOutcomeReporter } from '../../domain/reporting/ISubmissionOutcomeReporter';
+import { SubmissionOutcomeReporter } from '../../domain/reporting/SubmissionOutcomeReporter';
 
 const container = new Container();
 
@@ -40,5 +42,6 @@ container.bind<IResultInterfaceCategoriser>(TYPES.ResultInterfaceCategoriser).to
 container.bind<ITARSSubmissionFacade>(TYPES.TARSSubmissionFacade).to(TARSSubmissionFacade);
 container.bind<ITARSPayloadConverter>(TYPES.TARSPayloadConverter).to(TARSPayloadConverter);
 container.bind<IDateFormatter>(TYPES.DateFormatter).to(DateFormatter);
+container.bind<ISubmissionOutcomeReporter>(TYPES.SubmissionOutcomeReporter).to(SubmissionOutcomeReporter);
 
 export { container };
