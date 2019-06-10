@@ -6,6 +6,7 @@ import { injectable, inject } from 'inversify';
 import { NonCompletedTestPayload } from './NonCompletedTest';
 import { CompletedTestPayload } from './CompletedTestPayload';
 import { TYPES } from '../../framework/di/types';
+import { CompletedTestPayloadCreationError } from './errors/CompletedTestPayloadCreationError';
 
 @injectable()
 export class TARSPayloadConverter implements ITARSPayloadConverter {
@@ -32,10 +33,10 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       !communicationPreferences ||
       !candidate.driverNumber ||
       !testSummary ||
-      !testSummary.D255 ||
+      testSummary.D255 === undefined ||
       !vehicleDetails
     ) {
-      throw new Error(`Invalid completed test: ${JSON.stringify(test)}`);
+      throw new CompletedTestPayloadCreationError(test);
     }
     return {
       applicationId,
