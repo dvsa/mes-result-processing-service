@@ -1,5 +1,5 @@
 export enum ProcessingStatus {
-  PROCESSING,
-  ACCEPTED,
-  FAILED,
+  PROCESSING = 'PROCESSING',
+  ACCEPTED = 'ACCEPTED',
+  FAILED = 'FAILED',
 }
