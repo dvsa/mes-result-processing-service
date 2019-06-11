@@ -5,6 +5,7 @@ import { inject, injectable, named } from 'inversify';
 import { TYPES } from '../../di/types';
 import bottleneck from 'bottleneck';
 import { UploadRetryCount } from '../../../domain/upload/UploadRetryCount';
+import { ITARSRateLimiterConfig } from './ITARSRateLimiterConfig';
 
 @injectable()
 export class RateLimitDecoratingTARSUploader implements ITARSUploader {
@@ -15,19 +16,31 @@ export class RateLimitDecoratingTARSUploader implements ITARSUploader {
 
   constructor(
     @inject(TYPES.TARSUploader) @named('http') private innerUploader: ITARSUploader,
+    @inject(TYPES.TARSRateLimiterConfig) private rateLimiterConfig: ITARSRateLimiterConfig,
   ) {
+    const { requestIntervalMs } = rateLimiterConfig;
     this.completedLimiter = new bottleneck({
-      minTime: 3000,
+      minTime: requestIntervalMs,
     });
     this.nonCompletedLimiter = new bottleneck({
-      minTime: 3000,
+      minTime: requestIntervalMs,
     });
+    this.setupRetryPolicy();
   }
 
   uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<UploadRetryCount> {
     return interfaceType === TARSInterfaceType.COMPLETED ?
       this.completedLimiter.schedule(() => this.innerUploader.uploadToTARS(tarsPayload, interfaceType)) :
       this.nonCompletedLimiter.schedule(() => this.innerUploader.uploadToTARS(tarsPayload, interfaceType));
+  }
+
+  private setupRetryPolicy() {
+    const { maxRetries, requestIntervalMs } = this.rateLimiterConfig;
+    this.nonCompletedLimiter.on('failed', async (error, jobInfo) => {
+      if (jobInfo.retryCount < maxRetries) {
+        return requestIntervalMs;
+      }
+    });
   }
 
 }

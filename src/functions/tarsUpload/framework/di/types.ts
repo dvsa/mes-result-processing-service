@@ -9,6 +9,7 @@ const TYPES = {
   SubmissionReportingMediator: Symbol.for('SubmissionReportingMediator'),
   TARSHTTPConfig: Symbol.for('TARSHTTPConfig'),
   TARSPayloadConverter: Symbol.for('TARSPayloadConverter'),
+  TARSRateLimiterConfig: Symbol.for('TARSRateLimiterConfig'),
   TARSSubmissionFacade: Symbol.for('TarsSubmissionFacade'),
   TARSUploader: Symbol.for('TARSUploader'),
   TestResultBatchProcessor: Symbol.for('TestResultBatchProcessor'),

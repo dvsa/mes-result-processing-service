@@ -28,6 +28,8 @@ import { ISubmissionOutcomeUploader } from '../../application/secondary/ISubmiss
 import { HTTPSubmissionOutcomeUploader } from '../adapter/report/HTTPSubmissionOutcomeUploader';
 import { IOutcomeReportingHTTPConfig } from '../adapter/report/IOutcomeReportingHTTPConfig';
 import { EnvvarOutcomeReportingHTTPConfig } from '../adapter/report/EnvvarOutcomeReportingHTTPConfig';
+import { ITARSRateLimiterConfig } from '../adapter/upload/ITARSRateLimiterConfig';
+import { TARSRateLimiterConfig } from '../adapter/upload/TARSRateLimiterConfig';
 
 const container = new Container();
 
@@ -39,6 +41,7 @@ container.bind<ITARSUploader>(TYPES.TARSUploader).to(RateLimitDecoratingTARSUplo
 container.bind<ITARSUploader>(TYPES.TARSUploader).to(HTTPTARSUploader).whenTargetNamed('http');
 container.bind<ISubmissionOutcomeUploader>(TYPES.SubmissionOutcomeUploader).to(HTTPSubmissionOutcomeUploader);
 container.bind<IOutcomeReportingHTTPConfig>(TYPES.OutcomeReportingHTTPConfig).to(EnvvarOutcomeReportingHTTPConfig);
+container.bind<ITARSRateLimiterConfig>(TYPES.TARSRateLimiterConfig).to(TARSRateLimiterConfig);
 
 // Application
 container.bind<BatchProcessInvoker>(BatchProcessInvoker).toSelf();
