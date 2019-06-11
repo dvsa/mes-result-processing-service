@@ -7,9 +7,14 @@ import { NonCompletedTestPayload } from './NonCompletedTest';
 import { CompletedTestPayload } from './CompletedTestPayload';
 import { TYPES } from '../../framework/di/types';
 import { CompletedTestPayloadCreationError } from './errors/CompletedTestPayloadCreationError';
+import { IDateFormatter } from '../util/IDateFormatter';
 
 @injectable()
 export class TARSPayloadConverter implements ITARSPayloadConverter {
+  constructor(
+    @inject(TYPES.DateFormatter) private dateFormatter: IDateFormatter,
+  ) { }
+
   convertToTARSSubmission(test: StandardCarTestCATBSchema, interfaceType: TARSInterfaceType): ITARSPayload {
     return interfaceType === TARSInterfaceType.COMPLETED ?
       this.convertToCompletedTestPayload(test) :
@@ -51,7 +56,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       d255Selected: testSummary.D255,
       passResult: test.activityCode === '1',
       driverNumber: candidate.driverNumber,
-      testDate: new Date(testSlotAttributes.start).toLocaleDateString('en-GB'),
+      testDate: this.dateFormatter.asSlashDelimitedDate(new Date(testSlotAttributes.start)),
       passCertificate: passCompletion.passCertificateNumber,
     };
   }
