@@ -15,7 +15,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     @inject(TYPES.DateFormatter) private dateFormatter: IDateFormatter,
   ) { }
 
-  convertToTARSSubmission(test: StandardCarTestCATBSchema, interfaceType: TARSInterfaceType): ITARSPayload {
+  convertToTARSPayload(test: StandardCarTestCATBSchema, interfaceType: TARSInterfaceType): ITARSPayload {
     return interfaceType === TARSInterfaceType.COMPLETED ?
       this.convertToCompletedTestPayload(test) :
       this.convertToNonCompletedTestPayload(test);

@@ -4,6 +4,7 @@ import { ITARSPayload } from '../../../domain/upload/ITARSPayload';
 import { inject, injectable, named } from 'inversify';
 import { TYPES } from '../../di/types';
 import bottleneck from 'bottleneck';
+import { UploadRetryCount } from '../../../domain/upload/UploadRetryCount';
 
 @injectable()
 export class RateLimitDecoratingTARSUploader implements ITARSUploader {
@@ -23,7 +24,7 @@ export class RateLimitDecoratingTARSUploader implements ITARSUploader {
     });
   }
 
-  uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<void> {
+  uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<UploadRetryCount> {
     return interfaceType === TARSInterfaceType.COMPLETED ?
       this.completedLimiter.schedule(() => this.innerUploader.uploadToTARS(tarsPayload, interfaceType)) :
       this.nonCompletedLimiter.schedule(() => this.innerUploader.uploadToTARS(tarsPayload, interfaceType));

@@ -5,12 +5,14 @@ import { TYPES } from '../framework/di/types';
 import { IResultInterfaceCategoriser } from './upload/IResultInterfaceCategoriser';
 import { ITARSSubmissionFacade } from './upload/ITARSSubmissionFacade';
 import { TARSInterfaceType } from './upload/TARSInterfaceType';
+import { ISubmissionOutcomeReporter } from './reporting/ISubmissionOutcomeReporter';
 
 @injectable()
 export class SubmissionReportingMediator implements ISubmissionReportingMediator {
   constructor(
     @inject(TYPES.ResultInterfaceCategoriser) private resultInterfaceCategoriser: IResultInterfaceCategoriser,
     @inject(TYPES.TARSSubmissionFacade) private tarsSubmissionFacade: ITARSSubmissionFacade,
+    @inject(TYPES.SubmissionOutcomeReporter) private submissionOutcomeReporter: ISubmissionOutcomeReporter,
   ) { }
 
   async submitBatchesAndReportOutcome(batch: StandardCarTestCATBSchema[]): Promise<void> {
@@ -25,7 +27,7 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
     return completedTests.map((completedTest) => {
       return this.tarsSubmissionFacade.convertAndUpload(completedTest, TARSInterfaceType.COMPLETED)
         .then((uploadResult) => {
-          console.log(`reporting completed upload`);
+          this.submissionOutcomeReporter.reportSubmissionOutcome(uploadResult);
         });
     });
   }
@@ -34,7 +36,7 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
     return nonCompletedTests.map((nonCompletedTest) => {
       return this.tarsSubmissionFacade.convertAndUpload(nonCompletedTest, TARSInterfaceType.NON_COMPLETED)
         .then((uploadResult) => {
-          console.log(`reporting noncompleted upload`);
+          this.submissionOutcomeReporter.reportSubmissionOutcome(uploadResult);
         });
     });
   }

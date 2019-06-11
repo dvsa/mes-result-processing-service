@@ -17,9 +17,17 @@ import { TARSSubmissionFacade } from '../../domain/upload/TARSSubmissionFacade';
 import { ITARSUploader } from '../../application/secondary/ITARSUploader';
 import { EnvvarTARSHTTPConfig } from '../adapter/upload/EnvvarTARSHTTPConfig';
 import { RateLimitDecoratingTARSUploader } from '../adapter/upload/RateLimitDecoratingTARSUploader';
-import { HTTPRetryingTARSUploader } from '../adapter/upload/HTTPRetryingTARSUploader';
 import { IDateFormatter } from '../../domain/util/IDateFormatter';
 import { DateFormatter } from '../../domain/util/DateFormatter';
+import { HTTPTARSUploader } from '../adapter/upload/HTTPTARSUploader';
+import { ISubmissionOutcomeReporter } from '../../domain/reporting/ISubmissionOutcomeReporter';
+import { SubmissionOutcomeReporter } from '../../domain/reporting/SubmissionOutcomeReporter';
+import { ISubmissionOutcomeContextBuilder } from '../../domain/reporting/ISubmissionOutcomeContextBuilder';
+import { SubmissionOutcomeContextBuilder } from '../../domain/reporting/SubmissionOutcomeContextBuilder';
+import { ISubmissionOutcomeUploader } from '../../application/secondary/ISubmissionOutcomeUploader';
+import { HTTPSubmissionOutcomeUploader } from '../adapter/report/HTTPSubmissionOutcomeUploader';
+import { IOutcomeReportingHTTPConfig } from '../adapter/report/IOutcomeReportingHTTPConfig';
+import { EnvvarOutcomeReportingHTTPConfig } from '../adapter/report/EnvvarOutcomeReportingHTTPConfig';
 
 const container = new Container();
 
@@ -28,7 +36,9 @@ const container = new Container();
 container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(ConfigurableBatchFetcher);
 container.bind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).to(EnvvarTARSHTTPConfig);
 container.bind<ITARSUploader>(TYPES.TARSUploader).to(RateLimitDecoratingTARSUploader).whenTargetIsDefault();
-container.bind<ITARSUploader>(TYPES.TARSUploader).to(HTTPRetryingTARSUploader).whenTargetNamed('http');
+container.bind<ITARSUploader>(TYPES.TARSUploader).to(HTTPTARSUploader).whenTargetNamed('http');
+container.bind<ISubmissionOutcomeUploader>(TYPES.SubmissionOutcomeUploader).to(HTTPSubmissionOutcomeUploader);
+container.bind<IOutcomeReportingHTTPConfig>(TYPES.OutcomeReportingHTTPConfig).to(EnvvarOutcomeReportingHTTPConfig);
 
 // Application
 container.bind<BatchProcessInvoker>(BatchProcessInvoker).toSelf();
@@ -40,5 +50,8 @@ container.bind<IResultInterfaceCategoriser>(TYPES.ResultInterfaceCategoriser).to
 container.bind<ITARSSubmissionFacade>(TYPES.TARSSubmissionFacade).to(TARSSubmissionFacade);
 container.bind<ITARSPayloadConverter>(TYPES.TARSPayloadConverter).to(TARSPayloadConverter);
 container.bind<IDateFormatter>(TYPES.DateFormatter).to(DateFormatter);
+container.bind<ISubmissionOutcomeReporter>(TYPES.SubmissionOutcomeReporter).to(SubmissionOutcomeReporter);
+container.bind<ISubmissionOutcomeContextBuilder>(TYPES.SubmissionOutcomeContextBuilder)
+  .to(SubmissionOutcomeContextBuilder);
 
 export { container };

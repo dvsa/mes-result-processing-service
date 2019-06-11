@@ -3,5 +3,5 @@ import { ITARSPayload } from './ITARSPayload';
 import { TARSInterfaceType } from './TARSInterfaceType';
 
 export interface ITARSPayloadConverter {
-  convertToTARSSubmission(test: StandardCarTestCATBSchema, interfaceType: TARSInterfaceType): ITARSPayload;
+  convertToTARSPayload(test: StandardCarTestCATBSchema, interfaceType: TARSInterfaceType): ITARSPayload;
 }
