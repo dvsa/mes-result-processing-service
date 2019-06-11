@@ -1,5 +1,5 @@
 import { ITARSSubmissionFacade } from './ITARSSubmissionFacade';
-import { injectable, inject, named } from 'inversify';
+import { injectable, inject } from 'inversify';
 import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
 import { TARSInterfaceType } from './TARSInterfaceType';
 import { TARSUploadResult } from './TARSUploadResult';
@@ -7,6 +7,7 @@ import { TYPES } from '../../framework/di/types';
 import { ITARSPayloadConverter } from './ITARSPayloadConverter';
 import { ITARSUploader } from '../../application/secondary/ITARSUploader';
 import { TARSUploadStatus } from './TARSUploadStatus';
+import { UploadFailureWithRetryCountError } from './errors/UploadFailureError';
 
 @injectable()
 export class TARSSubmissionFacade implements ITARSSubmissionFacade {
@@ -23,8 +24,7 @@ export class TARSSubmissionFacade implements ITARSSubmissionFacade {
       const uploadRetryCount = await this.tarsUploader.uploadToTARS(tarsPayload, interfacetype);
       return { test, uploadRetryCount, status: TARSUploadStatus.SUCCESSFUL };
     } catch (err) {
-      // TODO: Categorise the error, find the actual retry count
-      const uploadRetryCount = 0;
+      const uploadRetryCount = err instanceof UploadFailureWithRetryCountError ? err.retryCount : 0;
       return { test, uploadRetryCount, status: TARSUploadStatus.TRANSIENT_ERROR, errorMessage: err.message };
     }
   }
