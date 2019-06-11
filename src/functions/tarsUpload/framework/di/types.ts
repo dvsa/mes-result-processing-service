@@ -1,5 +1,6 @@
 const TYPES = {
   BatchFetcher: Symbol.for('BatchFetcher'),
+  DateFormatter: Symbol.for('DateFormatter'),
   ResultInterfaceCategoriser: Symbol.for('ResultInterfaceCategoriser'),
   SubmissionOutcomeReporter: Symbol.for('SubmissionOutcomeReporter'),
   SubmissionReportingMediator: Symbol.for('SubmissionReportingMediator'),
