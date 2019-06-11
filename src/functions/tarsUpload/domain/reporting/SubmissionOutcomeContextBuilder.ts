@@ -3,12 +3,13 @@ import { TARSUploadResult } from '../upload/TARSUploadResult';
 import { SubmissionOutcomeContext } from './SubmissionOutcomeContext';
 import { injectable } from 'inversify';
 import { ProcessingStatus } from './ProcessingStatus';
+import { ApplicationReference } from '@dvsa/mes-test-schema/categories/B';
 
 @injectable()
 export class SubmissionOutcomeContextBuilder implements ISubmissionOutcomeContextBuilder {
   buildSubmissionOutcomeContext(uploadResult: TARSUploadResult): SubmissionOutcomeContext {
     return {
-      applicationId: `${uploadResult.test.journalData.applicationReference.applicationId}`,
+      applicationReference: this.buildApplicationReferenceIdentifer(uploadResult.test.journalData.applicationReference),
       outcomePayload: {
         interface: 'TARS',
         state: ProcessingStatus.ACCEPTED,
@@ -16,5 +17,9 @@ export class SubmissionOutcomeContextBuilder implements ISubmissionOutcomeContex
         error_message: uploadResult.errorMessage || null,
       },
     };
+  }
+
+  private buildApplicationReferenceIdentifer(appRef: ApplicationReference): string {
+    return `${appRef.applicationId}${appRef.bookingSequence}${appRef.checkDigit}`;
   }
 }

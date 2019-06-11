@@ -46,7 +46,7 @@ describe('TestResultBatchProcessor', () => {
     });
     expect(outcomeUploader.calls.length).toBe(1);
     expect(outcomeUploader.calls[0]).toEqual({
-      applicationId: '1234571',
+      applicationReference: '123457126',
       outcomePayload: {
         state: ProcessingStatus.ACCEPTED,
         interface: 'TARS',
@@ -81,7 +81,7 @@ describe('TestResultBatchProcessor', () => {
     });
     expect(outcomeUploader.calls.length).toBe(1);
     expect(outcomeUploader.calls[0]).toEqual({
-      applicationId: '1234569',
+      applicationReference: '123456919',
       outcomePayload: {
         state: ProcessingStatus.ACCEPTED,
         interface: 'TARS',
