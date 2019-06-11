@@ -94,7 +94,7 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
     category: 'B',
     journalData: {
       examiner: {
-        staffNumber: '123',
+        staffNumber: '321',
       },
       testCentre: {
         centreId: 54321,

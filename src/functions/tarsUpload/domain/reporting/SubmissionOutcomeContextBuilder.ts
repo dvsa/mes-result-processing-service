@@ -8,9 +8,11 @@ import { ApplicationReference } from '@dvsa/mes-test-schema/categories/B';
 @injectable()
 export class SubmissionOutcomeContextBuilder implements ISubmissionOutcomeContextBuilder {
   buildSubmissionOutcomeContext(uploadResult: TARSUploadResult): SubmissionOutcomeContext {
+    const { journalData } = uploadResult.test;
     return {
-      applicationReference: this.buildApplicationReferenceIdentifer(uploadResult.test.journalData.applicationReference),
+      applicationReference: this.buildApplicationReferenceIdentifer(journalData.applicationReference),
       outcomePayload: {
+        staffNumber: journalData.examiner.staffNumber,
         interface: 'TARS',
         state: ProcessingStatus.ACCEPTED,
         retry_count: uploadResult.uploadRetryCount,

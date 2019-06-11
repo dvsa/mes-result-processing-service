@@ -48,6 +48,7 @@ describe('TestResultBatchProcessor', () => {
     expect(outcomeUploader.calls[0]).toEqual({
       applicationReference: '123457126',
       outcomePayload: {
+        staffNumber: '123',
         state: ProcessingStatus.ACCEPTED,
         interface: 'TARS',
         retry_count: 0,
@@ -83,6 +84,7 @@ describe('TestResultBatchProcessor', () => {
     expect(outcomeUploader.calls[0]).toEqual({
       applicationReference: '123456919',
       outcomePayload: {
+        staffNumber: '321',
         state: ProcessingStatus.ACCEPTED,
         interface: 'TARS',
         retry_count: 0,
