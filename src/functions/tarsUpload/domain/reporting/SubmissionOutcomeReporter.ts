@@ -3,15 +3,16 @@ import { TARSUploadResult } from '../upload/TARSUploadResult';
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../../framework/di/types';
 import { ISubmissionOutcomeContextBuilder } from './ISubmissionOutcomeContextBuilder';
+import { ISubmissionOutcomeUploader } from '../../application/secondary/ISubmissionOutcomeUploader';
 
 @injectable()
 export class SubmissionOutcomeReporter implements ISubmissionOutcomeReporter {
   constructor(
     @inject(TYPES.SubmissionOutcomeContextBuilder) private ctxBuilder: ISubmissionOutcomeContextBuilder,
+    @inject(TYPES.SubmissionOutcomeUploader) private submissionOutcomeUploader: ISubmissionOutcomeUploader,
   ) { }
-  reportSubmissionOutcome(attemptedSubmission: TARSUploadResult): Promise<void> {
+  async reportSubmissionOutcome(attemptedSubmission: TARSUploadResult): Promise<void> {
     const submissionContext = this.ctxBuilder.buildSubmissionOutcomeContext(attemptedSubmission);
-    console.log(`reporting on ${JSON.stringify(submissionContext)}`);
-    return Promise.resolve();
+    await this.submissionOutcomeUploader.uploadSubmissionOutcome(submissionContext);
   }
 }

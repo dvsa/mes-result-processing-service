@@ -10,23 +10,29 @@ import { dummyTests } from './__data__/DummyTests';
 import { TARSInterfaceType } from '../upload/TARSInterfaceType';
 import { NonCompletedTestPayload } from '../upload/NonCompletedTest';
 import { CompletedTestPayload } from '../upload/CompletedTestPayload';
+import { ISubmissionOutcomeUploader } from '../../application/secondary/ISubmissionOutcomeUploader';
+import { RecordingSubmissionOutcomeUploader } from './__mocks__/RecordingSubmissionOutcomeUploader';
+import { ProcessingStatus } from '../reporting/ProcessingStatus';
 
 describe('TestResultBatchProcessor', () => {
   let testResultBatchProcessor: ITestResultBatchProcessor;
   let batchFetcher: ConfigurableBatchFetcher;
   let tarsUploader: RecordingTARSUploader;
+  let outcomeUploader: RecordingSubmissionOutcomeUploader;
 
   beforeEach(() => {
     batchFetcher = new ConfigurableBatchFetcher();
     tarsUploader = new RecordingTARSUploader();
+    outcomeUploader = new RecordingSubmissionOutcomeUploader();
 
     container.rebind<IBatchFetcher>(TYPES.BatchFetcher).toConstantValue(batchFetcher);
     container.rebind<ITARSUploader>(TYPES.TARSUploader).toConstantValue(tarsUploader);
+    container.rebind<ISubmissionOutcomeUploader>(TYPES.SubmissionOutcomeUploader).toConstantValue(outcomeUploader);
 
     testResultBatchProcessor = container.get<ITestResultBatchProcessor>(TYPES.TestResultBatchProcessor);
   });
 
-  it('should submit a single non-completed test payload to TARS', async () => {
+  it('should submit a single non-completed test payload to TARS and the update outcome', async () => {
     batchFetcher.setNextBatch([dummyTests.fail1]);
 
     await testResultBatchProcessor.processNextBatch();
@@ -37,6 +43,16 @@ describe('TestResultBatchProcessor', () => {
       applicationId: 1234571,
       bookingSequence: 2,
       nonCompletionCode: 51,
+    });
+    expect(outcomeUploader.calls.length).toBe(1);
+    expect(outcomeUploader.calls[0]).toEqual({
+      applicationId: '1234571',
+      outcomePayload: {
+        state: ProcessingStatus.ACCEPTED,
+        interface: 'TARS',
+        retry_count: 0,
+        error_message: null,
+      },
     });
   });
 
@@ -62,6 +78,16 @@ describe('TestResultBatchProcessor', () => {
       driverNumber: 'DOEXX625220A99HC',
       testDate: '10/06/2019',
       passCertificate: 'passcert',
+    });
+    expect(outcomeUploader.calls.length).toBe(1);
+    expect(outcomeUploader.calls[0]).toEqual({
+      applicationId: '1234569',
+      outcomePayload: {
+        state: ProcessingStatus.ACCEPTED,
+        interface: 'TARS',
+        retry_count: 0,
+        error_message: null,
+      },
     });
   });
 });
