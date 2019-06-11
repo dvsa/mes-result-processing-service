@@ -26,6 +26,8 @@ import { ISubmissionOutcomeContextBuilder } from '../../domain/reporting/ISubmis
 import { SubmissionOutcomeContextBuilder } from '../../domain/reporting/SubmissionOutcomeContextBuilder';
 import { ISubmissionOutcomeUploader } from '../../application/secondary/ISubmissionOutcomeUploader';
 import { HTTPSubmissionOutcomeUploader } from '../adapter/report/HTTPSubmissionOutcomeUploader';
+import { IOutcomeReportingHTTPConfig } from '../adapter/report/IOutcomeReportingHTTPConfig';
+import { EnvvarOutcomeReportingHTTPConfig } from '../adapter/report/EnvvarOutcomeReportingHTTPConfig';
 
 const container = new Container();
 
@@ -36,6 +38,7 @@ container.bind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).to(EnvvarTARSHTTPConfig);
 container.bind<ITARSUploader>(TYPES.TARSUploader).to(RateLimitDecoratingTARSUploader).whenTargetIsDefault();
 container.bind<ITARSUploader>(TYPES.TARSUploader).to(HTTPTARSUploader).whenTargetNamed('http');
 container.bind<ISubmissionOutcomeUploader>(TYPES.SubmissionOutcomeUploader).to(HTTPSubmissionOutcomeUploader);
+container.bind<IOutcomeReportingHTTPConfig>(TYPES.OutcomeReportingHTTPConfig).to(EnvvarOutcomeReportingHTTPConfig);
 
 // Application
 container.bind<BatchProcessInvoker>(BatchProcessInvoker).toSelf();

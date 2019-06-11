@@ -1,6 +1,8 @@
 import { ISubmissionOutcomeUploader } from '../../../application/secondary/ISubmissionOutcomeUploader';
 import { SubmissionOutcomeContext } from '../../reporting/SubmissionOutcomeContext';
+import { injectable } from 'inversify';
 
+@injectable()
 export class RecordingSubmissionOutcomeUploader implements ISubmissionOutcomeUploader {
   calls: SubmissionOutcomeContext[] = [];
   private nextCallRejection: Error | null = null;
