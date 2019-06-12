@@ -4,7 +4,7 @@ import { ITestResultBatchProcessor } from '../../domain/ITestResultBatchProcesso
 import { TestResultBatchProcessor } from '../../domain/TestResultBatchProcessor';
 import { BatchProcessInvoker } from '../../application/primary/BatchProcessInvoker';
 import { IBatchFetcher } from '../../application/secondary/IBatchFetcher';
-import { ConfigurableBatchFetcher } from '../adapter/fetch/ConfigurableBatchFetcher';
+import { StubBatchFetcher } from '../adapter/fetch/StubBatchFetcher';
 import { ISubmissionReportingMediator } from '../../domain/ISubmissionReportingMediator';
 import { SubmissionReportingMediator } from '../../domain/SubmissionReportingMediator';
 import { IResultInterfaceCategoriser } from '../../domain/upload/IResultInterfaceCategoriser';
@@ -28,13 +28,16 @@ import { ISubmissionOutcomeUploader } from '../../application/secondary/ISubmiss
 import { HTTPSubmissionOutcomeUploader } from '../adapter/report/HTTPSubmissionOutcomeUploader';
 import { IOutcomeReportingHTTPConfig } from '../adapter/report/IOutcomeReportingHTTPConfig';
 import { EnvvarOutcomeReportingHTTPConfig } from '../adapter/report/EnvvarOutcomeReportingHTTPConfig';
+import { ITestResultHTTPConfig } from '../adapter/upload/ITestResultHTTPConfig';
+import { EnvvarTestResultHTTPConfig } from '../adapter/upload/EnvvarTestResultHTTPConfig';
 
 const container = new Container();
 
 // Framework
 // TODO: Implement a HTTP version when the endpoint is available - this version is just for testing
-container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(ConfigurableBatchFetcher);
+container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(StubBatchFetcher);
 container.bind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).to(EnvvarTARSHTTPConfig);
+container.bind<ITestResultHTTPConfig>(TYPES.TestResultHTTPConfig).to(EnvvarTestResultHTTPConfig);
 container.bind<ITARSUploader>(TYPES.TARSUploader).to(RateLimitDecoratingTARSUploader).whenTargetIsDefault();
 container.bind<ITARSUploader>(TYPES.TARSUploader).to(HTTPTARSUploader).whenTargetNamed('http');
 container.bind<ISubmissionOutcomeUploader>(TYPES.SubmissionOutcomeUploader).to(HTTPSubmissionOutcomeUploader);
