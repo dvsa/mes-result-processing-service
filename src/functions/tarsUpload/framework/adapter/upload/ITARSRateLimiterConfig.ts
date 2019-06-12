@@ -1,4 +1,4 @@
 export interface ITARSRateLimiterConfig {
-  requestIntervalMs: number;
+  requestsPerSecond: number;
   maxRetries: number;
 }
