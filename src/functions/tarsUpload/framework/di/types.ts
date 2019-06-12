@@ -10,6 +10,7 @@ const TYPES = {
   TARSHTTPConfig: Symbol.for('TARSHTTPConfig'),
   TestResultHTTPConfig: Symbol.for('TestResultHTTPConfig'),
   TARSPayloadConverter: Symbol.for('TARSPayloadConverter'),
+  TARSRateLimiterConfig: Symbol.for('TARSRateLimiterConfig'),
   TARSSubmissionFacade: Symbol.for('TarsSubmissionFacade'),
   TARSUploader: Symbol.for('TARSUploader'),
   TestResultBatchProcessor: Symbol.for('TestResultBatchProcessor'),
