@@ -35,7 +35,4 @@ export class StubBatchFetcher implements IBatchFetcher {
       });
     });
   }
-  setNextBatch(nextBatch: StandardCarTestCATBSchema[]) {
-    this.nextBatch = nextBatch;
-  }
 }
