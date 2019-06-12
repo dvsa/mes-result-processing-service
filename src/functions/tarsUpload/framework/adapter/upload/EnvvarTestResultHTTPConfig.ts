@@ -8,7 +8,7 @@ export class EnvvarTestResultHTTPConfig extends EnvvarConfigProvider implements 
   endpoint: string;
   constructor() {
     super();
-    this.endpoint = this.getFromEnvThrowIfNotPresent('TEST_RESULT_ENDPOINT');
+    this.endpoint = this.getFromEnvDefaultIfNotPresent('TEST_RESULT_ENDPOINT', 'http://localhost:3001/results');
   }
 
 }
