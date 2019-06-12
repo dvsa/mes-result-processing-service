@@ -6,8 +6,8 @@ import { TARSUploadResult } from './TARSUploadResult';
 import { TYPES } from '../../framework/di/types';
 import { ITARSPayloadConverter } from './ITARSPayloadConverter';
 import { ITARSUploader } from '../../application/secondary/ITARSUploader';
-import { TARSUploadStatus } from './TARSUploadStatus';
 import { UploadFailureWithRetryCountError } from './errors/UploadFailureWithRetryCountError';
+import { ProcessingStatus } from '../reporting/ProcessingStatus';
 
 @injectable()
 export class TARSSubmissionFacade implements ITARSSubmissionFacade {
@@ -22,10 +22,10 @@ export class TARSSubmissionFacade implements ITARSSubmissionFacade {
     try {
       const tarsPayload = this.tarsPayloadConverter.convertToTARSPayload(test, interfacetype);
       const uploadRetryCount = await this.tarsUploader.uploadToTARS(tarsPayload, interfacetype);
-      return { test, uploadRetryCount, status: TARSUploadStatus.SUCCESSFUL };
+      return { test, uploadRetryCount, status: ProcessingStatus.ACCEPTED };
     } catch (err) {
       const uploadRetryCount = err instanceof UploadFailureWithRetryCountError ? err.retryCount : 0;
-      return { test, uploadRetryCount, status: TARSUploadStatus.TRANSIENT_ERROR, errorMessage: err.message };
+      return { test, uploadRetryCount, status: ProcessingStatus.FAILED, errorMessage: err.message };
     }
   }
 

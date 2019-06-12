@@ -13,6 +13,7 @@ import { CompletedTestPayload } from '../upload/CompletedTestPayload';
 import { ISubmissionOutcomeUploader } from '../../application/secondary/ISubmissionOutcomeUploader';
 import { RecordingSubmissionOutcomeUploader } from './__mocks__/RecordingSubmissionOutcomeUploader';
 import { ProcessingStatus } from '../reporting/ProcessingStatus';
+import { PermanentUploadError } from '../upload/errors/PermanentUploadError';
 
 describe('TestResultBatchProcessor', () => {
   let testResultBatchProcessor: ITestResultBatchProcessor;
@@ -96,11 +97,23 @@ describe('TestResultBatchProcessor', () => {
   describe('retry count reporting', () => {
     it('should report the retry count when the tarsUploader indicates retries occurred', async () => {
       batchFetcher.setNextBatch([dummyTests.pass1]);
-      tarsUploader.reportRetriesOnNextCall(2);
+      tarsUploader.reportRetriesOnNextCall(1);
 
       await testResultBatchProcessor.processNextBatch();
 
-      expect(outcomeUploader.calls[0].outcomePayload.retry_count).toBe(2);
+      expect(outcomeUploader.calls[0].outcomePayload.retry_count).toBe(1);
+    });
+  });
+
+  describe('upload error reporting', () => {
+    it('should report the FAILED state and the error error message when the tarsUploader errors', async () => {
+      batchFetcher.setNextBatch([dummyTests.pass1]);
+      tarsUploader.rejectWithErrorOnNextCall(new PermanentUploadError('bad request'));
+
+      await testResultBatchProcessor.processNextBatch();
+
+      expect(outcomeUploader.calls[0].outcomePayload.state).toBe('FAILED');
+      expect(outcomeUploader.calls[0].outcomePayload.error_message).toBe('bad request');
     });
   });
 });
