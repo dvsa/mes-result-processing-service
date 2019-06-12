@@ -2,7 +2,6 @@ import { ISubmissionOutcomeContextBuilder } from './ISubmissionOutcomeContextBui
 import { TARSUploadResult } from '../upload/TARSUploadResult';
 import { SubmissionOutcomeContext } from './SubmissionOutcomeContext';
 import { injectable } from 'inversify';
-import { ProcessingStatus } from './ProcessingStatus';
 import { ApplicationReference } from '@dvsa/mes-test-schema/categories/B';
 
 @injectable()
@@ -12,9 +11,9 @@ export class SubmissionOutcomeContextBuilder implements ISubmissionOutcomeContex
     return {
       applicationReference: this.buildApplicationReferenceIdentifer(journalData.applicationReference),
       outcomePayload: {
-        staffNumber: journalData.examiner.staffNumber,
+        staff_number: journalData.examiner.staffNumber,
         interface: 'TARS',
-        state: ProcessingStatus.ACCEPTED,
+        state: uploadResult.status,
         retry_count: uploadResult.uploadRetryCount,
         error_message: uploadResult.errorMessage || null,
       },

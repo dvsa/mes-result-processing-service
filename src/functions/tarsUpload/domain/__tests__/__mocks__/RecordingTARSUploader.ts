@@ -14,13 +14,14 @@ export class RecordingTARSUploader implements ITARSUploader {
 
   private errorForNextCall: Error | null = null;
   private calledWith: TARSUploaderCall[] = [];
+  private retryCountForNextCall: number | null = null;
 
   uploadToTARS(payload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<UploadRetryCount> {
     this.calledWith = [...this.calledWith, { payload, interfaceType }];
     if (this.errorForNextCall) {
       return Promise.reject(this.errorForNextCall);
     }
-    return Promise.resolve(0);
+    return Promise.resolve(this.retryCountForNextCall || 0);
   }
 
   rejectWithErrorOnNextCall(error: Error) {
@@ -29,6 +30,10 @@ export class RecordingTARSUploader implements ITARSUploader {
 
   getCalls(): TARSUploaderCall[] {
     return this.calledWith;
+  }
+
+  reportRetriesOnNextCall(retryCount: number) {
+    this.retryCountForNextCall = retryCount;
   }
 
 }

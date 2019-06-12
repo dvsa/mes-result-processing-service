@@ -4,7 +4,7 @@ import { UploadRetryCount } from '../upload/UploadRetryCount';
 export interface SubmissionOutcomeContext {
   applicationReference: string;
   outcomePayload: {
-    staffNumber: string;
+    staff_number: string;
     interface: string;
     state: ProcessingStatus;
     retry_count: UploadRetryCount;

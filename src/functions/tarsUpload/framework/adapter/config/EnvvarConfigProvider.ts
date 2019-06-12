@@ -12,7 +12,6 @@ export abstract class EnvvarConfigProvider {
   }
 
   protected getFromEnvThrowIfNotPresent(envvarName: string): string {
-    console.log(`getting from env ${envvarName}`);
     const envvarVal = process.env[envvarName];
     if (envvarVal === undefined || envvarVal.trim().length === 0) {
       throw new Error(`Couldn't find envvar ${envvarName}`);
