@@ -11,7 +11,7 @@ export class SubmissionOutcomeContextBuilder implements ISubmissionOutcomeContex
     return {
       applicationReference: this.buildApplicationReferenceIdentifer(journalData.applicationReference),
       outcomePayload: {
-        staffNumber: journalData.examiner.staffNumber,
+        staff_number: journalData.examiner.staffNumber,
         interface: 'TARS',
         state: uploadResult.status,
         retry_count: uploadResult.uploadRetryCount,
