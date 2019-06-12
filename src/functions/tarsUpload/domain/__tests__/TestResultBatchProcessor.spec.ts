@@ -92,4 +92,15 @@ describe('TestResultBatchProcessor', () => {
       },
     });
   });
+
+  describe('retry count reporting', () => {
+    it('should report the retry count when the tarsUploader indicates retries occurred', async () => {
+      batchFetcher.setNextBatch([dummyTests.pass1]);
+      tarsUploader.reportRetriesOnNextCall(2);
+
+      await testResultBatchProcessor.processNextBatch();
+
+      expect(outcomeUploader.calls[0].outcomePayload.retry_count).toBe(2);
+    });
+  });
 });

@@ -7,7 +7,7 @@ import { TYPES } from '../../framework/di/types';
 import { ITARSPayloadConverter } from './ITARSPayloadConverter';
 import { ITARSUploader } from '../../application/secondary/ITARSUploader';
 import { TARSUploadStatus } from './TARSUploadStatus';
-import { UploadFailureWithRetryCountError } from './errors/UploadFailureError';
+import { UploadFailureWithRetryCountError } from './errors/UploadFailureWithRetryCountError';
 
 @injectable()
 export class TARSSubmissionFacade implements ITARSSubmissionFacade {

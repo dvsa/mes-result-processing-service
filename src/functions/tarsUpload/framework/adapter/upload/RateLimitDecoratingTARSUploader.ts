@@ -6,7 +6,7 @@ import { TYPES } from '../../di/types';
 import bottleneck from 'bottleneck';
 import { UploadRetryCount } from '../../../domain/upload/UploadRetryCount';
 import { ITARSRateLimiterConfig } from './ITARSRateLimiterConfig';
-import { UploadFailureWithRetryCountError } from '../../../domain/upload/errors/UploadFailureError';
+import { UploadFailureWithRetryCountError } from '../../../domain/upload/errors/UploadFailureWithRetryCountError';
 
 @injectable()
 export class RateLimitDecoratingTARSUploader implements ITARSUploader {
