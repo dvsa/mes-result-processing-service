@@ -25,7 +25,7 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
         ...this.submitAndReportNonCompletedTests(nonCompleted),
       ]);
     } catch (err) {
-      this.logger.error('Failure reporting upload statuses, terminating');
+      this.logger.error(`Failure reporting upload statuses, terminating: ${err.message}`);
     }
   }
 

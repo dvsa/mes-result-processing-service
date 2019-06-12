@@ -30,11 +30,11 @@ export class RateLimitDecoratingTARSUploader implements ITARSUploader {
   private createRateLimiter() {
     const { requestsPerSecond } = this.rateLimiterConfig;
     return new bottleneck({
-      maxConcurrent: null,
-      minTime: 0,
-      reservoir: requestsPerSecond,
-      reservoirRefreshInterval: 1000,
-      reservoirRefreshAmount: requestsPerSecond,
+      maxConcurrent: null,                       // No limit on concurrent requests
+      minTime: 0,                                // No time waited between each request
+      reservoir: requestsPerSecond,              // Amount of jobs the queue can perform at the start of the queue
+      reservoirRefreshInterval: 1000,            // How often to add new jobs to the queue (every second)
+      reservoirRefreshAmount: requestsPerSecond, // How many jobs to add to the queue each refresh
     });
   }
 
