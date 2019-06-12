@@ -15,7 +15,8 @@ export class ResultInterfaceCategoriser implements IResultInterfaceCategoriser {
   }
 
   private isCompletedTest(test: StandardCarTestCATBSchema) {
-    return ['1', '2'].includes(test.activityCode);
+    const completedActivityCodes = ['1', '2', '3', '4', '5'];
+    return completedActivityCodes.includes(test.activityCode);
   }
 
 }
