@@ -22,18 +22,28 @@ export class RateLimitDecoratingTARSUploader implements ITARSUploader {
     @inject(TYPES.TARSUploader) @named('http') private delegatedUploader: ITARSUploader,
     @inject(TYPES.TARSRateLimiterConfig) private rateLimiterConfig: ITARSRateLimiterConfig,
   ) {
-    const { requestIntervalMs } = rateLimiterConfig;
-    this.completedLimiter = new bottleneck({ minTime: requestIntervalMs });
-    this.nonCompletedLimiter = new bottleneck({ minTime: requestIntervalMs });
+    this.completedLimiter = this.createRateLimiter();
+    this.nonCompletedLimiter = this.createRateLimiter();
     this.setupRetryPolicy();
   }
 
+  private createRateLimiter() {
+    const { requestsPerSecond } = this.rateLimiterConfig;
+    return new bottleneck({
+      maxConcurrent: null,                       // No limit on concurrent requests
+      minTime: 0,                                // No time waited between each request
+      reservoir: requestsPerSecond,              // Amount of jobs the queue can perform at the start of the queue
+      reservoirRefreshInterval: 1000,            // How often to add new jobs to the queue (every second)
+      reservoirRefreshAmount: requestsPerSecond, // How many jobs to add to the queue each refresh
+    });
+  }
+
   private setupRetryPolicy() {
-    const { maxRetries, requestIntervalMs } = this.rateLimiterConfig;
+    const { maxRetries, requestsPerSecond } = this.rateLimiterConfig;
     // Trigger a retry in the case that we have retry attempts remaining on this upload
     this.nonCompletedLimiter.on('failed', async (error, jobInfo) => {
       if (jobInfo.retryCount < maxRetries && error instanceof TransientUploadError) {
-        return requestIntervalMs;
+        return requestsPerSecond * 1000;
       }
     });
     // Track of the retry counts for given application IDs so uploadToTARS can return the count
