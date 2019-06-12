@@ -7,6 +7,7 @@ import bottleneck from 'bottleneck';
 import { UploadRetryCount } from '../../../domain/upload/UploadRetryCount';
 import { ITARSRateLimiterConfig } from './ITARSRateLimiterConfig';
 import { UploadFailureWithRetryCountError } from '../../../domain/upload/errors/UploadFailureWithRetryCountError';
+import { TransientUploadError } from '../../../domain/upload/errors/TransientUploadError';
 
 @injectable()
 export class RateLimitDecoratingTARSUploader implements ITARSUploader {
@@ -31,7 +32,7 @@ export class RateLimitDecoratingTARSUploader implements ITARSUploader {
     const { maxRetries, requestIntervalMs } = this.rateLimiterConfig;
     // Trigger a retry in the case that we have retry attempts remaining on this upload
     this.nonCompletedLimiter.on('failed', async (error, jobInfo) => {
-      if (jobInfo.retryCount < maxRetries) {
+      if (jobInfo.retryCount < maxRetries && error instanceof TransientUploadError) {
         return requestIntervalMs;
       }
     });

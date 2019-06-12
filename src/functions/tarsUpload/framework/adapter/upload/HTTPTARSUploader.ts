@@ -4,8 +4,10 @@ import { TYPES } from '../../di/types';
 import { ITARSHTTPConfig } from './ITARSHTTPConfig';
 import { ITARSUploader } from '../../../application/secondary/ITARSUploader';
 import { ITARSPayload } from '../../../domain/upload/ITARSPayload';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosError } from 'axios';
 import { UploadRetryCount } from '../../../domain/upload/UploadRetryCount';
+import { TransientUploadError } from '../../../domain/upload/errors/TransientUploadError';
+import { PermanentUploadError } from '../../../domain/upload/errors/PermanentUploadError';
 
 @injectable()
 export class HTTPTARSUploader implements ITARSUploader {
@@ -21,10 +23,29 @@ export class HTTPTARSUploader implements ITARSUploader {
   }
 
   async uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<UploadRetryCount> {
-    const endpoint = interfaceType === TARSInterfaceType.COMPLETED ?
-      this.tarsHttpConfig.completedTestEndpoint : this.tarsHttpConfig.nonCompletedTestEndpoint;
-    await this.axios.post(endpoint, tarsPayload);
-    return 0;
+    try {
+      const endpoint = interfaceType === TARSInterfaceType.COMPLETED ?
+        this.tarsHttpConfig.completedTestEndpoint : this.tarsHttpConfig.nonCompletedTestEndpoint;
+      await this.axios.post(endpoint, tarsPayload);
+      return 0;
+    } catch (err) {
+      throw this.mapHTTPErrorToDomainError(err);
+    }
+  }
+
+  private mapHTTPErrorToDomainError(err: AxiosError): TransientUploadError | PermanentUploadError {
+    const { request, response } = err;
+    if (response) {
+      return response.status >= 400 && response.status <= 499 ?
+        new PermanentUploadError(err.message) :
+        new TransientUploadError(err.message);
+    }
+    // Request was made, but no response received
+    if (request) {
+      return new TransientUploadError(err.message);
+    }
+    // Failed to setup the request
+    return new PermanentUploadError(err.message);
   }
 
 }
