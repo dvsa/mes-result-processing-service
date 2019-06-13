@@ -22,6 +22,6 @@ export class HTTPSubmissionOutcomeUploader implements ISubmissionOutcomeUploader
 
   private buildParameterisedPutRequestURL(submissionOutcomeCtx: SubmissionOutcomeContext): string {
     const template = this.outcomeReportingHTTPConfig.outcomeReportingURLTemplate;
-    return template.replace('{appRef}', submissionOutcomeCtx.applicationReference);
+    return template.replace('{app-ref}', submissionOutcomeCtx.applicationReference);
   }
 }
