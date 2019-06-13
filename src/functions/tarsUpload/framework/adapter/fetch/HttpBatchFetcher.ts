@@ -25,6 +25,9 @@ export class HttpBatchFetcher implements IBatchFetcher {
       const result = this.axios.get(this.endpoint);
       result.then((response) => {
         const resultList: StandardCarTestCATBSchema[] = [];
+        if (!response.data) {
+          return resultList;
+        }
         const parseResult = response.data;
         parseResult.forEach((element: string) => {
           let uncompressedResult: string = '';
