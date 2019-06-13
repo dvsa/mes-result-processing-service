@@ -9,6 +9,7 @@ const TYPES = {
   SubmissionOutcomeUploader: Symbol.for('SubmissionOutcomeUploader'),
   SubmissionReportingMediator: Symbol.for('SubmissionReportingMediator'),
   TARSHTTPConfig: Symbol.for('TARSHTTPConfig'),
+  TestResultHTTPConfig: Symbol.for('TestResultHTTPConfig'),
   TARSPayloadConverter: Symbol.for('TARSPayloadConverter'),
   TARSRateLimiterConfig: Symbol.for('TARSRateLimiterConfig'),
   TARSSubmissionFacade: Symbol.for('TarsSubmissionFacade'),

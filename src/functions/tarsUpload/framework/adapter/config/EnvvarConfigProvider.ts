@@ -18,4 +18,12 @@ export abstract class EnvvarConfigProvider {
     }
     return envvarVal as string;
   }
+
+  protected getFromEnvDefaultIfNotPresent(envvarName: string, defaultValue: string): string {
+    const envvarVal = process.env[envvarName];
+    if (envvarVal === undefined || envvarVal.trim().length === 0) {
+      return defaultValue;
+    }
+    return envvarVal as string;
+  }
 }
