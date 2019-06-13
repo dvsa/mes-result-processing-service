@@ -33,6 +33,19 @@ describe('HttpBatchFetcher', () => {
     });
   });
 
+  describe('given a get request returns a valid response but has no data', () => {
+    beforeEach(() => {
+      nock('http://localhost:3001')
+      .get('/results')
+      .reply(200);
+    });
+
+    it('should return an empty array', async () => {
+      const result = await batchFetcher.fetchNextUploadBatch();
+      expect(result.length).toBe(0);
+    });
+  });
+
   describe('given a get request returns a 500 status code', () => {
     beforeEach(() => {
       nock('http://localhost:3001')

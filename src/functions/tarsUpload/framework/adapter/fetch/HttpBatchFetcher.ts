@@ -26,7 +26,8 @@ export class HttpBatchFetcher implements IBatchFetcher {
       result.then((response) => {
         const resultList: StandardCarTestCATBSchema[] = [];
         if (!response.data) {
-          return resultList;
+          resolve(resultList);
+          return;
         }
         const parseResult = response.data;
         parseResult.forEach((element: string) => {
