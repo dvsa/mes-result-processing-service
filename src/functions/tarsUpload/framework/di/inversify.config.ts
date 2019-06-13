@@ -32,6 +32,8 @@ import { ITestResultHTTPConfig } from '../adapter/upload/ITestResultHTTPConfig';
 import { EnvvarTestResultHTTPConfig } from '../adapter/upload/EnvvarTestResultHTTPConfig';
 import { ITARSRateLimiterConfig } from '../adapter/upload/ITARSRateLimiterConfig';
 import { TARSRateLimiterConfig } from '../adapter/upload/TARSRateLimiterConfig';
+import { ILogger } from '../../domain/util/ILogger';
+import { ConsoleLogger } from '../../domain/util/ConsoleLogger';
 
 const container = new Container();
 
@@ -59,5 +61,6 @@ container.bind<IDateFormatter>(TYPES.DateFormatter).to(DateFormatter);
 container.bind<ISubmissionOutcomeReporter>(TYPES.SubmissionOutcomeReporter).to(SubmissionOutcomeReporter);
 container.bind<ISubmissionOutcomeContextBuilder>(TYPES.SubmissionOutcomeContextBuilder)
   .to(SubmissionOutcomeContextBuilder);
+container.bind<ILogger>(TYPES.Logger).to(ConsoleLogger);
 
 export { container };
