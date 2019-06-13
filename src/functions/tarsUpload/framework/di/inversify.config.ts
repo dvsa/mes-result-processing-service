@@ -4,7 +4,7 @@ import { ITestResultBatchProcessor } from '../../domain/ITestResultBatchProcesso
 import { TestResultBatchProcessor } from '../../domain/TestResultBatchProcessor';
 import { BatchProcessInvoker } from '../../application/primary/BatchProcessInvoker';
 import { IBatchFetcher } from '../../application/secondary/IBatchFetcher';
-import { StubBatchFetcher } from '../adapter/fetch/StubBatchFetcher';
+import { HttpBatchFetcher } from '../adapter/fetch/HttpBatchFetcher';
 import { ISubmissionReportingMediator } from '../../domain/ISubmissionReportingMediator';
 import { SubmissionReportingMediator } from '../../domain/SubmissionReportingMediator';
 import { IResultInterfaceCategoriser } from '../../domain/upload/IResultInterfaceCategoriser';
@@ -37,7 +37,7 @@ const container = new Container();
 
 // Framework
 // TODO: Implement a HTTP version when the endpoint is available - this version is just for testing
-container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(StubBatchFetcher);
+container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(HttpBatchFetcher);
 container.bind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).to(EnvvarTARSHTTPConfig);
 container.bind<ITestResultHTTPConfig>(TYPES.TestResultHTTPConfig).to(EnvvarTestResultHTTPConfig);
 container.bind<ITARSUploader>(TYPES.TARSUploader).to(RateLimitDecoratingTARSUploader).whenTargetIsDefault();
