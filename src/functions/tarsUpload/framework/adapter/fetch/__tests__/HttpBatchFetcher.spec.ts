@@ -7,7 +7,7 @@ import { dummyResponseArray, invalidBase64Array, validBase64InvalidTestSchemna }
 import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
 import { EnvvarTestResultHTTPConfig } from '../EnvvarTestResultHTTPConfig';
 
-describe('HttpBatchFetcher', () => {
+describe('HTTPBatchFetcher', () => {
   let batchFetcher: HTTPBatchFetcher;
   const testResultHTTPConfig = new EnvvarTestResultHTTPConfig();
 
@@ -21,7 +21,7 @@ describe('HttpBatchFetcher', () => {
   describe('given a get request returns a valid response', () => {
     beforeEach(() => {
       nock('http://localhost:3001')
-        .get('/results')
+        .get('/results?interface=TARS&batch_size=25')
         .reply(200, dummyResponseArray);
     });
 
@@ -36,7 +36,7 @@ describe('HttpBatchFetcher', () => {
   describe('given a get request returns a valid response but has no data', () => {
     beforeEach(() => {
       nock('http://localhost:3001')
-        .get('/results')
+        .get('/results?interface=TARS&batch_size=25')
         .reply(200);
     });
 
@@ -49,7 +49,7 @@ describe('HttpBatchFetcher', () => {
   describe('given a get request returns a 500 status code', () => {
     beforeEach(() => {
       nock('http://localhost:3001')
-        .get('/results')
+        .get('/results?interface=TARS&batch_size=25')
         .reply(500, 'error');
     });
 
@@ -66,7 +66,7 @@ describe('HttpBatchFetcher', () => {
   describe('given a get request returns invalid base64 data', () => {
     beforeEach(() => {
       nock('http://localhost:3001')
-        .get('/results')
+        .get('/results?interface=TARS&batch_size=25')
         .reply(200, invalidBase64Array);
     });
 
@@ -83,7 +83,7 @@ describe('HttpBatchFetcher', () => {
   describe('given a get request returns data that does not match schema', () => {
     beforeEach(() => {
       nock('http://localhost:3001')
-        .get('/results')
+        .get('/results?interface=TARS&batch_size=25')
         .reply(200, validBase64InvalidTestSchemna);
     });
 

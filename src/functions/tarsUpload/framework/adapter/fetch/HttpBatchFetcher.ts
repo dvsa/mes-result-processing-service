@@ -9,7 +9,6 @@ import { TestResultError } from './errors/TestResultError';
 @injectable()
 export class HTTPBatchFetcher implements IBatchFetcher {
 
-  private endpoint: string;
   axios: AxiosInstance;
 
   constructor(
@@ -17,12 +16,12 @@ export class HTTPBatchFetcher implements IBatchFetcher {
   ) {
     this.axios = axios.create({
     });
-    this.endpoint = testResultHttpConfig.endpoint;
   }
 
   fetchNextUploadBatch(): Promise<StandardCarTestCATBSchema[]> {
+    const endpoint = this.getEndpointWithQueryParams();
     return new Promise((resolve, reject) => {
-      const result = this.axios.get(this.endpoint);
+      const result = this.axios.get(endpoint);
       result.then((response) => {
         const resultList: StandardCarTestCATBSchema[] = [];
         if (!response.data) {
@@ -52,6 +51,10 @@ export class HTTPBatchFetcher implements IBatchFetcher {
         reject(this.mapHTTPErrorToDomainError(err));
       });
     });
+  }
+
+  private getEndpointWithQueryParams() {
+    return `${this.testResultHttpConfig.endpoint}?interface=TARS&batch_size=${this.testResultHttpConfig.batchSize}`;
   }
 
   private mapHTTPErrorToDomainError(err: AxiosError): TestResultError {

@@ -42,7 +42,6 @@ export class HTTPTARSUploader implements ITARSUploader {
     }
     // Request was made, but no response received
     if (request) {
-      console.log(`******** transient no response`);
       return new TransientUploadError(err.message);
     }
     // Failed to setup the request

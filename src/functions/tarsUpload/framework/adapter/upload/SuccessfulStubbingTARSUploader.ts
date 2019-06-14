@@ -11,7 +11,7 @@ export class SuccessfulStubbingTARSUploader implements ITARSUploader {
     @inject(TYPES.Logger) private logger: ILogger,
   ) { }
   uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<number> {
-    this.logger.info(`In-memory TARS stub called with payload ${JSON.stringify(tarsPayload)}`);
+    this.logger.info(`In-memory TARS stub called at ${new Date()} with payload ${JSON.stringify(tarsPayload)}`);
     return Promise.resolve(0);
   }
 }
