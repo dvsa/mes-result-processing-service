@@ -5,7 +5,7 @@ import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
 @injectable()
 export class ConfigurableBatchFetcher implements IBatchFetcher {
 
-  dummyTest = {
+  dummyTest: StandardCarTestCATBSchema = {
     category: 'B',
     id: 'xyz',
     journalData: {
@@ -94,7 +94,7 @@ export class ConfigurableBatchFetcher implements IBatchFetcher {
     eyesightTestResult: 'P',
   };
 
-  private nextBatch: StandardCarTestCATBSchema[] = [];
+  private nextBatch: StandardCarTestCATBSchema[] = [this.dummyTest];
 
   fetchNextUploadBatch(): Promise<StandardCarTestCATBSchema[]> {
     return Promise.resolve(this.nextBatch);
@@ -104,17 +104,4 @@ export class ConfigurableBatchFetcher implements IBatchFetcher {
     this.nextBatch = nextBatch;
   }
 
-  private dummyTestWithApplicationId(applicationId: number): StandardCarTestCATBSchema {
-    // @ts-ignore
-    return {
-      ...this.dummyTest,
-      journalData: {
-        ...this.dummyTest.journalData,
-        applicationReference: {
-          ...this.dummyTest.journalData.applicationReference,
-          applicationId,
-        },
-      },
-    };
-  }
 }
