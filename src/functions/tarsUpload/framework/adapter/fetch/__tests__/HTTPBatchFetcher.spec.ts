@@ -56,10 +56,11 @@ describe('HTTPBatchFetcher', () => {
     it('should throw an exception', async () => {
       batchFetcher.fetchNextUploadBatch().then(() => {
         fail();
-      }).catch((err) => {
-        const expectedError = new Error('Request failed with status code 500');
-        expect(err).toEqual(expectedError);
-      });
+      })
+        .catch((err: any) => {
+          const expectedError = new Error('Request failed with status code 500');
+          expect(err).toEqual(expectedError);
+        });
     });
   });
 
@@ -72,11 +73,12 @@ describe('HTTPBatchFetcher', () => {
 
     it('should throw an exception', async () => {
 
-      batchFetcher.fetchNextUploadBatch().then((result: StandardCarTestCATBSchema[]) => { fail(); }).catch((err) => {
-        const expectedError = new Error('failed decompressing test result');
-        expect(err).toEqual(expectedError);
-        return;
-      });
+      batchFetcher.fetchNextUploadBatch().then((result: StandardCarTestCATBSchema[]) => { fail(); })
+        .catch((err: any) => {
+          const expectedError = new Error('failed decompressing test result');
+          expect(err).toEqual(expectedError);
+          return;
+        });
     });
   });
 
@@ -88,10 +90,11 @@ describe('HTTPBatchFetcher', () => {
     });
 
     it('should throw an exception', async () => {
-      batchFetcher.fetchNextUploadBatch().then((result: StandardCarTestCATBSchema[]) => { fail(); }).catch((err) => {
-        const expectedError = new Error('failed parsing test result');
-        expect(err).toEqual(expectedError);
-      });
+      batchFetcher.fetchNextUploadBatch().then((result: StandardCarTestCATBSchema[]) => { fail(); })
+        .catch((err: any) => {
+          const expectedError = new Error('failed parsing test result');
+          expect(err).toEqual(expectedError);
+        });
     });
   });
 
