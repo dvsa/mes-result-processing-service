@@ -34,17 +34,43 @@ import { ITARSRateLimiterConfig } from '../adapter/upload/ITARSRateLimiterConfig
 import { TARSRateLimiterConfig } from '../adapter/upload/TARSRateLimiterConfig';
 import { ILogger } from '../../domain/util/ILogger';
 import { ConsoleLogger } from '../../domain/util/ConsoleLogger';
+import { SuccessfulStubbingTARSUploader } from '../adapter/upload/SuccessfulStubbingTARSUploader';
+import { ConfigurableBatchFetcher } from '../adapter/fetch/ConfigurableBatchFetcher';
+import {
+  SuccessfulStubbingSubmissionOutcomeUploader,
+} from '../adapter/report/SuccessfulStubbingSubmissionOutcomeUploader';
+
+const deriveTARSUploaderType = () => {
+  if (process.env.USE_TARS_STUB === 'true') {
+    return SuccessfulStubbingTARSUploader;
+  }
+  return HTTPTARSUploader;
+};
+
+const deriveBatchFetcherType = () => {
+  if (process.env.USE_BATCH_FETCH_STUB === 'true') {
+    return ConfigurableBatchFetcher;
+  }
+  return HttpBatchFetcher;
+};
+
+const deriveSubmissionOutcomeUploaderType = () => {
+  if (process.env.USE_SUBMISSION_OUTCOME_STUB === 'true') {
+    return SuccessfulStubbingSubmissionOutcomeUploader;
+  }
+  return HTTPSubmissionOutcomeUploader;
+};
 
 const container = new Container();
 
 // Framework
 // TODO: Implement a HTTP version when the endpoint is available - this version is just for testing
-container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(HttpBatchFetcher);
+container.bind<IBatchFetcher>(TYPES.BatchFetcher).to(deriveBatchFetcherType());
 container.bind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).to(EnvvarTARSHTTPConfig);
 container.bind<ITestResultHTTPConfig>(TYPES.TestResultHTTPConfig).to(EnvvarTestResultHTTPConfig);
 container.bind<ITARSUploader>(TYPES.TARSUploader).to(RateLimitDecoratingTARSUploader).whenTargetIsDefault();
-container.bind<ITARSUploader>(TYPES.TARSUploader).to(HTTPTARSUploader).whenTargetNamed('http');
-container.bind<ISubmissionOutcomeUploader>(TYPES.SubmissionOutcomeUploader).to(HTTPSubmissionOutcomeUploader);
+container.bind<ITARSUploader>(TYPES.TARSUploader).to(deriveTARSUploaderType()).whenTargetNamed('http');
+container.bind<ISubmissionOutcomeUploader>(TYPES.SubmissionOutcomeUploader).to(deriveSubmissionOutcomeUploaderType());
 container.bind<IOutcomeReportingHTTPConfig>(TYPES.OutcomeReportingHTTPConfig).to(EnvvarOutcomeReportingHTTPConfig);
 container.bind<ITARSRateLimiterConfig>(TYPES.TARSRateLimiterConfig).to(TARSRateLimiterConfig);
 
