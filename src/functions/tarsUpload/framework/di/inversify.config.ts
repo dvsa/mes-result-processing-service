@@ -4,7 +4,7 @@ import { ITestResultBatchProcessor } from '../../domain/ITestResultBatchProcesso
 import { TestResultBatchProcessor } from '../../domain/TestResultBatchProcessor';
 import { BatchProcessInvoker } from '../../application/primary/BatchProcessInvoker';
 import { IBatchFetcher } from '../../application/secondary/IBatchFetcher';
-import { HttpBatchFetcher } from '../adapter/fetch/HttpBatchFetcher';
+import { HTTPBatchFetcher } from '../adapter/fetch/HTTPBatchFetcher';
 import { ISubmissionReportingMediator } from '../../domain/ISubmissionReportingMediator';
 import { SubmissionReportingMediator } from '../../domain/SubmissionReportingMediator';
 import { IResultInterfaceCategoriser } from '../../domain/upload/IResultInterfaceCategoriser';
@@ -28,8 +28,8 @@ import { ISubmissionOutcomeUploader } from '../../application/secondary/ISubmiss
 import { HTTPSubmissionOutcomeUploader } from '../adapter/report/HTTPSubmissionOutcomeUploader';
 import { IOutcomeReportingHTTPConfig } from '../adapter/report/IOutcomeReportingHTTPConfig';
 import { EnvvarOutcomeReportingHTTPConfig } from '../adapter/report/EnvvarOutcomeReportingHTTPConfig';
-import { ITestResultHTTPConfig } from '../adapter/upload/ITestResultHTTPConfig';
-import { EnvvarTestResultHTTPConfig } from '../adapter/upload/EnvvarTestResultHTTPConfig';
+import { ITestResultHTTPConfig } from '../adapter/fetch/ITestResultHTTPConfig';
+import { EnvvarTestResultHTTPConfig } from '../adapter/fetch/EnvvarTestResultHTTPConfig';
 import { ITARSRateLimiterConfig } from '../adapter/upload/ITARSRateLimiterConfig';
 import { TARSRateLimiterConfig } from '../adapter/upload/TARSRateLimiterConfig';
 import { ILogger } from '../../domain/util/ILogger';
@@ -51,7 +51,7 @@ const deriveBatchFetcherType = () => {
   if (process.env.USE_BATCH_FETCH_STUB === 'true') {
     return ConfigurableBatchFetcher;
   }
-  return HttpBatchFetcher;
+  return HTTPBatchFetcher;
 };
 
 const deriveSubmissionOutcomeUploaderType = () => {

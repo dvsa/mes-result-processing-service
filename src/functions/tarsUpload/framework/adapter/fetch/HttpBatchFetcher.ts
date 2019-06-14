@@ -3,11 +3,11 @@ import { injectable, inject } from 'inversify';
 import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import * as zlib from 'zlib';
-import { ITestResultHTTPConfig } from '../upload/ITestResultHTTPConfig';
+import { ITestResultHTTPConfig } from './ITestResultHTTPConfig';
 import { TYPES } from '../../di/types';
 import { TestResultError } from './errors/TestResultError';
 @injectable()
-export class HttpBatchFetcher implements IBatchFetcher {
+export class HTTPBatchFetcher implements IBatchFetcher {
 
   private endpoint: string;
   axios: AxiosInstance;
@@ -59,11 +59,11 @@ export class HttpBatchFetcher implements IBatchFetcher {
     if (response) {
       return new TestResultError(err.message);
     }
-  // Request was made, but no response received
+    // Request was made, but no response received
     if (request) {
       return new TestResultError(`no response received ${err.message}`);
     }
-  // Failed to setup the request
+    // Failed to setup the request
     return new TestResultError(err.message);
   }
 }
