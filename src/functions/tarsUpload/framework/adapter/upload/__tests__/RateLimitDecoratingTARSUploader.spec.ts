@@ -71,7 +71,7 @@ describe('RateLimitDecoratingTARSUploader', () => {
 
   describe('rate limiting', () => {
     // Predicate for whether a timing is "close enough" to what we expect.
-    const nearTo = (num1: number, num2: number) => Math.abs(num1 - num2) < 25;
+    const nearTo = (num1: number, num2: number) => Math.abs(num1 - num2) < 75;
     const approxInstantly = nearTo.bind(null, 0);
     const approxOneSecond = nearTo.bind(null, 1000);
 
