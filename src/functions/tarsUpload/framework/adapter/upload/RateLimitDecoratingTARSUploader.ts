@@ -39,15 +39,20 @@ export class RateLimitDecoratingTARSUploader implements ITARSUploader {
   }
 
   private setupRetryPolicy() {
+    this.setupRetryPolicyForInterfaceEndpoint(this.completedLimiter);
+    this.setupRetryPolicyForInterfaceEndpoint(this.nonCompletedLimiter);
+  }
+
+  private setupRetryPolicyForInterfaceEndpoint(limiter: bottleneck) {
     const { maxRetries, requestsPerSecond } = this.rateLimiterConfig;
     // Trigger a retry in the case that we have retry attempts remaining on this upload
-    this.nonCompletedLimiter.on('failed', async (error, jobInfo) => {
+    limiter.on('failed', async (error, jobInfo) => {
       if (jobInfo.retryCount < maxRetries && error instanceof TransientUploadError) {
         return requestsPerSecond * 1000;
       }
     });
     // Track of the retry counts for given application IDs so uploadToTARS can return the count
-    this.nonCompletedLimiter.on('retry', (error, jobInfo) => {
+    limiter.on('retry', (error, jobInfo) => {
       const oldRetryCount = jobInfo.retryCount;
       this.retryCountByApplicationId = {
         ...this.retryCountByApplicationId,
