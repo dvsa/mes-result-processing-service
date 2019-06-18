@@ -34,7 +34,6 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     const { applicationReference, testSlotAttributes, candidate } = journalData;
     const { applicationId, bookingSequence, checkDigit } = applicationReference;
     if (
-      !passCompletion ||
       !communicationPreferences ||
       !candidate.driverNumber ||
       !testSummary ||
@@ -48,7 +47,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       bookingSequence,
       checkDigit,
       languageId: communicationPreferences.conductedLanguage === 'English' ? 'E' : 'W',
-      licenceSurrender: passCompletion.provisionalLicenceProvided,
+      licenceSurrender: passCompletion ? passCompletion.provisionalLicenceProvided : false,
       dL25Category: category,
       dL25TestType: 2, // TODO: 2 is for cat B only, we need to get this from the test schema eventually
       automaticTest: vehicleDetails.gearboxCategory === 'Automatic',
@@ -57,7 +56,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       passResult: test.activityCode === '1',
       driverNumber: candidate.driverNumber,
       testDate: this.dateFormatter.asSlashDelimitedDate(new Date(testSlotAttributes.start)),
-      passCertificate: passCompletion.passCertificateNumber,
+      passCertificate: passCompletion ? passCompletion.passCertificateNumber : '',
     };
   }
 

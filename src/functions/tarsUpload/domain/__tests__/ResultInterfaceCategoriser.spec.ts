@@ -24,9 +24,9 @@ describe('ResultInterfaceCategoriser', () => {
   });
 
   it('should be able to correctly categorise tests based on their activity codes', () => {
-    batch = [dummyTests.pass1, dummyTests.fail1];
+    batch = [dummyTests.pass1, dummyTests.terminateNoShow];
     expectedResult.completed.push(dummyTests.pass1);
-    expectedResult.nonCompleted.push(dummyTests.fail1);
+    expectedResult.nonCompleted.push(dummyTests.terminateNoShow);
 
     const result = categoriser.categoriseByInterface(batch);
     expect(result).toEqual(expectedResult);
