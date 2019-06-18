@@ -34,7 +34,7 @@ describe('TestResultBatchProcessor', () => {
   });
 
   it('should submit a single non-completed test payload to TARS and the update outcome', async () => {
-    batchFetcher.setNextBatch([dummyTests.fail1]);
+    batchFetcher.setNextBatch([dummyTests.terminateNoShow]);
 
     await testResultBatchProcessor.processNextBatch();
 
@@ -58,7 +58,7 @@ describe('TestResultBatchProcessor', () => {
     });
   });
 
-  it('should submit a single pass payload to TARS', async () => {
+  it('should submit a single pass payload to TARS and report on the outcome', async () => {
     batchFetcher.setNextBatch([dummyTests.pass1]);
 
     await testResultBatchProcessor.processNextBatch();
@@ -86,6 +86,42 @@ describe('TestResultBatchProcessor', () => {
       applicationReference: '123456919',
       outcomePayload: {
         staff_number: '321',
+        state: ProcessingStatus.ACCEPTED,
+        interface: 'TARS',
+        retry_count: 0,
+        error_message: null,
+      },
+    });
+  });
+
+  it('should submit a single failed test payload to TARS and report on the outcome', async () => {
+    batchFetcher.setNextBatch([dummyTests.failEyesight]);
+
+    await testResultBatchProcessor.processNextBatch();
+
+    expect(tarsUploader.getCalls().length).toBe(1);
+    expect(tarsUploader.getCalls()[0].interfaceType).toBe(TARSInterfaceType.COMPLETED);
+    expect(tarsUploader.getCalls()[0].payload as CompletedTestPayload).toEqual({
+      applicationId: 1234571,
+      bookingSequence: 2,
+      checkDigit: 6,
+      languageId: 'E',
+      licenceSurrender: false,
+      dL25Category: 'B',
+      dL25TestType: 2,
+      automaticTest: false,
+      extendedTest: false,
+      d255Selected: true,
+      passResult: false,
+      driverNumber: 'CAMPB805220A89HC',
+      testDate: '10/06/2019',
+      passCertificate: '',
+    });
+    expect(outcomeUploader.calls.length).toBe(1);
+    expect(outcomeUploader.calls[0]).toEqual({
+      applicationReference: '123457126',
+      outcomePayload: {
+        staff_number: '123',
         state: ProcessingStatus.ACCEPTED,
         interface: 'TARS',
         retry_count: 0,

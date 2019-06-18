@@ -7,7 +7,6 @@ export class ConfigurableBatchFetcher implements IBatchFetcher {
 
   dummyTest: StandardCarTestCATBSchema = {
     category: 'B',
-    id: 'xyz',
     journalData: {
       examiner: {
         staffNumber: '123',
