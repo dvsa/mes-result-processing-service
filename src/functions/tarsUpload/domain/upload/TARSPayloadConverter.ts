@@ -1,5 +1,5 @@
 import { ITARSPayloadConverter } from './ITARSPayloadConverter';
-import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
+import { StandardCarTestCATBSchema, PassCompletion } from '@dvsa/mes-test-schema/categories/B';
 import { TARSInterfaceType } from './TARSInterfaceType';
 import { ITARSPayload } from './ITARSPayload';
 import { injectable, inject } from 'inversify';
@@ -42,7 +42,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     ) {
       throw new CompletedTestPayloadCreationError(test);
     }
-    return {
+    let completedTestPayload: CompletedTestPayload = {
       applicationId,
       bookingSequence,
       checkDigit,
@@ -56,7 +56,21 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       passResult: test.activityCode === '1',
       driverNumber: candidate.driverNumber,
       testDate: this.dateFormatter.asSlashDelimitedDate(new Date(testSlotAttributes.start)),
-      passCertificate: passCompletion ? passCompletion.passCertificateNumber : '',
+    };
+    completedTestPayload = this.populatePassCertificateIfPresent(completedTestPayload, passCompletion);
+    return completedTestPayload;
+  }
+
+  private populatePassCertificateIfPresent(
+    completedTestPayload: CompletedTestPayload,
+    passCompletion: PassCompletion | undefined,
+  ): CompletedTestPayload {
+    if (!passCompletion) {
+      return completedTestPayload;
+    }
+    return {
+      ...completedTestPayload,
+      passCertificate: passCompletion.passCertificateNumber,
     };
   }
 

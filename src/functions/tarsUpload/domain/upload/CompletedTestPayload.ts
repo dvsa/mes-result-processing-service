@@ -43,7 +43,7 @@ export interface CompletedTestPayload extends ITARSPayload {
   testDate: string;
 
   /**
-   * Max 8 chars
+   * Max 8 chars - omitted for failed tests
    */
-  passCertificate: string;
+  passCertificate?: string;
 }

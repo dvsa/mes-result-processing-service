@@ -115,7 +115,6 @@ describe('TestResultBatchProcessor', () => {
       passResult: false,
       driverNumber: 'CAMPB805220A89HC',
       testDate: '10/06/2019',
-      passCertificate: '',
     });
     expect(outcomeUploader.calls.length).toBe(1);
     expect(outcomeUploader.calls[0]).toEqual({
