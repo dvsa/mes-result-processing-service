@@ -4,7 +4,7 @@ import { TYPES } from '../../di/types';
 import { ITARSHTTPConfig } from './ITARSHTTPConfig';
 import { ITARSUploader } from '../../../application/secondary/ITARSUploader';
 import { ITARSPayload } from '../../../domain/upload/ITARSPayload';
-import axios, { AxiosInstance, AxiosError } from 'axios';
+import axios, { AxiosInstance, AxiosError, AxiosResponse } from 'axios';
 import { UploadRetryCount } from '../../../domain/upload/UploadRetryCount';
 import { TransientUploadError } from '../../../domain/upload/errors/TransientUploadError';
 import { PermanentUploadError } from '../../../domain/upload/errors/PermanentUploadError';
@@ -46,9 +46,13 @@ export class HTTPTARSUploader implements ITARSUploader {
   ): TransientUploadError | PermanentUploadError {
     const { request, response } = err;
     if (response) {
-      if (response.status >= 400 && response.status <= 499) {
+      if (this.responseIndicatesRateLimitExceeded(response)) {
+        this.logger.warn('Rate limit exceeded');
+        return new TransientUploadError('Rate limit exceeded');
+      }
+      if (this.responseIndicates4xxError(response)) {
         this.logger.warn(`4xx error received for payload ${tarsPayload}: ${JSON.stringify(response.data)}`);
-        new PermanentUploadError(err.message);
+        return new PermanentUploadError(err.message);
       }
       return new TransientUploadError(err.message);
     }
@@ -58,6 +62,14 @@ export class HTTPTARSUploader implements ITARSUploader {
     }
     // Failed to setup the request
     return new PermanentUploadError(err.message);
+  }
+
+  private responseIndicatesRateLimitExceeded(response: AxiosResponse) {
+    return response.status === 429;
+  }
+
+  private responseIndicates4xxError(response: AxiosResponse) {
+    return response.status >= 400 && response.status <= 499;
   }
 
 }
