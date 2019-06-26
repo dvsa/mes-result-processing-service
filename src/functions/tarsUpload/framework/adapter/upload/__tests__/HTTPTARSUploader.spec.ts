@@ -1,5 +1,4 @@
 import { container } from '../../../di/inversify.config';
-import { ITARSUploader } from '../../../../application/secondary/ITARSUploader';
 import { TYPES } from '../../../di/types';
 import * as nock from 'nock';
 import { ITARSPayload } from '../../../../domain/upload/ITARSPayload';
@@ -9,7 +8,7 @@ import { PermanentUploadError } from '../../../../domain/upload/errors/Permanent
 import { HTTPTARSUploader } from '../HTTPTARSUploader';
 import { TransientUploadError } from '../../../../domain/upload/errors/TransientUploadError';
 
-describe('HTTPTARSUploader', () => {
+xdescribe('HTTPTARSUploader', () => {
   let httpUploader: HTTPTARSUploader;
   const dummyTARSPayload: ITARSPayload = { applicationId: 123, bookingSequence: 4 };
   const fakeTARSEndpoint = 'http://localhost:3001';
@@ -39,7 +38,7 @@ describe('HTTPTARSUploader', () => {
         expect(err instanceof errorType).toBeTruthy();
         return;
       }
-      fail();
+      fail(`HTTPTARSUploader failed to throw exception on HTTP status ${status}`);
     };
 
     it('should throw a TransientUploadError when TARS indicates the rate limit was exceeded', async () => {
