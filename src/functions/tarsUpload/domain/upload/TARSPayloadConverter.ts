@@ -1,5 +1,5 @@
 import { ITARSPayloadConverter } from './ITARSPayloadConverter';
-import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
+import { StandardCarTestCATBSchema, PassCompletion } from '@dvsa/mes-test-schema/categories/B';
 import { TARSInterfaceType } from './TARSInterfaceType';
 import { ITARSPayload } from './ITARSPayload';
 import { injectable, inject } from 'inversify';
@@ -42,21 +42,35 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     ) {
       throw new CompletedTestPayloadCreationError(test);
     }
-    return {
+    let completedTestPayload: CompletedTestPayload = {
       applicationId,
       bookingSequence,
       checkDigit,
-      languageId: communicationPreferences.conductedLanguage === 'English' ? 'E' : 'W',
+      language: communicationPreferences.conductedLanguage === 'English' ? 'E' : 'W',
       licenceSurrender: passCompletion ? passCompletion.provisionalLicenceProvided : false,
-      dL25Category: category,
-      dL25TestType: 2, // TODO: 2 is for cat B only, we need to get this from the test schema eventually
+      dl25Category: category,
+      dl25TestType: 2, // TODO: 2 is for cat B only, we need to get this from the test schema eventually
       automaticTest: vehicleDetails.gearboxCategory === 'Automatic',
       extendedTest: testSlotAttributes.extendedTest,
       d255Selected: testSummary.D255,
       passResult: test.activityCode === '1',
       driverNumber: candidate.driverNumber,
       testDate: this.dateFormatter.asSlashDelimitedDate(new Date(testSlotAttributes.start)),
-      passCertificate: passCompletion ? passCompletion.passCertificateNumber : '',
+    };
+    completedTestPayload = this.populatePassCertificateIfPresent(completedTestPayload, passCompletion);
+    return completedTestPayload;
+  }
+
+  private populatePassCertificateIfPresent(
+    completedTestPayload: CompletedTestPayload,
+    passCompletion: PassCompletion | undefined,
+  ): CompletedTestPayload {
+    if (!passCompletion) {
+      return completedTestPayload;
+    }
+    return {
+      ...completedTestPayload,
+      passCertificate: passCompletion.passCertificateNumber,
     };
   }
 

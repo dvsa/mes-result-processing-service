@@ -7,19 +7,19 @@ export interface CompletedTestPayload extends ITARSPayload {
   /**
    * 'E' / 'W' (English or Welsh)
    */
-  languageId: string;
+  language: string;
 
   licenceSurrender: boolean;
 
   /**
    * 6 chars max
    */
-  dL25Category: string;
+  dl25Category: string;
 
   /**
    * Integer > 0, max 2 digits
    */
-  dL25TestType: number;
+  dl25TestType: number;
 
   automaticTest: boolean;
 
@@ -43,7 +43,7 @@ export interface CompletedTestPayload extends ITARSPayload {
   testDate: string;
 
   /**
-   * Max 8 chars
+   * Max 8 chars - omitted for failed tests
    */
-  passCertificate: string;
+  passCertificate?: string;
 }
