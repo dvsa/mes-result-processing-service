@@ -9,7 +9,7 @@ import { timed } from '../../../domain/util/TimingDecorator';
 @injectable()
 export class HTTPSubmissionOutcomeUploader implements ISubmissionOutcomeUploader {
 
-  axios: AxiosInstance;
+  private axios: AxiosInstance;
 
   constructor(
     @inject(TYPES.OutcomeReportingHTTPConfig) private outcomeReportingHTTPConfig: IOutcomeReportingHTTPConfig,

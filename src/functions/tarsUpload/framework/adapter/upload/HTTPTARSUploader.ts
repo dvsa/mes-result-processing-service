@@ -15,7 +15,7 @@ import { timed } from '../../../domain/util/TimingDecorator';
 @injectable()
 export class HTTPTARSUploader implements ITARSUploader {
 
-  axios: AxiosInstance;
+  private axios: AxiosInstance;
 
   constructor(
     @inject(TYPES.TARSHTTPConfig) private tarsHttpConfig: ITARSHTTPConfig,

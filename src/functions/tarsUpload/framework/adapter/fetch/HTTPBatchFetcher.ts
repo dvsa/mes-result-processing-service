@@ -10,7 +10,7 @@ import { timed } from '../../../domain/util/TimingDecorator';
 @injectable()
 export class HTTPBatchFetcher implements IBatchFetcher {
 
-  axios: AxiosInstance;
+  private axios: AxiosInstance;
 
   constructor(
     @inject(TYPES.TestResultHTTPConfig) private testResultHttpConfig: ITestResultHTTPConfig,
