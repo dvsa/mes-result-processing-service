@@ -6,6 +6,7 @@ import * as zlib from 'zlib';
 import { ITestResultHTTPConfig } from './ITestResultHTTPConfig';
 import { TYPES } from '../../di/types';
 import { TestResultError } from './errors/TestResultError';
+import { timed } from '../../../domain/util/TimingDecorator';
 @injectable()
 export class HTTPBatchFetcher implements IBatchFetcher {
 
@@ -18,6 +19,7 @@ export class HTTPBatchFetcher implements IBatchFetcher {
     });
   }
 
+  @timed()
   fetchNextUploadBatch(): Promise<StandardCarTestCATBSchema[]> {
     const endpoint = this.getEndpointWithQueryParams();
     return new Promise((resolve, reject) => {

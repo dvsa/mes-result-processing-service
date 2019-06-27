@@ -10,6 +10,7 @@ import { TransientUploadError } from '../../../domain/upload/errors/TransientUpl
 import { PermanentUploadError } from '../../../domain/upload/errors/PermanentUploadError';
 import * as https from 'https';
 import { ILogger } from '../../../domain/util/ILogger';
+import { timed } from '../../../domain/util/TimingDecorator';
 
 @injectable()
 export class HTTPTARSUploader implements ITARSUploader {
@@ -29,7 +30,9 @@ export class HTTPTARSUploader implements ITARSUploader {
     });
   }
 
+  @timed()
   async uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<UploadRetryCount> {
+    this.logger.info(`doing HTTP POST for payload ${JSON.stringify(tarsPayload)}`);
     try {
       const endpoint = interfaceType === TARSInterfaceType.COMPLETED ?
         this.tarsHttpConfig.completedTestEndpoint : this.tarsHttpConfig.nonCompletedTestEndpoint;
