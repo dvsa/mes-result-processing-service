@@ -30,9 +30,8 @@ export class HTTPTARSUploader implements ITARSUploader {
     });
   }
 
-  @timed()
+  @timed('TARSHTTPUploadTimeTakenMs', 'The number of ms taken to upload a payload to TARS')
   async uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<UploadRetryCount> {
-    this.logger.info(`doing HTTP POST for payload ${JSON.stringify(tarsPayload)}`);
     try {
       const endpoint = interfaceType === TARSInterfaceType.COMPLETED ?
         this.tarsHttpConfig.completedTestEndpoint : this.tarsHttpConfig.nonCompletedTestEndpoint;

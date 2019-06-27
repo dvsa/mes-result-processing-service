@@ -19,7 +19,7 @@ export class HTTPBatchFetcher implements IBatchFetcher {
     });
   }
 
-  @timed()
+  @timed('HTTPBatchFetchTimeTakenMs', 'The number of ms taken to fetch a batch of test results')
   fetchNextUploadBatch(): Promise<StandardCarTestCATBSchema[]> {
     const endpoint = this.getEndpointWithQueryParams();
     return new Promise((resolve, reject) => {
