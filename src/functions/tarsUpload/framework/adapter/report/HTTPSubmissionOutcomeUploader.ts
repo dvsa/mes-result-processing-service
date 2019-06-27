@@ -4,6 +4,7 @@ import { injectable, inject } from 'inversify';
 import axios, { AxiosInstance } from 'axios';
 import { IOutcomeReportingHTTPConfig } from './IOutcomeReportingHTTPConfig';
 import { TYPES } from '../../di/types';
+import { timed } from '../../../domain/util/TimingDecorator';
 
 @injectable()
 export class HTTPSubmissionOutcomeUploader implements ISubmissionOutcomeUploader {
@@ -15,6 +16,8 @@ export class HTTPSubmissionOutcomeUploader implements ISubmissionOutcomeUploader
   ) {
     this.axios = axios.create();
   }
+
+  @timed('HTTPSubmissionOutcomeTimeTakenMs', 'The number of ms taken to report an upload status')
   uploadSubmissionOutcome(submissionOutcomeCtx: SubmissionOutcomeContext): Promise<void> {
     const putRequestUrl = this.buildParameterisedPutRequestURL(submissionOutcomeCtx);
     return this.axios.put(putRequestUrl, submissionOutcomeCtx.outcomePayload);
