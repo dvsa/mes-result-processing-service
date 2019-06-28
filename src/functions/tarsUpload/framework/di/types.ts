@@ -3,6 +3,7 @@ const TYPES = {
   DateFormatter: Symbol.for('DateFormatter'),
   OutcomeReportingHTTPConfig: Symbol.for('OutcomeReportingHTTPConfig'),
   Logger: Symbol.for('Logger'),
+  MetricSubmitter: Symbol.for('MetricSubmitter'),
   ResultInterfaceCategoriser: Symbol.for('ResultInterfaceCategoriser'),
   SubmissionOutcomeReporter: Symbol.for('SubmissionOutcomeReporter'),
   SubmissionOutcomeContextBuilder: Symbol.for('SubmissionOutcomeContextBuilder'),

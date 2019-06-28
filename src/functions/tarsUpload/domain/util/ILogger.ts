@@ -3,4 +3,5 @@ export interface ILogger {
   error(message: string): void;
   info(message: string): void;
   warn(message: string): void;
+  metric(message: string): void;
 }

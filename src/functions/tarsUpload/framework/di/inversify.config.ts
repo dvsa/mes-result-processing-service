@@ -39,6 +39,8 @@ import { ConfigurableBatchFetcher } from '../adapter/fetch/ConfigurableBatchFetc
 import {
   SuccessfulStubbingSubmissionOutcomeUploader,
 } from '../adapter/report/SuccessfulStubbingSubmissionOutcomeUploader';
+import { IMetricSubmitter } from '../../application/secondary/IMetricSubmitter';
+import { JSONLoggingMetricSubmitter } from '../adapter/metric/JSONLoggingMetricSubmitter';
 
 const deriveTARSUploaderType = () => {
   if (process.env.USE_TARS_STUB === 'true') {
@@ -73,6 +75,7 @@ container.bind<ITARSUploader>(TYPES.TARSUploader).to(deriveTARSUploaderType()).w
 container.bind<ISubmissionOutcomeUploader>(TYPES.SubmissionOutcomeUploader).to(deriveSubmissionOutcomeUploaderType());
 container.bind<IOutcomeReportingHTTPConfig>(TYPES.OutcomeReportingHTTPConfig).to(EnvvarOutcomeReportingHTTPConfig);
 container.bind<ITARSRateLimiterConfig>(TYPES.TARSRateLimiterConfig).to(TARSRateLimiterConfig);
+container.bind<IMetricSubmitter>(TYPES.MetricSubmitter).to(JSONLoggingMetricSubmitter);
 
 // Application
 container.bind<BatchProcessInvoker>(BatchProcessInvoker).toSelf();
