@@ -15,4 +15,7 @@ export class ConsoleLogger implements ILogger {
   warn(message: string): void {
     console.warn(`WARN: ${message}`);
   }
+  metric(message: string): void {
+    console.log(message);
+  }
 }
