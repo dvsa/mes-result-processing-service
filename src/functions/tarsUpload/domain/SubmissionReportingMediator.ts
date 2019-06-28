@@ -7,6 +7,10 @@ import { ITARSSubmissionFacade } from './upload/ITARSSubmissionFacade';
 import { TARSInterfaceType } from './upload/TARSInterfaceType';
 import { ISubmissionOutcomeReporter } from './reporting/ISubmissionOutcomeReporter';
 import { ILogger } from './util/ILogger';
+import { IMetricSubmitter } from '../application/secondary/IMetricSubmitter';
+import { TARSUploadResult } from './upload/TARSUploadResult';
+import { ProcessingStatus } from './reporting/ProcessingStatus';
+import { Metric } from './util/Metrics';
 
 @injectable()
 export class SubmissionReportingMediator implements ISubmissionReportingMediator {
@@ -15,32 +19,46 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
     @inject(TYPES.TARSSubmissionFacade) private tarsSubmissionFacade: ITARSSubmissionFacade,
     @inject(TYPES.SubmissionOutcomeReporter) private submissionOutcomeReporter: ISubmissionOutcomeReporter,
     @inject(TYPES.Logger) private logger: ILogger,
+    @inject(TYPES.MetricSubmitter) private metricSubmitter: IMetricSubmitter,
   ) { }
 
   async submitBatchesAndReportOutcome(batch: StandardCarTestCATBSchema[]): Promise<void> {
     const { completed, nonCompleted } = this.resultInterfaceCategoriser.categoriseByInterface(batch);
     try {
-      await Promise.all([
+      const uploadResults = await Promise.all([
         ...this.submitAndReportCompletedTests(completed),
         ...this.submitAndReportNonCompletedTests(nonCompleted),
       ]);
+      this.emitMetricsForUploadResults(uploadResults);
     } catch (err) {
       this.logger.error(`Failure reporting upload statuses, terminating: ${err.message}`);
     }
   }
 
   private submitAndReportCompletedTests(completedTests: StandardCarTestCATBSchema[]) {
-    return completedTests.map((completedTest) => {
-      return this.tarsSubmissionFacade.convertAndUpload(completedTest, TARSInterfaceType.COMPLETED)
-        .then(uploadResult => this.submissionOutcomeReporter.reportSubmissionOutcome(uploadResult));
+    return completedTests.map(async (completedTest) => {
+      const uploadResult = await this.tarsSubmissionFacade.convertAndUpload(completedTest, TARSInterfaceType.COMPLETED);
+      await this.submissionOutcomeReporter.reportSubmissionOutcome(uploadResult);
+      return uploadResult;
     });
   }
 
   private submitAndReportNonCompletedTests(nonCompletedTests: StandardCarTestCATBSchema[]) {
-    return nonCompletedTests.map((nonCompletedTest) => {
-      return this.tarsSubmissionFacade.convertAndUpload(nonCompletedTest, TARSInterfaceType.NON_COMPLETED)
-        .then(uploadResult => this.submissionOutcomeReporter.reportSubmissionOutcome(uploadResult));
+    return nonCompletedTests.map(async (nonCompletedTest) => {
+      const uploadResult = await this.tarsSubmissionFacade.convertAndUpload(
+        nonCompletedTest,
+        TARSInterfaceType.NON_COMPLETED,
+      );
+      await this.submissionOutcomeReporter.reportSubmissionOutcome(uploadResult);
+      return uploadResult;
     });
+  }
+
+  private emitMetricsForUploadResults(uploadResults: TARSUploadResult[]) {
+    const successfulUploadCount = uploadResults.filter(result => result.status === ProcessingStatus.ACCEPTED).length;
+    const unsuccessfulUploadCount = uploadResults.length - successfulUploadCount;
+    this.metricSubmitter.submitMetric(Metric.ResultUploadSuccesses, successfulUploadCount);
+    this.metricSubmitter.submitMetric(Metric.ResultUploadFailures, unsuccessfulUploadCount);
   }
 
 }
