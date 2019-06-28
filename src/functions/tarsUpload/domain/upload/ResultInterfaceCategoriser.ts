@@ -21,8 +21,8 @@ export class ResultInterfaceCategoriser implements IResultInterfaceCategoriser {
       // tslint:disable-next-line:align
     }, { completed: [], nonCompleted: [] } as TestsByInterface);
 
-    this.metricSubmitter.submitMetric(Metric.BatchCompletedTests, categories.completed.length);
-    this.metricSubmitter.submitMetric(Metric.BatchNonCompletedTests, categories.nonCompleted.length);
+    this.metricSubmitter.submitMetric(Metric.UploadBatchCompletedTests, categories.completed.length);
+    this.metricSubmitter.submitMetric(Metric.UploadBatchNonCompletedTests, categories.nonCompleted.length);
 
     return categories;
   }
