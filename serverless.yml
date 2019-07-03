@@ -14,6 +14,13 @@ functions:
       - http:
           path: tarsUpload
           method: get
+          
+  retryUploads:
+    handler: src/functions/retryUploads/framework/handler.handler
+    events:
+      - http:
+          path: retryUpload
+          method: get
 
 custom:
   webpack:
