@@ -15,7 +15,7 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
         welshTest: false,
         slotId: 1005,
         start: '2019-06-07T12:38:00+01:00',
-        vehicleSlotType: 'B57mins',
+        vehicleTypeCode: 'C',
         extendedTest: false,
         specialNeeds: false,
       },
@@ -77,6 +77,7 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
       identification: 'Licence',
     },
     activityCode: '51',
+    rekey: false,
   },
   failEyesight: {
     category: 'B',
@@ -93,7 +94,7 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
         slotId: 1005,
         start: '2019-06-10T12:38:00+01:00',
         specialNeeds: false,
-        vehicleSlotType: 'B57mins',
+        vehicleTypeCode: 'C',
         extendedTest: false,
       },
       candidate: {
@@ -165,6 +166,7 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
       conductedLanguage: 'English',
     },
     activityCode: '3',
+    rekey: false,
   },
   pass1: {
     category: 'B',
@@ -180,7 +182,7 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
         welshTest: true,
         slotId: 1003,
         start: '2019-06-10T10:14:00+01:00',
-        vehicleSlotType: 'B57mins',
+        vehicleTypeCode: 'C',
         extendedTest: false,
         specialNeeds: false,
       },
@@ -281,6 +283,7 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
       conductedLanguage: 'Cymraeg',
     },
     activityCode: '1',
+    rekey: false,
   },
 
 };

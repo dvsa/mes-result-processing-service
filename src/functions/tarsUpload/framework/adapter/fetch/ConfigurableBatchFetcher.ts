@@ -19,7 +19,7 @@ export class ConfigurableBatchFetcher implements IBatchFetcher {
         welshTest: false,
         slotId: 1005,
         start: '2019-06-07T12:38:00+01:00',
-        vehicleSlotType: 'B57mins',
+        vehicleTypeCode: 'C',
         extendedTest: false,
         specialNeeds: false,
       },
@@ -91,6 +91,7 @@ export class ConfigurableBatchFetcher implements IBatchFetcher {
     },
     activityCode: '51',
     eyesightTestResult: 'P',
+    rekey: false,
   };
 
   private nextBatch: StandardCarTestCATBSchema[] = [this.dummyTest];
