@@ -2,7 +2,7 @@ import { ProcessingStatus } from './ProcessingStatus';
 import { UploadRetryCount } from '../upload/UploadRetryCount';
 
 export interface SubmissionOutcomeContext {
-  applicationReference: string;
+  applicationReference: number;
   outcomePayload: {
     staff_number: string;
     interface: string;

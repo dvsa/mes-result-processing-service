@@ -47,7 +47,7 @@ describe('TestResultBatchProcessor', () => {
     });
     expect(outcomeUploader.calls.length).toBe(1);
     expect(outcomeUploader.calls[0]).toEqual({
-      applicationReference: '123457126',
+      applicationReference: 1234571026,
       outcomePayload: {
         staff_number: '123',
         state: ProcessingStatus.ACCEPTED,
@@ -83,7 +83,7 @@ describe('TestResultBatchProcessor', () => {
     });
     expect(outcomeUploader.calls.length).toBe(1);
     expect(outcomeUploader.calls[0]).toEqual({
-      applicationReference: '123456919',
+      applicationReference: 1234569019,
       outcomePayload: {
         staff_number: '321',
         state: ProcessingStatus.ACCEPTED,
@@ -118,7 +118,7 @@ describe('TestResultBatchProcessor', () => {
     });
     expect(outcomeUploader.calls.length).toBe(1);
     expect(outcomeUploader.calls[0]).toEqual({
-      applicationReference: '123457126',
+      applicationReference: 1234571026,
       outcomePayload: {
         staff_number: '123',
         state: ProcessingStatus.ACCEPTED,
