@@ -2,14 +2,14 @@ import { ISubmissionOutcomeContextBuilder } from './ISubmissionOutcomeContextBui
 import { TARSUploadResult } from '../upload/TARSUploadResult';
 import { SubmissionOutcomeContext } from './SubmissionOutcomeContext';
 import { injectable } from 'inversify';
-import { ApplicationReference } from '@dvsa/mes-test-schema/categories/B';
+import { formatApplicationReference } from '@dvsa/mes-microservice-common/domain/tars';
 
 @injectable()
 export class SubmissionOutcomeContextBuilder implements ISubmissionOutcomeContextBuilder {
   buildSubmissionOutcomeContext(uploadResult: TARSUploadResult): SubmissionOutcomeContext {
     const { journalData } = uploadResult.test;
     return {
-      applicationReference: this.buildApplicationReferenceIdentifer(journalData.applicationReference),
+      applicationReference: formatApplicationReference(journalData.applicationReference),
       outcomePayload: {
         staff_number: journalData.examiner.staffNumber,
         interface: 'TARS',
@@ -18,9 +18,5 @@ export class SubmissionOutcomeContextBuilder implements ISubmissionOutcomeContex
         error_message: uploadResult.errorMessage || null,
       },
     };
-  }
-
-  private buildApplicationReferenceIdentifer(appRef: ApplicationReference): string {
-    return `${appRef.applicationId}${appRef.bookingSequence}${appRef.checkDigit}`;
   }
 }
