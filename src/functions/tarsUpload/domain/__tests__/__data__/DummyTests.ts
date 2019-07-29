@@ -66,6 +66,7 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
         tellMeQuestion: {},
         showMeQuestion: {},
       },
+      eyesightTest: {},
     },
     postTestDeclarations: {
       healthDeclarationAccepted: false,
@@ -126,7 +127,6 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
       residencyDeclarationAccepted: true,
       preTestSignature: 'data:image/svg+xml;base64,PHN2ZyB4b',
     },
-    eyesightTestResult: 'F',
     accompaniment: {},
     vehicleDetails: {
       registrationNumber: '',
@@ -144,6 +144,11 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
       vehicleChecks: {
         tellMeQuestion: {},
         showMeQuestion: {},
+      },
+      eyesightTest: {
+        complete: true,
+        seriousFault: true,
+        faultComments: 'was blind',
       },
     },
     postTestDeclarations: {
@@ -214,7 +219,6 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
       residencyDeclarationAccepted: true,
       preTestSignature: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0',
     },
-    eyesightTestResult: 'P',
     accompaniment: {},
     vehicleDetails: {
       registrationNumber: '1',
@@ -255,6 +259,9 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
           code: 'S5',
           description: 'When it is safe to do so can you show me how you would operate the horn.',
         },
+      },
+      eyesightTest: {
+        complete: true,
       },
     },
     passCompletion: {
