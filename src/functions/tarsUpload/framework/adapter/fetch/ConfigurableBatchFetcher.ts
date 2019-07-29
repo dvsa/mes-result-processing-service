@@ -70,6 +70,9 @@ export class ConfigurableBatchFetcher implements IBatchFetcher {
         tellMeQuestion: {},
         showMeQuestion: {},
       },
+      eyesightTest: {
+        complete: true,
+      },
     },
     passCompletion: {
       provisionalLicenceProvided: true,
@@ -90,7 +93,6 @@ export class ConfigurableBatchFetcher implements IBatchFetcher {
       conductedLanguage: 'English',
     },
     activityCode: '51',
-    eyesightTestResult: 'P',
     rekey: false,
   };
 
