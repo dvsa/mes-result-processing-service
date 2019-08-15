@@ -79,6 +79,10 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
     },
     activityCode: '51',
     rekey: false,
+    changeMarker: false,
+    examinerBooked: 12345678,
+    examinerConducted: 12345678,
+    examinerKeyed: 12345678,
   },
   failEyesight: {
     category: 'B',
@@ -172,6 +176,10 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
     },
     activityCode: '3',
     rekey: false,
+    changeMarker: false,
+    examinerBooked: 12345678,
+    examinerConducted: 12345678,
+    examinerKeyed: 12345678,
   },
   pass1: {
     category: 'B',
@@ -291,6 +299,10 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
     },
     activityCode: '1',
     rekey: false,
+    changeMarker: false,
+    examinerBooked: 12345678,
+    examinerConducted: 12345678,
+    examinerKeyed: 12345678,
   },
 
 };
