@@ -2,6 +2,7 @@ import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
 
 export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
   terminateNoShow: {
+    version: '0.0.1',
     category: 'B',
     journalData: {
       examiner: {
@@ -85,6 +86,7 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
     examinerKeyed: 12345678,
   },
   failEyesight: {
+    version: '0.0.1',
     category: 'B',
     journalData: {
       examiner: {
@@ -182,6 +184,7 @@ export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
     examinerKeyed: 12345678,
   },
   pass1: {
+    version: '0.0.1',
     category: 'B',
     journalData: {
       examiner: {
