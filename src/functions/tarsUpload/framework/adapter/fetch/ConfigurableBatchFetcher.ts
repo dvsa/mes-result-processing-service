@@ -6,6 +6,7 @@ import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
 export class ConfigurableBatchFetcher implements IBatchFetcher {
 
   dummyTest: StandardCarTestCATBSchema = {
+    version: '0.0.1',
     category: 'B',
     journalData: {
       examiner: {
