@@ -1,6 +1,6 @@
 import { ITARSPayloadConverter } from './ITARSPayloadConverter';
 import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
-import { PassCompletion } from '@dvsa/mes-test-schema/categories/common';
+import { PassCompletion } from '@dvsa/mes-test-schema/categories/Common';
 import { TARSInterfaceType } from './TARSInterfaceType';
 import { ITARSPayload } from './ITARSPayload';
 import { injectable, inject } from 'inversify';
