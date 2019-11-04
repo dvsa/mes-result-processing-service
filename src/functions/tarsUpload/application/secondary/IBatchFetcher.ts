@@ -1,5 +1,4 @@
-import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
-
+import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 export interface IBatchFetcher {
-  fetchNextUploadBatch(): Promise<CatBUniqueTypes.TestResult[]>;
+  fetchNextUploadBatch(): Promise<TestResultSchemasUnion[]>;
 }

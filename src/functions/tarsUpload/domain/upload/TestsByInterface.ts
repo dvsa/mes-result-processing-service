@@ -1,6 +1,6 @@
-import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
+import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 
 export interface TestsByInterface {
-  completed: CatBUniqueTypes.TestResult[];
-  nonCompleted: CatBUniqueTypes.TestResult[];
+  completed: TestResultSchemasUnion[];
+  nonCompleted: TestResultSchemasUnion[];
 }

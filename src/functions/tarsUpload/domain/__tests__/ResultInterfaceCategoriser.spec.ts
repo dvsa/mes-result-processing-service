@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { IResultInterfaceCategoriser } from '../upload/IResultInterfaceCategoriser';
-import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
+import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 import { ActivityCode } from '@dvsa/mes-test-schema/categories/common';
 import { dummyTests } from './__data__/DummyTests';
 import { TestsByInterface } from '../upload/TestsByInterface';
@@ -9,7 +9,7 @@ import { TYPES } from '../../framework/di/types';
 
 describe('ResultInterfaceCategoriser', () => {
   let categoriser: IResultInterfaceCategoriser;
-  let batch: CatBUniqueTypes.TestResult[];
+  let batch: TestResultSchemasUnion[];
   let expectedResult: TestsByInterface;
 
   beforeEach(() => {

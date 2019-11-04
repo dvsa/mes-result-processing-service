@@ -1,6 +1,6 @@
 import { ITARSSubmissionFacade } from './ITARSSubmissionFacade';
 import { injectable, inject } from 'inversify';
-import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
+import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 import { TARSInterfaceType } from './TARSInterfaceType';
 import { TARSUploadResult } from './TARSUploadResult';
 import { TYPES } from '../../framework/di/types';
@@ -16,7 +16,7 @@ export class TARSSubmissionFacade implements ITARSSubmissionFacade {
     @inject(TYPES.TARSUploader) private tarsUploader: ITARSUploader,
   ) { }
   async convertAndUpload(
-    test: CatBUniqueTypes.TestResult,
+    test: TestResultSchemasUnion,
     interfacetype: TARSInterfaceType,
   ): Promise<TARSUploadResult> {
     try {

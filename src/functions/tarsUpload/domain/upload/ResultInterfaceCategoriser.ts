@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
 import { IResultInterfaceCategoriser } from './IResultInterfaceCategoriser';
-import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
+import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 import { TestsByInterface } from './TestsByInterface';
 import { TYPES } from '../../framework/di/types';
 import { IMetricSubmitter } from '../../application/secondary/IMetricSubmitter';
@@ -13,7 +13,7 @@ export class ResultInterfaceCategoriser implements IResultInterfaceCategoriser {
     @inject(TYPES.MetricSubmitter) private metricSubmitter: IMetricSubmitter,
   ) { }
 
-  categoriseByInterface(batch: CatBUniqueTypes.TestResult[]): TestsByInterface {
+  categoriseByInterface(batch: TestResultSchemasUnion[]): TestsByInterface {
     const categories = batch.reduce((categories, test) => {
       return this.isCompletedTest(test) ?
         { ...categories, completed: [...categories.completed, test] } :
@@ -27,7 +27,7 @@ export class ResultInterfaceCategoriser implements IResultInterfaceCategoriser {
     return categories;
   }
 
-  private isCompletedTest(test: CatBUniqueTypes.TestResult) {
+  private isCompletedTest(test: TestResultSchemasUnion) {
     const completedActivityCodes = ['1', '2', '3', '4', '5'];
     return completedActivityCodes.includes(test.activityCode);
   }

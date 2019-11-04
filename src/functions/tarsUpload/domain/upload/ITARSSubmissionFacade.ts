@@ -1,7 +1,7 @@
-import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
+import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 import { TARSUploadResult } from './TARSUploadResult';
 import { TARSInterfaceType } from './TARSInterfaceType';
 
 export interface ITARSSubmissionFacade {
-  convertAndUpload(tests: CatBUniqueTypes.TestResult, intefaceType: TARSInterfaceType): Promise<TARSUploadResult>;
+  convertAndUpload(tests: TestResultSchemasUnion, intefaceType: TARSInterfaceType): Promise<TARSUploadResult>;
 }

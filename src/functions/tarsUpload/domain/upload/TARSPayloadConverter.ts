@@ -1,5 +1,5 @@
 import { ITARSPayloadConverter } from './ITARSPayloadConverter';
-import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
+import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 import { PassCompletion } from '@dvsa/mes-test-schema/categories/common';
 import { TARSInterfaceType } from './TARSInterfaceType';
 import { ITARSPayload } from './ITARSPayload';
@@ -16,13 +16,13 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     @inject(TYPES.DateFormatter) private dateFormatter: IDateFormatter,
   ) { }
 
-  convertToTARSPayload(test: CatBUniqueTypes.TestResult, interfaceType: TARSInterfaceType): ITARSPayload {
+  convertToTARSPayload(test: TestResultSchemasUnion, interfaceType: TARSInterfaceType): ITARSPayload {
     return interfaceType === TARSInterfaceType.COMPLETED ?
       this.convertToCompletedTestPayload(test) :
       this.convertToNonCompletedTestPayload(test);
   }
 
-  convertToNonCompletedTestPayload(test: CatBUniqueTypes.TestResult): NonCompletedTestPayload {
+  convertToNonCompletedTestPayload(test: TestResultSchemasUnion): NonCompletedTestPayload {
     return {
       applicationId: test.journalData.applicationReference.applicationId,
       bookingSequence: test.journalData.applicationReference.bookingSequence,
@@ -30,7 +30,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     };
   }
 
-  convertToCompletedTestPayload(test: CatBUniqueTypes.TestResult): CompletedTestPayload {
+  convertToCompletedTestPayload(test: TestResultSchemasUnion): CompletedTestPayload {
     const { journalData, communicationPreferences, passCompletion, category, vehicleDetails, testSummary } = test;
     const { applicationReference, testSlotAttributes, candidate } = journalData;
     const { applicationId, bookingSequence, checkDigit } = applicationReference;

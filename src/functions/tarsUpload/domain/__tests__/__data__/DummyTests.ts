@@ -1,6 +1,6 @@
-import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
+import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 
-export const dummyTests: { [name: string]: CatBUniqueTypes.TestResult } = {
+export const dummyTests: { [name: string]: TestResultSchemasUnion } = {
   terminateNoShow: {
     version: '0.0.1',
     category: 'B',

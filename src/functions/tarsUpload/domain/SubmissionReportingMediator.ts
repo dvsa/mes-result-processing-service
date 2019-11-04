@@ -1,5 +1,5 @@
 import { ISubmissionReportingMediator } from './ISubmissionReportingMediator';
-import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
+import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../framework/di/types';
 import { IResultInterfaceCategoriser } from './upload/IResultInterfaceCategoriser';
@@ -22,7 +22,7 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
     @inject(TYPES.MetricSubmitter) private metricSubmitter: IMetricSubmitter,
   ) { }
 
-  async submitBatchesAndReportOutcome(batch: CatBUniqueTypes.TestResult[]): Promise<void> {
+  async submitBatchesAndReportOutcome(batch: TestResultSchemasUnion[]): Promise<void> {
     const { completed, nonCompleted } = this.resultInterfaceCategoriser.categoriseByInterface(batch);
     try {
       const uploadResults = await Promise.all([
@@ -35,7 +35,7 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
     }
   }
 
-  private submitAndReportCompletedTests(completedTests: CatBUniqueTypes.TestResult[]) {
+  private submitAndReportCompletedTests(completedTests: TestResultSchemasUnion[]) {
     return completedTests.map(async (completedTest) => {
       const uploadResult = await this.tarsSubmissionFacade.convertAndUpload(completedTest, TARSInterfaceType.COMPLETED);
       await this.submissionOutcomeReporter.reportSubmissionOutcome(uploadResult);
@@ -43,7 +43,7 @@ export class SubmissionReportingMediator implements ISubmissionReportingMediator
     });
   }
 
-  private submitAndReportNonCompletedTests(nonCompletedTests: CatBUniqueTypes.TestResult[]) {
+  private submitAndReportNonCompletedTests(nonCompletedTests: TestResultSchemasUnion[]) {
     return nonCompletedTests.map(async (nonCompletedTest) => {
       const uploadResult = await this.tarsSubmissionFacade.convertAndUpload(
         nonCompletedTest,

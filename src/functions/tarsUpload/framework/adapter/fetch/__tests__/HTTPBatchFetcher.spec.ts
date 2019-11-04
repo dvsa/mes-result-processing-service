@@ -4,7 +4,7 @@ import { container } from '../../../di/inversify.config';
 import { IBatchFetcher } from '../../../../application/secondary/IBatchFetcher';
 import { TYPES } from '../../../di/types';
 import { dummyResponseArray, invalidBase64Array, validBase64InvalidTestSchemna } from './dummyReponse';
-import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
+import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 import { EnvvarTestResultHTTPConfig } from '../EnvvarTestResultHTTPConfig';
 
 describe('HTTPBatchFetcher', () => {
@@ -73,7 +73,7 @@ describe('HTTPBatchFetcher', () => {
 
     it('should throw an exception', async () => {
 
-      batchFetcher.fetchNextUploadBatch().then((result: CatBUniqueTypes.TestResult[]) => { fail(); })
+      batchFetcher.fetchNextUploadBatch().then((result: TestResultSchemasUnion[]) => { fail(); })
         .catch((err: any) => {
           const expectedError = new Error('failed decompressing test result');
           expect(err).toEqual(expectedError);
@@ -90,7 +90,7 @@ describe('HTTPBatchFetcher', () => {
     });
 
     it('should throw an exception', async () => {
-      batchFetcher.fetchNextUploadBatch().then((result: CatBUniqueTypes.TestResult[]) => { fail(); })
+      batchFetcher.fetchNextUploadBatch().then((result: TestResultSchemasUnion[]) => { fail(); })
         .catch((err: any) => {
           const expectedError = new Error('failed parsing test result');
           expect(err).toEqual(expectedError);
