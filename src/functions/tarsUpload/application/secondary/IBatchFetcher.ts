@@ -1,5 +1,4 @@
-import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
-
+import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 export interface IBatchFetcher {
-  fetchNextUploadBatch(): Promise<StandardCarTestCATBSchema[]>;
+  fetchNextUploadBatch(): Promise<TestResultSchemasUnion[]>;
 }

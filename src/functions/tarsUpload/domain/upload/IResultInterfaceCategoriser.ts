@@ -1,6 +1,6 @@
-import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
+import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 import { TestsByInterface } from './TestsByInterface';
 
 export interface IResultInterfaceCategoriser {
-  categoriseByInterface(batch: StandardCarTestCATBSchema[]): TestsByInterface;
+  categoriseByInterface(batch: TestResultSchemasUnion[]): TestsByInterface;
 }
