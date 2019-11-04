@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { IResultInterfaceCategoriser } from '../upload/IResultInterfaceCategoriser';
-import { StandardCarTestCATBSchema, ActivityCode } from '@dvsa/mes-test-schema/categories/B';
-import { ResultInterfaceCategoriser } from '../upload/ResultInterfaceCategoriser';
+import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
+import { ActivityCode } from '@dvsa/mes-test-schema/categories/common';
 import { dummyTests } from './__data__/DummyTests';
 import { TestsByInterface } from '../upload/TestsByInterface';
 import { container } from '../../framework/di/inversify.config';
@@ -9,7 +9,7 @@ import { TYPES } from '../../framework/di/types';
 
 describe('ResultInterfaceCategoriser', () => {
   let categoriser: IResultInterfaceCategoriser;
-  let batch: StandardCarTestCATBSchema[];
+  let batch: CatBUniqueTypes.TestResult[];
   let expectedResult: TestsByInterface;
 
   beforeEach(() => {

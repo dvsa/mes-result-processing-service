@@ -1,6 +1,6 @@
 import { IBatchFetcher } from '../../../application/secondary/IBatchFetcher';
 import { injectable, inject } from 'inversify';
-import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
+import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import * as zlib from 'zlib';
 import { ITestResultHTTPConfig } from './ITestResultHTTPConfig';
@@ -18,12 +18,12 @@ export class HTTPBatchFetcher implements IBatchFetcher {
     });
   }
 
-  fetchNextUploadBatch(): Promise<StandardCarTestCATBSchema[]> {
+  fetchNextUploadBatch(): Promise<CatBUniqueTypes.TestResult[]> {
     const endpoint = this.getEndpointWithQueryParams();
     return new Promise((resolve, reject) => {
       const result = this.axios.get(endpoint);
       result.then((response) => {
-        const resultList: StandardCarTestCATBSchema[] = [];
+        const resultList: CatBUniqueTypes.TestResult[] = [];
         if (!response.data) {
           resolve(resultList);
           return;
@@ -31,7 +31,7 @@ export class HTTPBatchFetcher implements IBatchFetcher {
         const parseResult = response.data;
         parseResult.forEach((element: string) => {
           let uncompressedResult: string = '';
-          let test: StandardCarTestCATBSchema;
+          let test: CatBUniqueTypes.TestResult;
 
           try {
             uncompressedResult = zlib.gunzipSync(new Buffer(element, 'base64')).toString();

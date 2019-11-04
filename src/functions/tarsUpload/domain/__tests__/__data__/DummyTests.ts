@@ -1,6 +1,6 @@
-import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
+import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
 
-export const dummyTests: { [name: string]: StandardCarTestCATBSchema } = {
+export const dummyTests: { [name: string]: CatBUniqueTypes.TestResult } = {
   terminateNoShow: {
     version: '0.0.1',
     category: 'B',

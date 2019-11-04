@@ -1,6 +1,6 @@
-import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
+import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
 
 export interface TestsByInterface {
-  completed: StandardCarTestCATBSchema[];
-  nonCompleted: StandardCarTestCATBSchema[];
+  completed: CatBUniqueTypes.TestResult[];
+  nonCompleted: CatBUniqueTypes.TestResult[];
 }

@@ -1,7 +1,7 @@
-import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
+import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
 
 export class CompletedTestPayloadCreationError extends Error {
-  constructor(invalidTest: StandardCarTestCATBSchema) {
+  constructor(invalidTest: CatBUniqueTypes.TestResult) {
     super(`Failed to build CompletedTestPayload for ${JSON.stringify(invalidTest)}`);
     Object.setPrototypeOf(this, CompletedTestPayloadCreationError);
   }

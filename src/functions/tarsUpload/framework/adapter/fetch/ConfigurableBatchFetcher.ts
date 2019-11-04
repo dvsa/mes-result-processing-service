@@ -1,11 +1,11 @@
 import { IBatchFetcher } from '../../../application/secondary/IBatchFetcher';
 import { injectable } from 'inversify';
-import { StandardCarTestCATBSchema } from '@dvsa/mes-test-schema/categories/B';
+import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
 
 @injectable()
 export class ConfigurableBatchFetcher implements IBatchFetcher {
 
-  dummyTest: StandardCarTestCATBSchema = {
+  dummyTest: CatBUniqueTypes.TestResult = {
     version: '0.0.1',
     category: 'B',
     journalData: {
@@ -101,13 +101,13 @@ export class ConfigurableBatchFetcher implements IBatchFetcher {
     examinerKeyed: 12345678,
   };
 
-  private nextBatch: StandardCarTestCATBSchema[] = [this.dummyTest];
+  private nextBatch: CatBUniqueTypes.TestResult[] = [this.dummyTest];
 
-  fetchNextUploadBatch(): Promise<StandardCarTestCATBSchema[]> {
+  fetchNextUploadBatch(): Promise<CatBUniqueTypes.TestResult[]> {
     return Promise.resolve(this.nextBatch);
   }
 
-  setNextBatch(nextBatch: StandardCarTestCATBSchema[]) {
+  setNextBatch(nextBatch: CatBUniqueTypes.TestResult[]) {
     this.nextBatch = nextBatch;
   }
 
