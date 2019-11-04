@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { IResultInterfaceCategoriser } from '../upload/IResultInterfaceCategoriser';
 import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
-import { ActivityCode } from '@dvsa/mes-test-schema/categories/Common';
+import { ActivityCode } from '@dvsa/mes-test-schema/categories/common';
 import { dummyTests } from './__data__/DummyTests';
 import { TestsByInterface } from '../upload/TestsByInterface';
 import { container } from '../../framework/di/inversify.config';
