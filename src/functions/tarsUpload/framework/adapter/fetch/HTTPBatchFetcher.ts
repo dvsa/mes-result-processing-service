@@ -34,7 +34,7 @@ export class HTTPBatchFetcher implements IBatchFetcher {
           let test: StandardCarTestCATBSchema;
 
           try {
-            uncompressedResult = zlib.gunzipSync(new Buffer(element, 'base64')).toString();
+            uncompressedResult = zlib.gunzipSync(Buffer.from(element, 'base64')).toString();
           } catch (e) {
             reject(new TestResultError('failed decompressing test result'));
           }
