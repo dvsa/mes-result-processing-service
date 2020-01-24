@@ -1,4 +1,11 @@
 import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
+import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
+
+const emptyVehicleDetails: CatBUniqueTypes.VehicleDetails = {};
+const manualVehicleDetails: CatBUniqueTypes.VehicleDetails = {
+  registrationNumber: '1',
+  gearboxCategory: 'Manual',
+};
 
 export const dummyTests: { [name: string]: TestResultSchemasUnion } = {
   terminateNoShow: {
@@ -50,9 +57,7 @@ export const dummyTests: { [name: string]: TestResultSchemasUnion } = {
       preTestSignature: '',
     },
     accompaniment: {},
-    vehicleDetails: {
-      registrationNumber: '',
-    },
+    vehicleDetails: emptyVehicleDetails,
     instructorDetails: {},
     testData: {
       dangerousFaults: {},
@@ -134,9 +139,7 @@ export const dummyTests: { [name: string]: TestResultSchemasUnion } = {
       preTestSignature: 'data:image/svg+xml;base64,PHN2ZyB4b',
     },
     accompaniment: {},
-    vehicleDetails: {
-      registrationNumber: '',
-    },
+    vehicleDetails: emptyVehicleDetails,
     instructorDetails: {},
     testData: {
       dangerousFaults: {},
@@ -231,10 +234,7 @@ export const dummyTests: { [name: string]: TestResultSchemasUnion } = {
       preTestSignature: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0',
     },
     accompaniment: {},
-    vehicleDetails: {
-      registrationNumber: '1',
-      gearboxCategory: 'Manual',
-    },
+    vehicleDetails: manualVehicleDetails,
     instructorDetails: {},
     testData: {
       dangerousFaults: {},

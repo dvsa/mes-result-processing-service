@@ -9,7 +9,9 @@ import { CompletedTestPayload } from './CompletedTestPayload';
 import { TYPES } from '../../framework/di/types';
 import { CompletedTestPayloadCreationError } from './errors/CompletedTestPayloadCreationError';
 import { IDateFormatter } from '../util/IDateFormatter';
-
+import { determineDl25TestType } from '../util/TestTypeLookup';
+import { licenceToIssue } from '@dvsa/mes-microservice-common/application/utils/licence-type';
+import { get } from 'lodash';
 @injectable()
 export class TARSPayloadConverter implements ITARSPayloadConverter {
   constructor(
@@ -34,6 +36,16 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     const { journalData, communicationPreferences, passCompletion, category, vehicleDetails, testSummary } = test;
     const { applicationReference, testSlotAttributes, candidate } = journalData;
     const { applicationId, bookingSequence, checkDigit } = applicationReference;
+    let transmission: string = '';
+    let code78Present: boolean = false;
+
+    if (vehicleDetails) {
+      transmission = get(vehicleDetails, 'gearboxCategory', '');
+    }
+    if (passCompletion) {
+      code78Present = get(passCompletion, 'code78Present', false);
+    }
+
     if (
       !communicationPreferences ||
       !candidate.driverNumber ||
@@ -50,8 +62,8 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       language: communicationPreferences.conductedLanguage === 'English' ? 'E' : 'W',
       licenceSurrender: passCompletion ? passCompletion.provisionalLicenceProvided : false,
       dl25Category: category,
-      dl25TestType: 2, // TODO: 2 is for cat B only, we need to get this from the test schema eventually
-      automaticTest: vehicleDetails.gearboxCategory === 'Automatic',
+      dl25TestType: determineDl25TestType(category),
+      automaticTest: licenceToIssue(category, transmission, code78Present) === 'Automatic',
       extendedTest: testSlotAttributes.extendedTest,
       d255Selected: testSummary.D255,
       passResult: test.activityCode === '1',
@@ -74,5 +86,4 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       passCertificate: passCompletion.passCertificateNumber,
     };
   }
-
 }
