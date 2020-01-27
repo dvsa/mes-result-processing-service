@@ -8,6 +8,7 @@ import { NonCompletedTestPayload } from './NonCompletedTest';
 import { CompletedTestPayload } from './CompletedTestPayload';
 import { TYPES } from '../../framework/di/types';
 import { CompletedTestPayloadCreationError } from './errors/CompletedTestPayloadCreationError';
+import { CompletedTestInvalidCategoryError } from './errors/CompletedTestInvalidCategoryError';
 import { IDateFormatter } from '../util/IDateFormatter';
 import { determineDl25TestType } from '../util/TestTypeLookup';
 import { licenceToIssue } from '@dvsa/mes-microservice-common/application/utils/licence-type';
@@ -59,7 +60,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
 
     const determinedDl25TestType: number|undefined = determineDl25TestType(category);
     if (determinedDl25TestType === undefined) {
-      throw new CompletedTestPayloadCreationError(test);
+      throw new CompletedTestInvalidCategoryError(test);
     } else {
       testType = determinedDl25TestType;
     }
