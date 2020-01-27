@@ -38,6 +38,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     const { applicationId, bookingSequence, checkDigit } = applicationReference;
     let transmission: string = '';
     let code78Present: boolean = false;
+    let testType: number = 0;
 
     if (vehicleDetails) {
       transmission = get(vehicleDetails, 'gearboxCategory', '');
@@ -55,6 +56,14 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     ) {
       throw new CompletedTestPayloadCreationError(test);
     }
+
+    const determinedDl25TestType: number|undefined = determineDl25TestType(category);
+    if (determinedDl25TestType === undefined) {
+      throw new CompletedTestPayloadCreationError(test);
+    } else {
+      testType = determinedDl25TestType;
+    }
+
     let completedTestPayload: CompletedTestPayload = {
       applicationId,
       bookingSequence,
@@ -62,7 +71,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       language: communicationPreferences.conductedLanguage === 'English' ? 'E' : 'W',
       licenceSurrender: passCompletion ? passCompletion.provisionalLicenceProvided : false,
       dl25Category: category,
-      dl25TestType: determineDl25TestType(category),
+      dl25TestType: testType,
       automaticTest: licenceToIssue(category, transmission, code78Present) === 'Automatic',
       extendedTest: testSlotAttributes.extendedTest,
       d255Selected: testSummary.D255,

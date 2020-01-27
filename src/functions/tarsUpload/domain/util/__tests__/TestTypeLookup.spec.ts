@@ -32,8 +32,7 @@ describe('determineDl25TestType', () => {
       expect(determineDl25TestType(test.category)).toBe(test.expected);
     });
   });
-
-  it(`should return default test type of 2 for unrecognised category`, () => {
-    expect(determineDl25TestType('X')).toBe(2);
+  it('should return undefined if category unrecognised', () => {
+    expect(determineDl25TestType('X')).toBeUndefined();
   });
 });

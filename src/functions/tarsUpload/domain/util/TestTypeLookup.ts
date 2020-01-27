@@ -1,4 +1,4 @@
-export const determineDl25TestType = (category: string): number => {
+export const determineDl25TestType = (category: string): number | undefined => {
     // DL25 test category to test type mapping, as per the TARS TEST_CATEGORY_CROSS_REFERENCE table,
      // documented at https://wiki.i-env.net/display/MES/Test+Category+Cross+Reference and agreed with DVSA MI Team.
   const mapping: Map<string, number> = new Map([
@@ -20,5 +20,5 @@ export const determineDl25TestType = (category: string): number => {
   ]);
   const testType = mapping.get(category);
        // Note if no mapping exists will default to category B value of 2
-  return (testType === undefined) ? 2  : testType;
+  return testType;
 };
