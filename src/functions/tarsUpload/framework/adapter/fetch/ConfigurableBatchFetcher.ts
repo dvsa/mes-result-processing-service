@@ -1,10 +1,12 @@
 import { IBatchFetcher } from '../../../application/secondary/IBatchFetcher';
 import { injectable } from 'inversify';
 import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
+import { CatBUniqueTypes } from '@dvsa/mes-test-schema/categories/B';
 
 @injectable()
 export class ConfigurableBatchFetcher implements IBatchFetcher {
 
+  emptyVehicleDetails: CatBUniqueTypes.VehicleDetails = {};
   dummyTest: TestResultSchemasUnion = {
     version: '0.0.1',
     category: 'B',
@@ -54,9 +56,7 @@ export class ConfigurableBatchFetcher implements IBatchFetcher {
       preTestSignature: '',
     },
     accompaniment: {},
-    vehicleDetails: {
-      registrationNumber: '',
-    },
+    vehicleDetails: this.emptyVehicleDetails,
     instructorDetails: {},
     testData: {
       dangerousFaults: {},
