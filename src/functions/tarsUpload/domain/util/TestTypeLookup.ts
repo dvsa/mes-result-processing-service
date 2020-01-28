@@ -10,7 +10,7 @@ export const determineDl25TestType = (category: string): number | undefined => {
        ['G', 6],
        ['H', 7],
        ['K', 8],
-       // Note that some extra data will be needed in MES to indentify CPC tests, if MES adds support for them...
+       // Note that some extra data will be needed in MES to identify CPC tests, if MES adds support for them...
        // LGV (Lorry) CPC (all C Categories) => 44
        // PCV (Bus) CPC (all D Categories) => 44
        ['A1M1', 16], ['A1M2', 1],
@@ -19,6 +19,5 @@ export const determineDl25TestType = (category: string): number | undefined => {
        ['AMM1', 17], ['AMM2', 9],
   ]);
   const testType = mapping.get(category);
-       // Note if no mapping exists will default to category B value of 2
   return testType;
 };
