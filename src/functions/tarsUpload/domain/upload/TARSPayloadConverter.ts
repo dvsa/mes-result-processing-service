@@ -1,6 +1,5 @@
 import { ITARSPayloadConverter } from './ITARSPayloadConverter';
 import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
-import { PassCompletion } from '@dvsa/mes-test-schema/categories/common';
 import { TARSInterfaceType } from './TARSInterfaceType';
 import { ITARSPayload } from './ITARSPayload';
 import { injectable, inject } from 'inversify';
@@ -13,6 +12,7 @@ import { IDateFormatter } from '../util/IDateFormatter';
 import { determineDl25TestType } from '../util/TestTypeLookup';
 import { licenceToIssue } from '@dvsa/mes-microservice-common/application/utils/licence-type';
 import { get } from 'lodash';
+import { PassCompletionUnion } from './passCompletion.constants';
 @injectable()
 export class TARSPayloadConverter implements ITARSPayloadConverter {
   constructor(
@@ -86,7 +86,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
 
   private populatePassCertificateIfPresent(
     completedTestPayload: CompletedTestPayload,
-    passCompletion: PassCompletion | undefined,
+    passCompletion: PassCompletionUnion | undefined,
   ): CompletedTestPayload {
     if (!passCompletion) {
       return completedTestPayload;
