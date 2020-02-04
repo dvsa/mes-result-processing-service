@@ -10,7 +10,7 @@
     "url": "git+https://github.com/dvsa/mes-result-processing-service.git"
   },
   "dependencies": {
-    "@dvsa/mes-microservice-common": "^0.1.9",
+    "@dvsa/mes-microservice-common": "0.4.0",
     "@types/lodash": "^4.14.149",
     "@types/nock": "^10.0.3",
     "aws-sdk": "^2.389.0",
