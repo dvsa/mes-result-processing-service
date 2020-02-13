@@ -87,8 +87,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
 
   private setLicenceSurrendertoFalseIfNotPresent(passCompletion: Partial<PassCompletion> | undefined): boolean {
     if (!passCompletion) return false;
-    const resolvedProvisionalLicenceProvided = get(passCompletion, 'provisionalLicenceProvided', false);
-    return resolvedProvisionalLicenceProvided;
+    return get(passCompletion, 'provisionalLicenceProvided', false);
   }
 
   private populatePassCertificateIfPresent(
