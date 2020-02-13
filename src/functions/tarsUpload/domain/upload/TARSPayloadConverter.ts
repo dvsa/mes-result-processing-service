@@ -71,7 +71,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       bookingSequence,
       checkDigit,
       language: communicationPreferences.conductedLanguage === 'English' ? 'E' : 'W',
-      licenceSurrender: passCompletion ? passCompletion.provisionalLicenceProvided : false,
+      licenceSurrender: this.setLicenceSurrendertoFalseIfNotPresent(passCompletion),
       dl25Category: category,
       dl25TestType: testType,
       automaticTest: licenceToIssue(category, transmission, code78Present) === 'Automatic',
@@ -85,9 +85,15 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     return completedTestPayload;
   }
 
+  private setLicenceSurrendertoFalseIfNotPresent(passCompletion: Partial<PassCompletion> | undefined): boolean {
+    if (!passCompletion) return false;
+    const resolvedProvisionalLicenceProvided = get(passCompletion, 'provisionalLicenceProvided', false);
+    return resolvedProvisionalLicenceProvided;
+  }
+
   private populatePassCertificateIfPresent(
     completedTestPayload: CompletedTestPayload,
-    passCompletion: PassCompletion | undefined,
+    passCompletion: Partial<PassCompletion> | undefined,
   ): CompletedTestPayload {
     if (!passCompletion) {
       return completedTestPayload;
