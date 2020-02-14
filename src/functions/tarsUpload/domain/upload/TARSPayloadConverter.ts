@@ -10,9 +10,10 @@ import { CompletedTestPayloadCreationError } from './errors/CompletedTestPayload
 import { CompletedTestInvalidCategoryError } from './errors/CompletedTestInvalidCategoryError';
 import { IDateFormatter } from '../util/IDateFormatter';
 import { determineDl25TestType } from '../util/TestTypeLookup';
+import { convertDl25TestCategory } from '../util/TestCategoryConvertor';
 import { licenceToIssue } from '@dvsa/mes-microservice-common/application/utils/licence-type';
 import { get } from 'lodash';
-import { PassCompletion, CategoryCode } from '@dvsa/mes-test-schema/categories/common';
+import { PassCompletion } from '@dvsa/mes-test-schema/categories/common';
 
 @injectable()
 export class TARSPayloadConverter implements ITARSPayloadConverter {
@@ -72,7 +73,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       checkDigit,
       language: communicationPreferences.conductedLanguage === 'English' ? 'E' : 'W',
       licenceSurrender: this.setLicenceSurrendertoFalseIfNotPresent(passCompletion),
-      dl25Category: this.dl25CategoryConversion(category),
+      dl25Category: convertDl25TestCategory(category),
       dl25TestType: testType,
       automaticTest: licenceToIssue(category, transmission, code78Present) === 'Automatic',
       extendedTest: testSlotAttributes.extendedTest,
@@ -88,14 +89,6 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
   private setLicenceSurrendertoFalseIfNotPresent(passCompletion: Partial<PassCompletion> | undefined): boolean {
     if (!passCompletion) return false;
     return get(passCompletion, 'provisionalLicenceProvided', false);
-  }
-
-  private dl25CategoryConversion(category: CategoryCode): string {
-    if (category.indexOf('EU') === 0) {
-      return category.substring(2);
-    }
-
-    return category;
   }
 
   private populatePassCertificateIfPresent(
