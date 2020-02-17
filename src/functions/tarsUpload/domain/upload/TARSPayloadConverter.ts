@@ -10,8 +10,8 @@ import { CompletedTestPayloadCreationError } from './errors/CompletedTestPayload
 import { CompletedTestInvalidCategoryError } from './errors/CompletedTestInvalidCategoryError';
 import { IDateFormatter } from '../util/IDateFormatter';
 import { determineDl25TestType } from '../util/TestTypeLookup';
-import { convertDl25TestCategory } from '../util/TestCategoryConvertor';
 import { licenceToIssue } from '@dvsa/mes-microservice-common/application/utils/licence-type';
+import { trimTestCategoryPrefix } from '@dvsa/mes-microservice-common/domain/trim-test-category-prefix';
 import { get } from 'lodash';
 import { PassCompletion } from '@dvsa/mes-test-schema/categories/common';
 
@@ -73,7 +73,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       checkDigit,
       language: communicationPreferences.conductedLanguage === 'English' ? 'E' : 'W',
       licenceSurrender: this.setLicenceSurrendertoFalseIfNotPresent(passCompletion),
-      dl25Category: convertDl25TestCategory(category),
+      dl25Category: trimTestCategoryPrefix(category),
       dl25TestType: testType,
       automaticTest: licenceToIssue(category, transmission, code78Present) === 'Automatic',
       extendedTest: testSlotAttributes.extendedTest,
