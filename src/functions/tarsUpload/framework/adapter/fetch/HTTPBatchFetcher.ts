@@ -59,14 +59,15 @@ export class HTTPBatchFetcher implements IBatchFetcher {
 
   private mapHTTPErrorToDomainError(err: AxiosError): TestResultError {
     const { request, response } = err;
+
     if (response) {
-      return new TestResultError(`Get Upload Batch failed with error ${JSON.stringify(err)}`);
+      return new TestResultError(`Get Upload Batch failed`, err);
     }
     // Request was made, but no response received
     if (request) {
-      return new TestResultError(`Get Upload Batch, no response received with error ${JSON.stringify(err)}`);
+      return new TestResultError(`Get Upload Batch failed, no response received`, err);
     }
     // Failed to setup the request
-    return new TestResultError(`Get Upload Batch failed with error ${JSON.stringify(err)}`);
+    return new TestResultError(`Get Upload Batch failed, no response or request data available`, err);
   }
 }

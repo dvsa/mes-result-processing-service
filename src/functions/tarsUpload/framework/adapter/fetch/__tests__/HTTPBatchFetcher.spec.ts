@@ -59,7 +59,11 @@ describe('HTTPBatchFetcher', () => {
         fail();
       })
         .catch((err: TestResultError) => {
-          expect(err.message).toContain('Request failed with status code 500');
+          expect(err.message).toEqual('Get Upload Batch failed');
+          expect(err.data).toEqual('error');
+          expect(err.method).toEqual('get');
+          expect(err.status).toEqual(500);
+          expect(err.url).toEqual('http://localhost:3001/results?interface=TARS&batch_size=25');
         });
     });
   });
@@ -75,8 +79,12 @@ describe('HTTPBatchFetcher', () => {
 
       batchFetcher.fetchNextUploadBatch().then((result: TestResultSchemasUnion[]) => { fail(); })
         .catch((err: TestResultError) => {
-          const expectedError = new Error('failed decompressing test result');
-          expect(err).toEqual(expectedError);
+          expect(err.message).toEqual('failed decompressing test result');
+          expect(err.data).toBeUndefined();
+          expect(err.headers).toBeUndefined();
+          expect(err.method).toBeUndefined();
+          expect(err.status).toBeUndefined();
+          expect(err.url).toBeUndefined();
           return;
         });
     });
@@ -92,8 +100,12 @@ describe('HTTPBatchFetcher', () => {
     it('should throw an exception', async () => {
       batchFetcher.fetchNextUploadBatch().then((result: TestResultSchemasUnion[]) => { fail(); })
         .catch((err: any) => {
-          const expectedError = new Error('failed parsing test result');
-          expect(err).toEqual(expectedError);
+          expect(err.message).toEqual('failed parsing test result');
+          expect(err.data).toBeUndefined();
+          expect(err.headers).toBeUndefined();
+          expect(err.method).toBeUndefined();
+          expect(err.status).toBeUndefined();
+          expect(err.url).toBeUndefined();
         });
     });
   });
