@@ -67,6 +67,6 @@ export class HTTPBatchFetcher implements IBatchFetcher {
       return new TestResultError(`Get Upload Batch, no response received with error ${JSON.stringify(err)}`);
     }
     // Failed to setup the request
-    return new TestResultError(`Get Upload Batch failed with error ${JSON.stringify(JSON.stringify(err))}`);
+    return new TestResultError(`Get Upload Batch failed with error ${JSON.stringify(err)}`);
   }
 }
