@@ -6,6 +6,7 @@ import { TYPES } from '../../../di/types';
 import { dummyResponseArray, invalidBase64Array, validBase64InvalidTestSchemna } from './dummyReponse';
 import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 import { EnvvarTestResultHTTPConfig } from '../EnvvarTestResultHTTPConfig';
+import { TestResultError } from '../errors/TestResultError';
 
 describe('HTTPBatchFetcher', () => {
   let batchFetcher: HTTPBatchFetcher;
@@ -25,7 +26,7 @@ describe('HTTPBatchFetcher', () => {
         .reply(200, dummyResponseArray);
     });
 
-    xit('should extract and uncompress the data from the url provided', async () => {
+    it('should extract and uncompress the data from the url provided', async () => {
       const result = await batchFetcher.fetchNextUploadBatch();
       expect(result.length).toBe(2);
       expect(result[0].journalData.testSlotAttributes.slotId).toBe(1003);
@@ -40,7 +41,7 @@ describe('HTTPBatchFetcher', () => {
         .reply(200);
     });
 
-    xit('should return an empty array', async () => {
+    it('should return an empty array', async () => {
       const result = await batchFetcher.fetchNextUploadBatch();
       expect(result.length).toBe(0);
     });
@@ -53,13 +54,12 @@ describe('HTTPBatchFetcher', () => {
         .reply(500, 'error');
     });
 
-    xit('should throw an exception', async () => {
+    it('should throw an exception', async () => {
       batchFetcher.fetchNextUploadBatch().then(() => {
         fail();
       })
-        .catch((err: any) => {
-          const expectedError = new Error('Request failed with status code 500');
-          expect(err).toEqual(expectedError);
+        .catch((err: TestResultError) => {
+          expect(err.message).toContain('Request failed with status code 500');
         });
     });
   });
@@ -71,10 +71,10 @@ describe('HTTPBatchFetcher', () => {
         .reply(200, invalidBase64Array);
     });
 
-    xit('should throw an exception', async () => {
+    it('should throw an exception', async () => {
 
       batchFetcher.fetchNextUploadBatch().then((result: TestResultSchemasUnion[]) => { fail(); })
-        .catch((err: any) => {
+        .catch((err: TestResultError) => {
           const expectedError = new Error('failed decompressing test result');
           expect(err).toEqual(expectedError);
           return;
@@ -89,7 +89,7 @@ describe('HTTPBatchFetcher', () => {
         .reply(200, validBase64InvalidTestSchemna);
     });
 
-    xit('should throw an exception', async () => {
+    it('should throw an exception', async () => {
       batchFetcher.fetchNextUploadBatch().then((result: TestResultSchemasUnion[]) => { fail(); })
         .catch((err: any) => {
           const expectedError = new Error('failed parsing test result');
