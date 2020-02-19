@@ -58,6 +58,8 @@ export class HTTPTARSUploader implements ITARSUploader {
     }
     // Request was made, but no response received
     if (request) {
+      // tslint:disable-next-line:max-line-length
+      this.logger.error(`Tars upload no response received for app ref ${tarsPayload.applicationId}${tarsPayload.bookingSequence} with error ${JSON.stringify(err)}`);
       return new TransientUploadError(err.message);
     }
     // Failed to setup the request
