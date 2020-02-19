@@ -25,7 +25,7 @@ describe('HTTPBatchFetcher', () => {
         .reply(200, dummyResponseArray);
     });
 
-    xit('should extract and uncompress the data from the url provided', async () => {
+    it('should extract and uncompress the data from the url provided', async () => {
       const result = await batchFetcher.fetchNextUploadBatch();
       expect(result.length).toBe(2);
       expect(result[0].journalData.testSlotAttributes.slotId).toBe(1003);
@@ -40,7 +40,7 @@ describe('HTTPBatchFetcher', () => {
         .reply(200);
     });
 
-    xit('should return an empty array', async () => {
+    it('should return an empty array', async () => {
       const result = await batchFetcher.fetchNextUploadBatch();
       expect(result.length).toBe(0);
     });
@@ -53,7 +53,7 @@ describe('HTTPBatchFetcher', () => {
         .reply(500, 'error');
     });
 
-    xit('should throw an exception', async () => {
+    it('should throw an exception', async () => {
       batchFetcher.fetchNextUploadBatch().then(() => {
         fail();
       })
@@ -71,7 +71,7 @@ describe('HTTPBatchFetcher', () => {
         .reply(200, invalidBase64Array);
     });
 
-    xit('should throw an exception', async () => {
+    it('should throw an exception', async () => {
 
       batchFetcher.fetchNextUploadBatch().then((result: TestResultSchemasUnion[]) => { fail(); })
         .catch((err: any) => {
@@ -89,7 +89,7 @@ describe('HTTPBatchFetcher', () => {
         .reply(200, validBase64InvalidTestSchemna);
     });
 
-    xit('should throw an exception', async () => {
+    it('should throw an exception', async () => {
       batchFetcher.fetchNextUploadBatch().then((result: TestResultSchemasUnion[]) => { fail(); })
         .catch((err: any) => {
           const expectedError = new Error('failed parsing test result');
