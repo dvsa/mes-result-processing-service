@@ -36,10 +36,39 @@ export class HTTPTARSUploader implements ITARSUploader {
       await this.axios.post(endpoint, tarsPayload);
       return 0;
     } catch (err) {
-      throw this.mapHTTPErrorToDomainError(err, tarsPayload);
+      // TODO - MES-4934 - mapHTTPErrorToDomainError isn't actually invoked here. I think this function should be
+      // structured like HTTPSubmissionOutcomeUploader, the log below is temp and should be fixed to match the
+      // other log messages in the lambda
+      const tempError: any = {
+        interfaceType,
+        applicationReference : `${tarsPayload.applicationId}${tarsPayload.bookingSequence}`,
+        message: 'Failed to upload test to TARS',
+        stack: JSON.stringify(err.stack),
+        url: undefined,
+        method: undefined,
+        status: undefined,
+        headers: undefined,
+        data: undefined,
+      };
+
+      const axiError: AxiosError = err as AxiosError;
+
+      if (axiError && axiError.config) {
+        tempError.url = axiError.config.url;
+        tempError.method = axiError.config.method;
+      }
+      if (axiError && axiError.response) {
+        tempError.status = axiError.response.status;
+        tempError.headers = JSON.stringify(axiError.response.headers);
+        tempError.data = axiError.response.data;
+      }
+
+      this.logger.error(JSON.stringify(tempError));
+      throw this.mapHTTPErrorToDomainError(err as AxiosError, tarsPayload);
     }
   }
 
+  // TODO - MES-4934 - This method is never called, logging here needs to be improved
   private mapHTTPErrorToDomainError(
     err: AxiosError,
     tarsPayload: ITARSPayload,
@@ -58,8 +87,6 @@ export class HTTPTARSUploader implements ITARSUploader {
     }
     // Request was made, but no response received
     if (request) {
-      // tslint:disable-next-line:max-line-length
-      this.logger.error(`Tars upload no response received for app ref ${tarsPayload.applicationId}${tarsPayload.bookingSequence} with error ${JSON.stringify(err)}`);
       return new TransientUploadError(err.message);
     }
     // Failed to setup the request

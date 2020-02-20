@@ -30,7 +30,7 @@ export class TARSSubmissionFacade implements ITARSSubmissionFacade {
       const uploadRetryCount = err instanceof UploadFailureWithRetryCountError ? err.retryCount : 0;
       const appRef = formatApplicationReference(test.journalData.applicationReference);
       // tslint:disable-next-line:max-line-length
-      this.logger.error(`Failed to upload to tars with app ref ${appRef}, current retry count ${uploadRetryCount}, with error ${JSON.stringify(err)}`);
+      this.logger.error(`Failed to upload to tars with app ref ${appRef}, current retry count ${uploadRetryCount}, see previous logs for more details`);
       return { test, uploadRetryCount, status: ProcessingStatus.FAILED, errorMessage: err.message };
     }
   }
