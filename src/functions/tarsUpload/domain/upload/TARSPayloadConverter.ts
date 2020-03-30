@@ -54,7 +54,6 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       !communicationPreferences ||
       !candidate.driverNumber ||
       !testSummary ||
-      // testSummary.D255 === undefined ||
       !vehicleDetails
     ) {
       throw new CompletedTestPayloadCreationError(test);
