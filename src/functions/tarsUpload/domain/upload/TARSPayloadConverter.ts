@@ -54,7 +54,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       !communicationPreferences ||
       !candidate.driverNumber ||
       !testSummary ||
-      testSummary.D255 === undefined ||
+      // testSummary.D255 === undefined ||
       !vehicleDetails
     ) {
       throw new CompletedTestPayloadCreationError(test);
@@ -77,7 +77,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       dl25TestType: testType,
       automaticTest: licenceToIssue(category, transmission, code78Present) === 'Automatic',
       extendedTest: testSlotAttributes.extendedTest,
-      d255Selected: testSummary.D255,
+      d255Selected: get(testSummary, 'D255', false),
       passResult: test.activityCode === '1',
       driverNumber: candidate.driverNumber,
       testDate: this.dateFormatter.asSlashDelimitedDate(new Date(testSlotAttributes.start)),
