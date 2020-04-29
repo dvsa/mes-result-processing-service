@@ -37,7 +37,10 @@ export class HTTPTARSUploader implements ITARSUploader {
       .catch((err) => {
         const error: TransientUploadError |  PermanentUploadError = this.mapHTTPErrorToDomainError(err, tarsPayload);
         if (error.stack) {
-          this.logger.error(error.stack);
+          const errors: string[] = error.stack.split('    ');
+          this.logger.error(errors[0].trim());
+          this.logger.error(errors[1].trim());
+          this.logger.error(errors[2].trim());
         }
         return Promise.reject(err);
       });
