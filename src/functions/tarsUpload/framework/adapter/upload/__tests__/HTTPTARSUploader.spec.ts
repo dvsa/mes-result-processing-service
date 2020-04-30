@@ -7,6 +7,7 @@ import { ITARSHTTPConfig } from '../ITARSHTTPConfig';
 import { PermanentUploadError } from '../../../../domain/upload/errors/PermanentUploadError';
 import { HTTPTARSUploader } from '../HTTPTARSUploader';
 import { TransientUploadError } from '../../../../domain/upload/errors/TransientUploadError';
+import { ILogger } from '../../../../domain/util/ILogger';
 
 describe('HTTPTARSUploader', () => {
   let httpUploader: HTTPTARSUploader;
@@ -14,12 +15,13 @@ describe('HTTPTARSUploader', () => {
   const fakeTARSEndpoint = 'http://localhost:3001';
 
   beforeEach(() => {
-    container.rebind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).toConstantValue({
+    const tarsConfig = {
       completedTestEndpoint: fakeTARSEndpoint,
       nonCompletedTestEndpoint: fakeTARSEndpoint,
       requestTimeoutMs: 3000,
-    });
-    httpUploader = container.getNamed<HTTPTARSUploader>(TYPES.TARSUploader, 'http');
+    };
+    container.rebind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).toConstantValue(tarsConfig);
+    httpUploader = new HTTPTARSUploader(tarsConfig, container.get<ILogger>(TYPES.Logger));
   });
 
   afterEach(() => {
@@ -31,7 +33,7 @@ describe('HTTPTARSUploader', () => {
       nock(fakeTARSEndpoint)
         .post('/')
         .reply(status);
-
+      // spyOn(httpUploader.axios, 'post').and.returnValue(Promise.reject({ response: { status } }));
       try {
         await httpUploader.uploadToTARS(dummyTARSPayload, TARSInterfaceType.COMPLETED);
       } catch (err) {
@@ -40,15 +42,12 @@ describe('HTTPTARSUploader', () => {
       }
       fail(`HTTPTARSUploader failed to throw exception on HTTP status ${status}`);
     };
-
     it('should throw a TransientUploadError when TARS indicates the rate limit was exceeded', async () => {
       await assertResponseStatusResultsInErrorType(429, TransientUploadError);
     });
-
     it('should throw a PermanentUploadError when TARS returns a 4xx that is not 429', async () => {
       await assertResponseStatusResultsInErrorType(422, PermanentUploadError);
     });
-
     it('should throw a TransientUploadError when TARS returns a 5xx', async () => {
       await assertResponseStatusResultsInErrorType(500, TransientUploadError);
     });
