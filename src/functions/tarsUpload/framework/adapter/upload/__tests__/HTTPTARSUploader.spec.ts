@@ -20,7 +20,10 @@ describe('HTTPTARSUploader', () => {
       nonCompletedTestEndpoint: fakeTARSEndpoint,
       requestTimeoutMs: 3000,
     };
+
+    // this might not be necessary anymore
     container.rebind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).toConstantValue(tarsConfig);
+
     httpUploader = new HTTPTARSUploader(tarsConfig, container.get<ILogger>(TYPES.Logger));
   });
 
