@@ -8,7 +8,7 @@ import { PermanentUploadError } from '../../../../domain/upload/errors/Permanent
 import { HTTPTARSUploader } from '../HTTPTARSUploader';
 import { TransientUploadError } from '../../../../domain/upload/errors/TransientUploadError';
 
-xdescribe('HTTPTARSUploader', () => {
+describe('HTTPTARSUploader', () => {
   let httpUploader: HTTPTARSUploader;
   const dummyTARSPayload: ITARSPayload = { applicationId: 123, bookingSequence: 4 };
   const fakeTARSEndpoint = 'http://localhost:3001';
@@ -17,7 +17,7 @@ xdescribe('HTTPTARSUploader', () => {
     container.rebind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).toConstantValue({
       completedTestEndpoint: fakeTARSEndpoint,
       nonCompletedTestEndpoint: fakeTARSEndpoint,
-      requestTimeoutMs: 1000,
+      requestTimeoutMs: 3000,
     });
     httpUploader = container.getNamed<HTTPTARSUploader>(TYPES.TARSUploader, 'http');
   });

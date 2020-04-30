@@ -33,7 +33,9 @@ export class HTTPTARSUploader implements ITARSUploader {
     const endpoint = interfaceType === TARSInterfaceType.COMPLETED ?
       this.tarsHttpConfig.completedTestEndpoint : this.tarsHttpConfig.nonCompletedTestEndpoint;
     return this.axios.post(endpoint, tarsPayload)
-      .then(() => Promise.resolve(0 as UploadRetryCount))
+      .then(() => {
+        return Promise.resolve(0 as UploadRetryCount);
+      })
       .catch((err) => {
         const error: TransientUploadError |  PermanentUploadError = this.mapHTTPErrorToDomainError(err, tarsPayload);
         if (error.stack) {
@@ -42,7 +44,7 @@ export class HTTPTARSUploader implements ITARSUploader {
           this.logger.error(errors[1].trim());
           this.logger.error(errors[2].trim());
         }
-        return Promise.reject(err);
+        return Promise.reject(error);
       });
   }
 
