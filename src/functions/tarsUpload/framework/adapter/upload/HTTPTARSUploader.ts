@@ -34,7 +34,7 @@ export class HTTPTARSUploader implements ITARSUploader {
       this.tarsHttpConfig.completedTestEndpoint : this.tarsHttpConfig.nonCompletedTestEndpoint;
     return this.axios.post(endpoint, tarsPayload)
       .then(() => {
-        return Promise.resolve(0 as UploadRetryCount);
+        return 0 as UploadRetryCount;
       })
       .catch((err) => {
         const error: TransientUploadError |  PermanentUploadError = this.mapHTTPErrorToDomainError(err, tarsPayload);
