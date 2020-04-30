@@ -48,7 +48,6 @@ export class HTTPTARSUploader implements ITARSUploader {
       });
   }
 
-  // TODO - MES-4934 - This method is never called, logging here needs to be improved
   private mapHTTPErrorToDomainError(
     err: AxiosError,
     tarsPayload: ITARSPayload,

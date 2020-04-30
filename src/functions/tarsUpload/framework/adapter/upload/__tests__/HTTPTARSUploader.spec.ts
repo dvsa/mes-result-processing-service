@@ -1,9 +1,7 @@
 import { container } from '../../../di/inversify.config';
 import { TYPES } from '../../../di/types';
-import * as nock from 'nock';
 import { ITARSPayload } from '../../../../domain/upload/ITARSPayload';
 import { TARSInterfaceType } from '../../../../domain/upload/TARSInterfaceType';
-import { ITARSHTTPConfig } from '../ITARSHTTPConfig';
 import { PermanentUploadError } from '../../../../domain/upload/errors/PermanentUploadError';
 import { HTTPTARSUploader } from '../HTTPTARSUploader';
 import { TransientUploadError } from '../../../../domain/upload/errors/TransientUploadError';
@@ -21,22 +19,12 @@ describe('HTTPTARSUploader', () => {
       requestTimeoutMs: 3000,
     };
 
-    // this might not be necessary anymore
-    container.rebind<ITARSHTTPConfig>(TYPES.TARSHTTPConfig).toConstantValue(tarsConfig);
-
     httpUploader = new HTTPTARSUploader(tarsConfig, container.get<ILogger>(TYPES.Logger));
-  });
-
-  afterEach(() => {
-    nock.cleanAll();
   });
 
   describe('axios error handling', () => {
     const assertResponseStatusResultsInErrorType = async (status: number, errorType: any) => {
-      nock(fakeTARSEndpoint)
-        .post('/')
-        .reply(status);
-      // spyOn(httpUploader.axios, 'post').and.returnValue(Promise.reject({ response: { status } }));
+      spyOn(httpUploader.axios, 'post').and.returnValue(Promise.reject({ response: { status } }));
       try {
         await httpUploader.uploadToTARS(dummyTARSPayload, TARSInterfaceType.COMPLETED);
       } catch (err) {
