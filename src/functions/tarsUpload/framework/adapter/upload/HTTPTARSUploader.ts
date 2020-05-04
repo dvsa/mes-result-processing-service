@@ -1,10 +1,10 @@
 import { TARSInterfaceType } from '../../../domain/upload/TARSInterfaceType';
-import { injectable, inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { TYPES } from '../../di/types';
 import { ITARSHTTPConfig } from './ITARSHTTPConfig';
 import { ITARSUploader } from '../../../application/secondary/ITARSUploader';
 import { ITARSPayload } from '../../../domain/upload/ITARSPayload';
-import axios, { AxiosInstance, AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { UploadRetryCount } from '../../../domain/upload/UploadRetryCount';
 import { TransientUploadError } from '../../../domain/upload/errors/TransientUploadError';
 import { PermanentUploadError } from '../../../domain/upload/errors/PermanentUploadError';
@@ -30,45 +30,24 @@ export class HTTPTARSUploader implements ITARSUploader {
   }
 
   async uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<UploadRetryCount> {
-    try {
-      const endpoint = interfaceType === TARSInterfaceType.COMPLETED ?
-        this.tarsHttpConfig.completedTestEndpoint : this.tarsHttpConfig.nonCompletedTestEndpoint;
-      await this.axios.post(endpoint, tarsPayload);
-      return 0;
-    } catch (err) {
-      // TODO - MES-4934 - mapHTTPErrorToDomainError isn't actually invoked here. I think this function should be
-      // structured like HTTPSubmissionOutcomeUploader, the log below is temp and should be fixed to match the
-      // other log messages in the lambda
-      const tempError: any = {
-        interfaceType,
-        applicationReference : `${tarsPayload.applicationId}${tarsPayload.bookingSequence}`,
-        message: 'Failed to upload test to TARS',
-        stack: JSON.stringify(err.stack),
-        url: undefined,
-        method: undefined,
-        status: undefined,
-        headers: undefined,
-        data: undefined,
-      };
-
-      const axiError: AxiosError = err as AxiosError;
-
-      if (axiError && axiError.config) {
-        tempError.url = axiError.config.url;
-        tempError.method = axiError.config.method;
-      }
-      if (axiError && axiError.response) {
-        tempError.status = axiError.response.status;
-        tempError.headers = JSON.stringify(axiError.response.headers);
-        tempError.data = axiError.response.data;
-      }
-
-      this.logger.error(JSON.stringify(tempError));
-      throw this.mapHTTPErrorToDomainError(err as AxiosError, tarsPayload);
-    }
+    const endpoint = interfaceType === TARSInterfaceType.COMPLETED ?
+      this.tarsHttpConfig.completedTestEndpoint : this.tarsHttpConfig.nonCompletedTestEndpoint;
+    return this.axios.post(endpoint, tarsPayload)
+      .then(() => {
+        return 0 as UploadRetryCount;
+      })
+      .catch((err) => {
+        const error: TransientUploadError |  PermanentUploadError = this.mapHTTPErrorToDomainError(err, tarsPayload);
+        if (error.stack) {
+          const errors: string[] = error.stack.split('    ');
+          this.logger.error(errors[0].trim());
+          this.logger.error(errors[1].trim());
+          this.logger.error(errors[2].trim());
+        }
+        return Promise.reject(error);
+      });
   }
 
-  // TODO - MES-4934 - This method is never called, logging here needs to be improved
   private mapHTTPErrorToDomainError(
     err: AxiosError,
     tarsPayload: ITARSPayload,
