@@ -25,6 +25,8 @@ describe('determineDl25TestType', () => {
         { category: 'EUAM2', expected: 1 },
         { category: 'EUAMM1', expected: 17 },
         { category: 'EUAMM2', expected: 9 },
+        { category: 'CCPC', expected: 44 },
+        { category: 'DCPC', expected: 44 },
   ];
 
   validCategoryTestCases.forEach((test) => {
