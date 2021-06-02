@@ -15,8 +15,8 @@
     "@types/nock": "^10.0.3",
     "aws-sdk": "^2.900.0",
     "axios": "^0.21.1",
-    "bottleneck": "^2.19.1",
-    "inversify": "^5.1.1",
+    "bottleneck": "^2.19.5",
+    "inversify": "^5.0.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "reflect-metadata": "^0.1.13"
