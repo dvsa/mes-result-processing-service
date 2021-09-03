@@ -13,7 +13,7 @@
     "@dvsa/mes-microservice-common": "0.6.0",
     "@types/lodash": "^4.14.169",
     "@types/nock": "^10.0.3",
-    "aws-sdk": "^2.389.0",
+    "aws-sdk": "^2.900.0",
     "axios": "^0.21.1",
     "bottleneck": "^2.19.1",
     "inversify": "^5.1.1",
