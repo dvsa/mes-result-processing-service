@@ -14,7 +14,7 @@
     "@types/lodash": "^4.14.169",
     "@types/nock": "^10.0.3",
     "aws-sdk": "^2.900.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "bottleneck": "^2.19.5",
     "inversify": "^5.1.1",
     "lodash": "^4.17.21",
