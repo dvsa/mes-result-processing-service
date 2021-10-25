@@ -26,10 +26,10 @@ export class TARSSubmissionFacade implements ITARSSubmissionFacade {
       const tarsPayload = this.tarsPayloadConverter.convertToTARSPayload(test, interfacetype);
       const uploadRetryCount = await this.tarsUploader.uploadToTARS(tarsPayload, interfacetype);
       return { test, uploadRetryCount, status: ProcessingStatus.ACCEPTED };
-    } catch (err) {
+    } catch (err: any) {
       const uploadRetryCount = err instanceof UploadFailureWithRetryCountError ? err.retryCount : 0;
       const appRef = formatApplicationReference(test.journalData.applicationReference);
-      // tslint:disable-next-line:max-line-length
+      // eslint-disable-next-line max-len
       this.logger.error(`Failed to upload to tars with app ref ${appRef}, current retry count ${uploadRetryCount}, see previous logs for more details`);
       return { test, uploadRetryCount, status: ProcessingStatus.FAILED, errorMessage: err.message };
     }

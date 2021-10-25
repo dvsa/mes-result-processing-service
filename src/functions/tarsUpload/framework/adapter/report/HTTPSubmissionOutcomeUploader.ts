@@ -40,27 +40,29 @@ export class HTTPSubmissionOutcomeUploader implements ISubmissionOutcomeUploader
 
     const { request, response } = err;
     if (response) {
-      return new UpdateUploadStatusError(`Update Upload Status failed`, submissionOutcomeCtx , err);
+      return new UpdateUploadStatusError('Update Upload Status failed', submissionOutcomeCtx, err);
     }
     // Request was made, but no response received
     if (request) {
       return new UpdateUploadStatusError(
-        `Update Upload Status failed, no response received`,
+        'Update Upload Status failed, no response received',
         submissionOutcomeCtx,
         err,
       );
     }
     // Failed to setup the request
     return new UpdateUploadStatusError(
-      `Update Upload Status failed, no response or request data available`,
+      'Update Upload Status failed, no response or request data available',
       submissionOutcomeCtx,
       err)
     ;
   }
 
-  private stringfyError(error: UpdateUploadStatusError) : string {
-    error.headers = JSON.stringify(error.headers);
-    error.outcomePayload = JSON.stringify(error.outcomePayload);
-    return JSON.stringify(error, Object.getOwnPropertyNames(error));
+  private stringfyError(error: UpdateUploadStatusError): string {
+    return JSON.stringify({
+      ...error,
+      headers: JSON.stringify(error.headers),
+      outcomePayload: JSON.stringify(error.outcomePayload),
+    }, Object.getOwnPropertyNames(error));
   }
 }

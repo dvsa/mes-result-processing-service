@@ -28,7 +28,7 @@ export class HTTPBatchFetcher implements IBatchFetcher {
           resolve(resultList);
           return;
         }
-        const parseResult = response.data;
+        const parseResult = response.data as string[];
         parseResult.forEach((element: string) => {
           let uncompressedResult: string = '';
           let test: TestResultSchemasUnion;
@@ -61,13 +61,13 @@ export class HTTPBatchFetcher implements IBatchFetcher {
     const { request, response } = err;
 
     if (response) {
-      return new TestResultError(`Get Upload Batch failed`, err);
+      return new TestResultError('Get Upload Batch failed', err);
     }
     // Request was made, but no response received
     if (request) {
-      return new TestResultError(`Get Upload Batch failed, no response received`, err);
+      return new TestResultError('Get Upload Batch failed, no response received', err);
     }
     // Failed to setup the request
-    return new TestResultError(`Get Upload Batch failed, no response or request data available`, err);
+    return new TestResultError('Get Upload Batch failed, no response or request data available', err);
   }
 }

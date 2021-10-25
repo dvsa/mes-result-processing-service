@@ -1,11 +1,11 @@
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponseHeaders } from 'axios';
 
 export class TestResultError extends Error {
 
   url: string | undefined;
   method: any;
   status: number | undefined;
-  headers: string | undefined;
+  headers: AxiosResponseHeaders | undefined;
   data: string | undefined;
 
   constructor(message: string, httpError: AxiosError | null = null) {
@@ -20,7 +20,7 @@ export class TestResultError extends Error {
     if (httpError && httpError.response) {
       this.status = httpError.response.status;
       this.headers = httpError.response.headers;
-      this.data = httpError.response.data;
+      this.data = httpError.response.data as unknown as string | undefined;
     }
   }
 }

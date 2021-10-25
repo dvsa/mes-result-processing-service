@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponseHeaders } from 'axios';
 import { SubmissionOutcomeContext } from '../../../../domain/reporting/SubmissionOutcomeContext';
 
 export class UpdateUploadStatusError extends Error {
@@ -9,7 +9,7 @@ export class UpdateUploadStatusError extends Error {
   url: string | undefined;
   method: any;
   status: number | undefined;
-  headers: string | undefined;
+  headers: AxiosResponseHeaders | undefined;
   data: string | undefined;
 
   constructor(message: string, submissionOutcomeCtx: SubmissionOutcomeContext, httpError: AxiosError) {
@@ -27,7 +27,7 @@ export class UpdateUploadStatusError extends Error {
     if (httpError && httpError.response) {
       this.status = httpError.response.status;
       this.headers = httpError.response.headers;
-      this.data = httpError.response.data;
+      this.data = httpError.response.data as unknown as string | undefined;
     }
   }
 }

@@ -71,7 +71,10 @@ export class RateLimitDecoratingTARSUploader implements ITARSUploader {
       );
       return this.retryCountByApplicationId[applicationId] || 0;
     } catch (err) {
-      throw new UploadFailureWithRetryCountError(err, this.retryCountByApplicationId[applicationId] || 0);
+      throw new UploadFailureWithRetryCountError(
+        err as unknown as Error,
+        this.retryCountByApplicationId[applicationId] || 0
+      );
     }
   }
 
