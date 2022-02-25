@@ -31,7 +31,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     return {
       applicationId: test.journalData.applicationReference.applicationId,
       bookingSequence: test.journalData.applicationReference.bookingSequence,
-      nonCompletionCode: Number.parseInt(test.activityCode, 0),
+      nonCompletionCode: Number(test.activityCode),
     };
   }
 
