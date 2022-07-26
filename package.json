@@ -28,7 +28,7 @@
     "bottleneck": "^2.19.5",
     "inversify": "^6.0.1",
     "lodash": "^4.17.21",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
@@ -50,9 +50,9 @@
     "npm-run-all": "^4.1.5",
     "nyc": "^15.1.0",
     "rimraf": "^3.0.2",
-    "serverless": "^1.83.3",
+    "serverless": "^3.21.0",
     "serverless-dotenv-plugin": "^2.4.2",
-    "serverless-offline": "^4.10.6",
+    "serverless-offline": "^8.7.0",
     "serverless-webpack": "^5.6.1",
     "source-map-support": "^0.5.20",
     "ts-loader": "^9.2.6",
