@@ -46,4 +46,9 @@ export interface CompletedTestPayload extends ITARSPayload {
    * Max 8 chars - omitted for failed tests
    */
   passCertificate?: string;
+
+  /**
+   * Adi3 - The Mark received when completed the Test (It can be null or should be numeric 2 digits)
+   */
+  mark?: number;
 }

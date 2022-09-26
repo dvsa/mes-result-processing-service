@@ -3,6 +3,7 @@ export const determineDl25TestType = (category: string): number | undefined => {
   // documented at https://wiki.i-env.net/display/MES/Test+Category+Cross+Reference and agreed with DVSA MI Team.
   const mapping: Map<string, number> = new Map([
     ['ADI2', 10],
+    ['ADI3', 11],
     ['B', 2], ['B+E', 2],
     ['C', 3], ['C+E', 3], ['C1', 3], ['C1+E', 3],
     ['D', 4], ['D+E', 4], ['D1', 4], ['D1+E', 4],
