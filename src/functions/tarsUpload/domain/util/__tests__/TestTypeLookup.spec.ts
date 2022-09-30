@@ -3,6 +3,7 @@ import { determineDl25TestType } from '../TestTypeLookup';
 describe('determineDl25TestType', () => {
   const validCategoryTestCases = [
     { category: 'ADI2', expected: 10 },
+    { category: 'ADI3', expected: 11 },
     { category: 'B', expected: 2 },
     { category: 'B+E', expected: 2 },
     { category: 'C', expected: 3 },
