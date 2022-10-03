@@ -116,9 +116,9 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
    * @private
    */
   private populateMark(
-      completedTestPayload: CompletedTestPayload,
-      category: TestCategory,
-      test: TestResultSchemasUnion,
+    completedTestPayload: CompletedTestPayload,
+    category: TestCategory,
+    test: TestResultSchemasUnion,
   ): CompletedTestPayload {
     if (category !== TestCategory.ADI3 || !completedTestPayload.passResult) {
       return completedTestPayload;
@@ -142,5 +142,5 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       }
       return sum;
     },                                  0);
-  }
+  };
 }
