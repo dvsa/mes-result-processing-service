@@ -107,12 +107,20 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     };
   }
 
+  /**
+   * Add mark to payload if test is
+   * ADI3 with a pass result
+   * @param completedTestPayload
+   * @param category
+   * @param test
+   * @private
+   */
   private populateMark(
-    completedTestPayload: CompletedTestPayload,
-    category: TestCategory,
-    test: TestResultSchemasUnion,
+      completedTestPayload: CompletedTestPayload,
+      category: TestCategory,
+      test: TestResultSchemasUnion,
   ): CompletedTestPayload {
-    if (category !== TestCategory.ADI3) {
+    if (category !== TestCategory.ADI3 || !completedTestPayload.passResult) {
       return completedTestPayload;
     }
     return {
