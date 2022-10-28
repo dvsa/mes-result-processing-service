@@ -142,5 +142,5 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       }
       return sum;
     },                                  0);
-  }
+  };
 }
