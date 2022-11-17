@@ -89,7 +89,7 @@ describe('RateLimitDecoratingTARSUploader', () => {
       const callTimings = recordingUploader.getCallMsTimings();
 
       expect(approxInstantly(callTimings[0])).toEqual(true); // Second call happened instantly (different interface)
-      // expect(approxInstantly(callTimings[1])).toEqual(true); // Third call happened instantly (rate limit allows it)
+      expect(approxInstantly(callTimings[1])).toEqual(true); // Third call happened instantly (rate limit allows it)
       // expect(approxOneSecond(callTimings[2])).toEqual(true); // Fourth call was rate limited until ~1s after
       // expect(approxInstantly(callTimings[3])).toEqual(true);
       // expect(approxOneSecond(callTimings[4])).toEqual(true);
