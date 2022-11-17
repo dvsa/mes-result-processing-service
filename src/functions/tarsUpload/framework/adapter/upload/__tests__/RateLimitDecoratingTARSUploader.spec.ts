@@ -71,7 +71,7 @@ describe('RateLimitDecoratingTARSUploader', () => {
 
   describe('rate limiting', () => {
     // Predicate for whether a timing is "close enough" to what we expect.
-    const nearTo = (num1: number, num2: number) => Math.abs(num1 - num2) < 75;
+    const nearTo = (num1: number, num2: number) => Math.abs(num1 - num2) < 400;
     const approxInstantly = nearTo.bind(null, 0);
     const approxOneSecond = nearTo.bind(null, 1000);
 
@@ -88,12 +88,12 @@ describe('RateLimitDecoratingTARSUploader', () => {
 
       const callTimings = recordingUploader.getCallMsTimings();
 
-      expect(approxInstantly(callTimings[0])).toBeTruthy(); // Second call happened instantly (different interface)
-      expect(approxInstantly(callTimings[1])).toBeTruthy(); // Third call happened instantly (rate limit allows it)
-      expect(approxOneSecond(callTimings[2])).toBeTruthy(); // Fourth call was rate limited until ~1s after
-      expect(approxInstantly(callTimings[3])).toBeTruthy();
-      expect(approxOneSecond(callTimings[4])).toBeTruthy();
-      expect(approxInstantly(callTimings[5])).toBeTruthy();
+      expect(approxInstantly(callTimings[0])).toEqual(true); // Second call happened instantly (different interface)
+      expect(approxInstantly(callTimings[1])).toEqual(true); // Third call happened instantly (rate limit allows it)
+      expect(approxOneSecond(callTimings[2])).toEqual(true); // Fourth call was rate limited until ~1s after
+      expect(approxInstantly(callTimings[3])).toEqual(true);
+      expect(approxOneSecond(callTimings[4])).toEqual(true);
+      expect(approxInstantly(callTimings[5])).toEqual(true);
     }, 10000); // custom timeout, should be heavily overestimated
   });
 });
