@@ -33,7 +33,7 @@
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@dvsa/mes-test-schema": "3.39.8",
+    "@dvsa/mes-test-schema": "3.39.9",
     "@types/aws-lambda": "^8.10.108",
     "@types/jasmine": "^4.3.0",
     "@types/lodash": "^4.14.186",
