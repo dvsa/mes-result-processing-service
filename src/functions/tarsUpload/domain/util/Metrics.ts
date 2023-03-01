@@ -8,6 +8,12 @@ export enum Metric {
   UploadBatchNonCompletedTests = 'UploadBatchNonCompletedTests',
   ResultUploadSuccesses = 'ResultUploadSuccesses',
   ResultUploadFailures = 'ResultUploadFailures',
+  GetNextUploadBatchSuccess = 'GetNextUploadBatchSuccesses',
+  GetNextUploadBatchFailure = 'GetNextUploadBatchFailure',
+  UploadToTARSSuccess = 'UploadToTARSSuccess',
+  UploadToTARSFailure = 'UploadToTARSFailure',
+  UploadSubmissionOutcomeSuccess = 'UploadSubmissionOutcomeSuccess',
+  UploadSubmissionOutcomeFailure = 'UploadSubmissionOutcomeFailure',
 }
 
 export const lookupMetricSpecification = (metric: Metric): MetricSpecification => {

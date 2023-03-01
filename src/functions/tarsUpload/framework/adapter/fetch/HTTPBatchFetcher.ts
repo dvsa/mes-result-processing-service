@@ -6,6 +6,8 @@ import * as zlib from 'zlib';
 import { ITestResultHTTPConfig } from './ITestResultHTTPConfig';
 import { TYPES } from '../../di/types';
 import { TestResultError } from './errors/TestResultError';
+import {customMetric} from '@dvsa/mes-microservice-common/application/utils/logger';
+import {Metric} from '../../../domain/util/Metrics';
 @injectable()
 export class HTTPBatchFetcher implements IBatchFetcher {
 
@@ -25,6 +27,7 @@ export class HTTPBatchFetcher implements IBatchFetcher {
       result.then((response) => {
         const resultList: TestResultSchemasUnion[] = [];
         if (!response.data) {
+          customMetric(Metric.GetNextUploadBatchSuccess, 'Get next upload batch empty but successful for TARS');
           resolve(resultList);
           return;
         }
@@ -46,8 +49,10 @@ export class HTTPBatchFetcher implements IBatchFetcher {
             reject(new TestResultError('failed parsing test result'));
           }
         });
+        customMetric(Metric.GetNextUploadBatchSuccess, 'Get next upload batch successful for TARS');
         resolve(resultList);
       }).catch((err) => {
+        customMetric(Metric.GetNextUploadBatchFailure, 'Get next upload batch failed for TARS');
         reject(this.mapHTTPErrorToDomainError(err));
       });
     });

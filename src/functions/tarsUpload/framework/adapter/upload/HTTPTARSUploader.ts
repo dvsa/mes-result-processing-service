@@ -10,6 +10,8 @@ import { TransientUploadError } from '../../../domain/upload/errors/TransientUpl
 import { PermanentUploadError } from '../../../domain/upload/errors/PermanentUploadError';
 import * as https from 'https';
 import { ILogger } from '../../../domain/util/ILogger';
+import {customMetric} from '@dvsa/mes-microservice-common/application/utils/logger';
+import {Metric} from '../../../domain/util/Metrics';
 
 @injectable()
 export class HTTPTARSUploader implements ITARSUploader {
@@ -32,8 +34,10 @@ export class HTTPTARSUploader implements ITARSUploader {
   async uploadToTARS(tarsPayload: ITARSPayload, interfaceType: TARSInterfaceType): Promise<UploadRetryCount> {
     const endpoint = interfaceType === TARSInterfaceType.COMPLETED ?
       this.tarsHttpConfig.completedTestEndpoint : this.tarsHttpConfig.nonCompletedTestEndpoint;
+
     return this.axios.post(endpoint, tarsPayload)
       .then(() => {
+        customMetric(Metric.UploadToTARSSuccess, 'Uploading to TARS successful response');
         return 0 as UploadRetryCount;
       })
       .catch((err) => {
@@ -44,6 +48,7 @@ export class HTTPTARSUploader implements ITARSUploader {
           this.logger.error(errors[1].trim());
           this.logger.error(errors[2].trim());
         }
+        customMetric(Metric.UploadToTARSFailure, 'Uploading to TARS failure response');
         return Promise.reject(error);
       });
   }

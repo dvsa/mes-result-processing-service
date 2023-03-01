@@ -6,6 +6,8 @@ import { IOutcomeReportingHTTPConfig } from './IOutcomeReportingHTTPConfig';
 import { TYPES } from '../../di/types';
 import { UpdateUploadStatusError } from './errors/UpdateUploadStatusError';
 import { ILogger } from '../../../domain/util/ILogger';
+import {customMetric} from '@dvsa/mes-microservice-common/application/utils/logger';
+import {Metric} from '../../../domain/util/Metrics';
 
 @injectable()
 export class HTTPSubmissionOutcomeUploader implements ISubmissionOutcomeUploader {
@@ -22,9 +24,13 @@ export class HTTPSubmissionOutcomeUploader implements ISubmissionOutcomeUploader
     const putRequestUrl = this.buildParameterisedPutRequestURL(submissionOutcomeCtx);
     return this.axios
       .put(putRequestUrl, submissionOutcomeCtx.outcomePayload)
-      .then(() => Promise.resolve())
+      .then(() => {
+        customMetric(Metric.UploadSubmissionOutcomeSuccess, 'Upload submission outcome success');
+        return Promise.resolve();
+      })
       .catch((err) => {
         const error: UpdateUploadStatusError = this.mapHTTPErrorToDomainError(err, submissionOutcomeCtx);
+        customMetric(Metric.UploadSubmissionOutcomeFailure, 'Upload submission outcome failure');
         this.logger.error(this.stringfyError(error));
         return Promise.reject(error);
       });
