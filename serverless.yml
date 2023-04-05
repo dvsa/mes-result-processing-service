@@ -2,7 +2,7 @@ service: mes-result-processing-service
 
 provider:
   name: aws
-  runtime: nodejs14
+  runtime: nodejs14.x
 
 package:
   individually: true
