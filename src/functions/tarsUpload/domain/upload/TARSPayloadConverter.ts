@@ -16,6 +16,8 @@ import { get } from 'lodash';
 import { PassCompletion } from '@dvsa/mes-test-schema/categories/common';
 import { ActivityCode, TestData as CatADI3TestData } from '@dvsa/mes-test-schema/categories/ADI3';
 import { TestCategory } from '@dvsa/mes-test-schema/category-definitions/common/test-category';
+import { Adi3ActivityCodes } from '../util/ActivityCodes';
+import { TestResult } from '../util/TestResult';
 
 @injectable()
 export class TARSPayloadConverter implements ITARSPayloadConverter {
@@ -184,11 +186,16 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     testData: CatADI3TestData,
     previousADITests: number | undefined,
     activityCode: ActivityCode): string => {
-    if (activityCode === '4') {
-      return 'DAN';
-    }
+
+    // Failed in the interest of public safety
+    if (activityCode === Adi3ActivityCodes.FAIL_PUBLIC_SAFETY) return TestResult.DANGEROUS;
+
+    // Pass
+    if (passResult) return TestResult.PASS;
+
+    // Failed
     const currentAdiAttempt = previousADITests ? previousADITests + 1 : 1;
-    const isAutomatic = get(testData, 'riskManagement.score', 0) < 8 ? 'A' : '';
-    return passResult ? 'P' : 'F'.concat(isAutomatic, String(currentAdiAttempt));
+    const isAutomatic = get(testData, 'riskManagement.score', 0) < 8 ? TestResult.AUTOMATIC : '';
+    return TestResult.FAIL.concat(isAutomatic, String(currentAdiAttempt));
   };
 }
