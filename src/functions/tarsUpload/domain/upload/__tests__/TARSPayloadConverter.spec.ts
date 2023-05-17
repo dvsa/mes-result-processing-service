@@ -3,15 +3,17 @@ import { TARSPayloadConverter } from '../TARSPayloadConverter';
 import { DateFormatter } from '../../../domain/util/DateFormatter';
 import { CompletedTestInvalidCategoryError } from '../errors/CompletedTestInvalidCategoryError';
 
-describe('CompletedTestPayloadCreationError', () => {
+describe('TARSPayloadConverter', () => {
   const formatter = new DateFormatter();
-  const converter = new TARSPayloadConverter(formatter);
+  const tarsPayloadConverter = new TARSPayloadConverter(formatter);
 
   it('should error if unrecognised category on a valid test', () => {
     try {
-      const result = converter.convertToCompletedTestPayload(dummyTests['passWithInvalidCategory']);
+      const result =
+        tarsPayloadConverter.convertToCompletedTestPayload(dummyTests['passWithInvalidCategory']);
     } catch (err) {
-      const expectedError = new CompletedTestInvalidCategoryError(dummyTests['passWithInvalidCategory']);
+      const expectedError =
+        new CompletedTestInvalidCategoryError(dummyTests['passWithInvalidCategory']);
       expect(err).toEqual(expectedError);
     }
   });

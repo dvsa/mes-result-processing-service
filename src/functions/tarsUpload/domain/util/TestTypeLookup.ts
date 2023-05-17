@@ -22,6 +22,7 @@ export const determineDl25TestType = (category: string): number | undefined => {
     // manoeuvre catgeories
     ['CM', 18], ['C+EM', 18], ['C1M', 18], ['C1+EM', 18],
     ['DM', 19], ['D+EM', 19], ['D1M', 19], ['D1+EM', 19],
+    ['SC', 12],
   ]);
   const testType = mapping.get(category);
   return testType;

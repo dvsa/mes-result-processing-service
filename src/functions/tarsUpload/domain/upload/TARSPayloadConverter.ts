@@ -14,14 +14,15 @@ import { licenceToIssue } from '@dvsa/mes-microservice-common/application/utils/
 import { trimTestCategoryPrefix } from '@dvsa/mes-microservice-common/domain/trim-test-category-prefix';
 import { get } from 'lodash';
 import { PassCompletion } from '@dvsa/mes-test-schema/categories/common';
-import { TestData as CatADI3TestData } from '@dvsa/mes-test-schema/categories/ADI3';
+import { ActivityCode, TestData as CatADI3TestData } from '@dvsa/mes-test-schema/categories/ADI3';
 import { TestCategory } from '@dvsa/mes-test-schema/category-definitions/common/test-category';
 
 @injectable()
 export class TARSPayloadConverter implements ITARSPayloadConverter {
   constructor(
     @inject(TYPES.DateFormatter) private dateFormatter: IDateFormatter,
-  ) { }
+  ) {
+  }
 
   convertToTARSPayload(test: TestResultSchemasUnion, interfaceType: TARSInterfaceType): ITARSPayload {
     return interfaceType === TARSInterfaceType.COMPLETED ?
@@ -38,9 +39,9 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
   }
 
   convertToCompletedTestPayload(test: TestResultSchemasUnion): CompletedTestPayload {
-    const { journalData, communicationPreferences, passCompletion, category, vehicleDetails, testSummary } = test;
-    const { applicationReference, testSlotAttributes, candidate } = journalData;
-    const { applicationId, bookingSequence, checkDigit } = applicationReference;
+    const {journalData, communicationPreferences, passCompletion, category, vehicleDetails, testSummary} = test;
+    const {applicationReference, testSlotAttributes, candidate} = journalData;
+    const {applicationId, bookingSequence, checkDigit} = applicationReference;
     let transmission: string = '';
     let code78Present: boolean = false;
     let testType: number = 0;
@@ -62,7 +63,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       throw new CompletedTestPayloadCreationError(test);
     }
 
-    const determinedDl25TestType: number|undefined = determineDl25TestType(category);
+    const determinedDl25TestType: number | undefined = determineDl25TestType(category);
     if (determinedDl25TestType === undefined) {
       throw new CompletedTestInvalidCategoryError(test);
     } else {
@@ -86,6 +87,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     };
     completedTestPayload = this.populatePassCertificateIfPresent(completedTestPayload, passCompletion);
     completedTestPayload = this.populateMark(completedTestPayload, category as TestCategory, test);
+    completedTestPayload = this.populateStandardCheckTestResult(completedTestPayload, category as TestCategory, test);
     return completedTestPayload;
   }
 
@@ -109,7 +111,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
 
   /**
    * Add mark to payload if test is
-   * ADI3 with a pass result
+   * ADI3/SC with a pass result
    * @param completedTestPayload
    * @param category
    * @param test
@@ -120,7 +122,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     category: TestCategory,
     test: TestResultSchemasUnion,
   ): CompletedTestPayload {
-    if (category !== TestCategory.ADI3 || !completedTestPayload.passResult) {
+    if ((category !== TestCategory.ADI3 && category !== TestCategory.SC) || !completedTestPayload.passResult) {
       return completedTestPayload;
     }
     return {
@@ -130,17 +132,63 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
   }
 
   /**
+   * Add TestResult to payload if test is SC
+   * @param completedTestPayload
+   * @param category
+   * @param test
+   * @private
+   */
+  private populateStandardCheckTestResult(
+    completedTestPayload: CompletedTestPayload,
+    category: TestCategory,
+    test: TestResultSchemasUnion,
+  ): CompletedTestPayload {
+
+    if (category === TestCategory.SC) {
+      return {
+        ...completedTestPayload,
+        testResult: this.getStandardCheckTestResult(
+          completedTestPayload.passResult,
+          test?.testData as CatADI3TestData,
+          test?.journalData?.candidate?.previousADITests,
+          test.activityCode),
+      };
+    }
+    return completedTestPayload;
+  }
+
+  /**
    * Calculate total assessment score of an ADI3 test
    * @param testData
    */
-  private getTotalAssessmentScore = (testData: CatADI3TestData) : number => {
-    return Object.keys(testData).reduce((sum, key: string) : number => {
+  private getTotalAssessmentScore = (testData: CatADI3TestData): number => {
+    return Object.keys(testData).reduce((sum, key: string): number => {
       const value = get(testData, key);
       if (['lessonPlanning', 'riskManagement', 'teachingLearningStrategies']
         .includes(key) && typeof value === 'object') {
         return sum + (get(value, 'score') || 0);
       }
       return sum;
-    },                                  0);
+    }, 0);
+  };
+
+  /**
+   * Determine the test result for standard checks
+   * @param passResult
+   * @param testData
+   * @param previousADITests
+   * @param activityCode
+   */
+  private getStandardCheckTestResult = (
+    passResult: boolean,
+    testData: CatADI3TestData,
+    previousADITests: number | undefined,
+    activityCode: ActivityCode): string => {
+    if (activityCode === '4') {
+      return 'DAN';
+    }
+    const currentAdiAttempt = previousADITests ? previousADITests + 1 : 1;
+    const isAutomatic = get(testData, 'riskManagement.score', 0) < 8 ? 'A' : '';
+    return passResult ? 'P' : 'F'.concat(isAutomatic, String(currentAdiAttempt));
   };
 }
