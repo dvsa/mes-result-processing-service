@@ -181,7 +181,7 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
    * @param previousADITests
    * @param activityCode
    */
-  private getStandardCheckTestResult = (
+  getStandardCheckTestResult = (
     passResult: boolean,
     testData: CatADI3TestData,
     previousADITests: number | undefined,
@@ -194,8 +194,25 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     if (passResult) return TestResult.PASS;
 
     // Failed
-    const currentAdiAttempt = previousADITests ? previousADITests + 1 : 1;
     const isAutomatic = get(testData, 'riskManagement.score', 0) < 8 ? TestResult.AUTOMATIC : '';
-    return TestResult.FAIL.concat(isAutomatic, String(currentAdiAttempt));
+    return TestResult.FAIL.concat(isAutomatic, String(this.AdiAttempts(previousADITests)));
   };
+
+  /**
+   * Calculate the correct value for result code based upon previous attempts
+   * @param attempts
+   * @constructor
+   */
+  AdiAttempts(attempts: number | undefined): number {
+    switch (attempts) {
+    case 0:
+    case 1:
+    case 2:
+      return attempts + 1;
+    case 3:
+      return 3;
+    default:
+      return 1;
+    }
+  }
 }
