@@ -49,9 +49,9 @@ describe('TARSPayloadConverter', () => {
     };
 
     it('should return DAN when failed for public safety', () => {
-      const result = tarsPayloadConverter
-        .getStandardCheckTestResult(false, testData, 2, Adi3ActivityCodes.FAIL_PUBLIC_SAFETY);
-      expect(result).toBe('DAN');
+      const result =
+        tarsPayloadConverter.getStandardCheckTestResult(false, testData, 2, Adi3ActivityCodes.FAIL_PUBLIC_SAFETY);
+      expect(result).toBe('FA3');
     });
 
     it('should return P when passResult is true', () => {
@@ -61,11 +61,9 @@ describe('TARSPayloadConverter', () => {
     });
 
     it('should return FA3 if riskManagement below threshold and 2+ previous attempts', () => {
-
       const result = tarsPayloadConverter
         .getStandardCheckTestResult(false, testData, 2, Adi3ActivityCodes.FAIL);
-      const expected = 'FA3';
-      expect(result).toBe(expected);
+      expect(result).toBe('FA3');
     });
 
     it('should return F2 if riskManagement above threshold and 1 previous attempts', () => {
@@ -76,8 +74,7 @@ describe('TARSPayloadConverter', () => {
       };
       const result = tarsPayloadConverter
         .getStandardCheckTestResult(false, data, 1, Adi3ActivityCodes.FAIL);
-      const expected = 'F2';
-      expect(result).toBe(expected);
+      expect(result).toBe('F2');
     });
   });
 

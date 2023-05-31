@@ -187,14 +187,14 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
     previousADITests: number | undefined,
     activityCode: ActivityCode): string => {
 
-    // Failed in the interest of public safety
-    if (activityCode === Adi3ActivityCodes.FAIL_PUBLIC_SAFETY) return TestResult.DANGEROUS;
-
     // Pass
     if (passResult) return TestResult.PASS;
 
     // Failed
-    const isAutomatic = get(testData, 'riskManagement.score', 0) < 8 ? TestResult.AUTOMATIC : '';
+    const isAutomatic =
+      get(testData, 'riskManagement.score', 0) < 8 ||
+      activityCode === Adi3ActivityCodes.FAIL_PUBLIC_SAFETY
+        ? TestResult.AUTOMATIC : '';
     return TestResult.FAIL.concat(isAutomatic, String(this.AdiAttempts(previousADITests)));
   };
 
