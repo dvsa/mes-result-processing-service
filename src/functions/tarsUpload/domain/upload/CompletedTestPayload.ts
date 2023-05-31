@@ -51,4 +51,9 @@ export interface CompletedTestPayload extends ITARSPayload {
    * Adi3 - The Mark received when completed the Test (It can be null or should be numeric 2 digits)
    */
   mark?: number;
+
+  /**
+   * Standard Check - The Mark received when completed the Test (It can be null or should be numeric 2 digits)
+   */
+  testResult?: string;
 }
