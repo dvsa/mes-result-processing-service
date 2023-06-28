@@ -6,6 +6,8 @@ import * as zlib from 'zlib';
 import { ITestResultHTTPConfig } from './ITestResultHTTPConfig';
 import { TYPES } from '../../di/types';
 import { TestResultError } from './errors/TestResultError';
+import { error, info } from '@dvsa/mes-microservice-common/application/utils/logger';
+
 @injectable()
 export class HTTPBatchFetcher implements IBatchFetcher {
 
@@ -21,14 +23,19 @@ export class HTTPBatchFetcher implements IBatchFetcher {
   fetchNextUploadBatch(): Promise<TestResultSchemasUnion[]> {
     const endpoint = this.getEndpointWithQueryParams();
     return new Promise((resolve, reject) => {
-      const result = this.axios.get(endpoint);
-      result.then((response) => {
+      this.axios.get(
+        endpoint
+      ).then((response) => {
+        const parseResult = response.data as string[];
         const resultList: TestResultSchemasUnion[] = [];
-        if (!response.data) {
+
+        if (!parseResult) {
           resolve(resultList);
           return;
         }
-        const parseResult = response.data as string[];
+
+        info(`Successfully read batch of ${parseResult.length}`);
+
         parseResult.forEach((element: string) => {
           let uncompressedResult: string = '';
           let test: TestResultSchemasUnion;
@@ -43,6 +50,7 @@ export class HTTPBatchFetcher implements IBatchFetcher {
             test = JSON.parse(uncompressedResult);
             resultList.push(test);
           } catch (e) {
+            error('Failed to parse test result', uncompressedResult);
             reject(new TestResultError('failed parsing test result'));
           }
         });
