@@ -9,7 +9,7 @@ import { TYPES } from '../../framework/di/types';
 import { CompletedTestPayloadCreationError } from './errors/CompletedTestPayloadCreationError';
 import { CompletedTestInvalidCategoryError } from './errors/CompletedTestInvalidCategoryError';
 import { IDateFormatter } from '../util/IDateFormatter';
-import { determineDl25TestType } from '../util/TestTypeLookup';
+import { determineDl25TestType } from '@dvsa/mes-microservice-common/application/utils/dl25-test-type';
 import { licenceToIssue } from '@dvsa/mes-microservice-common/application/utils/licence-type';
 import { trimTestCategoryPrefix } from '@dvsa/mes-microservice-common/domain/trim-test-category-prefix';
 import { get } from 'lodash';
