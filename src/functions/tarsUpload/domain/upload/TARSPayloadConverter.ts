@@ -204,15 +204,12 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
    * @constructor
    */
   AdiAttempts(attempts: number | undefined): number {
-    switch (attempts) {
-    case 0:
-    case 1:
-    case 2:
-      return attempts + 1;
-    case 3:
-      return 3;
-    default:
+    if (!attempts || attempts < 0) {
       return 1;
+    } else if (attempts <= 2) {
+      return attempts + 1;
+    } else {
+      return 3;
     }
   }
 }
