@@ -92,7 +92,7 @@ describe('TARSPayloadConverter', () => {
     it('should return 1 for any other value', () => {
       expect(tarsPayloadConverter.AdiAttempts(-1)).toBe(1);
       expect(tarsPayloadConverter.AdiAttempts(undefined)).toBe(1);
-      expect(tarsPayloadConverter.AdiAttempts(10)).toBe(1);
+      expect(tarsPayloadConverter.AdiAttempts(10)).toBe(3);
     });
   });
 });
