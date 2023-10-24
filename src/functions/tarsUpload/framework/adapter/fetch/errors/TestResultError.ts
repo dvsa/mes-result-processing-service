@@ -19,7 +19,7 @@ export class TestResultError extends Error {
 
     if (httpError && httpError.response) {
       this.status = httpError.response.status;
-      this.headers = httpError.response.headers;
+      this.headers = httpError.response.headers as AxiosResponseHeaders;
       this.data = httpError.response.data as unknown as string | undefined;
     }
   }
