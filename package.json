@@ -23,11 +23,12 @@
     "start": "npm run compile && sls offline start",
     "test": "npm run compile && jasmine",
     "test:jasmine-coverage": "c8 npm run test",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner"
   },
   "dependencies": {
     "@dvsa/mes-microservice-common": "1.1.0",
-    "axios": "^1.6.0",
+    "axios": "^1.6.5",
     "bottleneck": "^2.19.5",
     "inversify": "^6.0.2",
     "lodash": "^4.17.21",
@@ -59,6 +60,7 @@
     "serverless-offline": "^13.2.0",
     "serverless-webpack": "^5.13.0",
     "snyk": "^1.1236.0",
+    "sonar-scanner": "^3.1.0",
     "source-map-support": "^0.5.21",
     "ts-loader": "^9.5.0",
     "ts-node": "^10.9.1",
