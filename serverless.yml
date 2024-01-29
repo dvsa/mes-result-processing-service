@@ -2,7 +2,7 @@ service: mes-result-processing-service
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs20.x
 
 package:
   individually: true
