@@ -33,7 +33,7 @@
     "inversify": "^6.0.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.14"
   },
   "devDependencies": {
     "@dvsa/mes-test-schema": "3.42.5",
