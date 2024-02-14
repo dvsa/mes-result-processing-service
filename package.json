@@ -32,7 +32,7 @@
     "bottleneck": "^2.19.5",
     "inversify": "^6.0.2",
     "lodash": "^4.17.21",
-    "moment": "^2.29.4",
+    "moment": "^2.30.1",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
