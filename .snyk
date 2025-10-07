@@ -10,34 +10,9 @@ version: v1.25.0
 
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  SNYK-JS-AXIOS-6032459:
+  SNYK-JS-AXIOS-12613773:
     - '*':
-        reason: Remediation not yet available
-        expires: 2025-12-31T09:01:15.119Z
-        created: 2022-10-25T16:20:15.122Z
-  SNYK-JS-AXIOS-6124857:
-    - '*':
-        reason: Remediation not yet available
-        expires: 2025-03-30T09:01:15.119Z
-        created: 2023-12-15T00:00:00.000Z
-  SNYK-JS-FASTXMLPARSER-7573289:
-    - '*':
-        reason: Remediation not yet available
-        expires: 2025-03-30T09:01:15.119Z
-        created: 2023-12-15T00:00:00.000Z
-  SNYK-JS-AXIOS-6671926:
-    - '*':
-        reason: Remediation not yet available
-        expires: 2025-03-30T09:01:15.119Z
-        created: 2023-12-15T00:00:00.000Z
-  SNYK-JS-FOLLOWREDIRECTS-6444610:
-    - '*':
-        reason: Remediation not yet available
-        expires: 2025-03-30T09:01:15.119Z
-        created: 2023-12-15T00:00:00.000Z
-  SNYK-JS-AXIOS-7361793:
-    - '*':
-        reason: Remediation not yet available
-        expires: 2025-03-30T09:01:15.119Z
-        created: 2023-12-15T00:00:00.000Z
+        reason: Breaking change, will be addressed in upcoming refactor
+        expires: 2025-11-30T09:01:15.119Z
+        created: 2025-10-06T00:00:00.000Z
 patch: {}
