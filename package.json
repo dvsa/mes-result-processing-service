@@ -28,10 +28,10 @@
   },
   "dependencies": {
     "@dvsa/mes-microservice-common": "1.2.4",
-    "axios": "1.8.4",
+    "axios": "1.12.0",
     "bottleneck": "^2.19.5",
     "inversify": "^6.0.2",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "moment": "^2.29.4",
     "reflect-metadata": "^0.1.13"
   },
