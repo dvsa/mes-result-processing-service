@@ -33,9 +33,15 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
   }
 
   convertToNonCompletedTestPayload(test: TestResultSchemasUnion): NonCompletedTestPayload {
+    const { applicationId, bookingSequence } = test.journalData.applicationReference;
+
+    if (applicationId === undefined || bookingSequence === undefined) {
+      throw new Error('applicationId and bookingSequence must be defined');
+    }
+
     return {
-      applicationId: test.journalData.applicationReference.applicationId,
-      bookingSequence: test.journalData.applicationReference.bookingSequence,
+      applicationId,
+      bookingSequence,
       nonCompletionCode: Number(test.activityCode),
     };
   }
@@ -70,6 +76,14 @@ export class TARSPayloadConverter implements ITARSPayloadConverter {
       throw new CompletedTestInvalidCategoryError(test);
     } else {
       testType = determinedDl25TestType;
+    }
+
+    if (
+      applicationId === undefined ||
+      bookingSequence === undefined ||
+      checkDigit === undefined
+    ) {
+      throw new Error('applicationId, bookingSequence, and checkDigit must be defined');
     }
 
     let completedTestPayload: CompletedTestPayload = {

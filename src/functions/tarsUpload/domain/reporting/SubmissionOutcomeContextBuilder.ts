@@ -9,7 +9,7 @@ export class SubmissionOutcomeContextBuilder implements ISubmissionOutcomeContex
   buildSubmissionOutcomeContext(uploadResult: TARSUploadResult): SubmissionOutcomeContext {
     const { journalData } = uploadResult.test;
     return {
-      applicationReference: formatApplicationReference(journalData.applicationReference),
+      applicationReference: Number(formatApplicationReference(journalData.applicationReference)),
       outcomePayload: {
         staff_number: journalData.examiner.staffNumber,
         interface: 'TARS',
