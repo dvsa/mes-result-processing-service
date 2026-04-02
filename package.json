@@ -31,7 +31,7 @@
     "axios": "1.12.0",
     "bottleneck": "^2.19.5",
     "inversify": "^6.0.2",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.1",
     "moment": "^2.29.4",
     "reflect-metadata": "^0.1.13"
   },
