@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { IResultInterfaceCategoriser } from '../upload/IResultInterfaceCategoriser';
 import { TestResultSchemasUnion } from '@dvsa/mes-test-schema/categories';
 import { ActivityCode } from '@dvsa/mes-test-schema/categories/common';
-import { dummyTests } from './__data__/DummyTests';
+import { dummyTests, dummyTestsNoVehicleTypeCode } from './__data__/DummyTests';
 import { TestsByInterface } from '../upload/TestsByInterface';
 import { container } from '../../framework/di/inversify.config';
 import { TYPES } from '../../framework/di/types';
@@ -27,6 +27,15 @@ describe('ResultInterfaceCategoriser', () => {
     batch = [dummyTests.pass1, dummyTests.terminateNoShow];
     expectedResult.completed.push(dummyTests.pass1);
     expectedResult.nonCompleted.push(dummyTests.terminateNoShow);
+
+    const result = categoriser.categoriseByInterface(batch);
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('should be able to with without vehicleTypeCode', () => {
+    batch = [dummyTestsNoVehicleTypeCode.pass1, dummyTestsNoVehicleTypeCode.terminateNoShow];
+    expectedResult.completed.push(dummyTestsNoVehicleTypeCode.pass1);
+    expectedResult.nonCompleted.push(dummyTestsNoVehicleTypeCode.terminateNoShow);
 
     const result = categoriser.categoriseByInterface(batch);
     expect(result).toEqual(expectedResult);
