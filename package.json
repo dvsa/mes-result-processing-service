@@ -36,7 +36,7 @@
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@dvsa/mes-test-schema": "3.52.0",
+    "@dvsa/mes-test-schema": "3.55.1",
     "@types/aws-lambda": "^8.10.126",
     "@types/jasmine": "^5.1.2",
     "@types/lodash": "^4.14.201",
@@ -65,7 +65,7 @@
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
-    "webpack": "^5.89.0",
+    "webpack": "^5.108.0",
     "webpack-cli": "^5.1.4",
     "yamljs": "^0.3.0"
   },
