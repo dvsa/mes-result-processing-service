@@ -30,7 +30,7 @@
     "@dvsa/mes-microservice-common": "1.2.6",
     "axios": "1.16.0",
     "bottleneck": "^2.19.5",
-    "inversify": "^6.0.2",
+    "inversify": "^6.2.2",
     "lodash": "^4.18.1",
     "moment": "^2.29.4",
     "reflect-metadata": "^0.1.13"
