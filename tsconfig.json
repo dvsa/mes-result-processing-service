@@ -10,7 +10,10 @@
       "dom"
     ],
     "target": "es2015",
-    "module": "commonjs",
+    "module": "node16",
+    "moduleResolution": "node16",
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
     "types": [
       "node",
       "jasmine",
