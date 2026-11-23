@@ -12,6 +12,10 @@
   "bugs": {
     "url": "https://github.com/dvsa/mes-result-processing-service/issues"
   },
+  "engines": {
+    "node": "24.18.*",
+    "npm": "11.16.*"
+  },
   "scripts": {
     "clean": "rimraf build artefacts",
     "compile": "rm -rf build && tsc",
@@ -28,12 +32,12 @@
   },
   "dependencies": {
     "@dvsa/mes-microservice-common": "1.2.6",
-    "axios": "1.16.0",
+    "axios": "^1.21.1",
     "bottleneck": "^2.19.5",
     "inversify": "^6.0.2",
     "lodash": "^4.18.1",
-    "moment": "^2.29.4",
-    "reflect-metadata": "^0.1.13"
+    "moment": "^2.31.0",
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@dvsa/mes-test-schema": "3.55.1",
@@ -55,10 +59,10 @@
     "nock": "^13.3.8",
     "npm-run-all": "^4.1.5",
     "rimraf": "^5.0.5",
-    "serverless": "^3.37.0",
+    "serverless": "^3.40.0",
     "serverless-dotenv-plugin": "^6.0.0",
-    "serverless-offline": "^13.3.0",
-    "serverless-webpack": "^5.13.0",
+    "serverless-offline": "^13.10.2",
+    "serverless-webpack": "^5.16.2",
     "snyk": "^1.1248.0",
     "sonar-scanner": "^3.1.0",
     "source-map-support": "^0.5.21",

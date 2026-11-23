@@ -10,9 +10,4 @@ version: v1.25.0
 
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  SNYK-JS-AXIOS-12613773:
-    - '*':
-        reason: Breaking change, will be addressed in upcoming refactor
-        expires: 2025-11-30T09:01:15.119Z
-        created: 2025-10-06T00:00:00.000Z
 patch: {}
