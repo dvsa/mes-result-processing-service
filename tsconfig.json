@@ -9,7 +9,11 @@
       "es2017",
       "dom"
     ],
-    "target": "es5",
+    "target": "es2015",
+    "module": "node16",
+    "moduleResolution": "node16",
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
     "types": [
       "node",
       "jasmine",
